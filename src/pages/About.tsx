@@ -100,9 +100,14 @@ export const About = () => {
                 <h2 className="text-xl font-light text-slate-500">{username}</h2>
              </div>
              
-             <button className="w-full py-1.5 bg-slate-50 border border-slate-300 rounded-md text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors shadow-sm">
+             <a 
+               href={`https://github.com/${username}`}
+               target="_blank"
+               rel="noopener noreferrer"
+               className="w-full block text-center py-1.5 bg-slate-50 border border-slate-300 rounded-md text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+             >
                Follow
-             </button>
+             </a>
 
              <p className="text-slate-700 text-sm leading-relaxed">
                {profile?.bio || "Artificial Intelligence & Data Science Student at Alard University | Creative Developer"}
@@ -130,11 +135,18 @@ export const About = () => {
                     {username} / README.md
                 </div>
                 <div className="p-8 text-slate-800 text-lg leading-relaxed font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    <ScrambledText className="space-y-6" radius={100} duration={1.2} speed={0.5} scrambleChars="0123456789!@#%&*ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+                    <div className="space-y-6">
                       <p>
-                        Hi, I'm <strong>Bhushan Kolte</strong>, an Artificial Intelligence and Data Science student at Alard University, Pune, driven by a passion for technology and innovation. I am constantly exploring new ideas, building technical skills, and challenging myself to grow both personally and professionally. My focus is on crafting modern web experiences that perfectly balance sleek visual design with seamless functionality. I add a highly personalized touch to your portfolios and websites to communicate your unique brand identity in the most creative way possible. As an active freelancer, I collaborate with clients to bring their next big vision to life.
+                        Hi, I'm <strong>Bhushan Kolte</strong>, an AI &amp; Data Science student and aspiring developer from India.
                       </p>
-                    </ScrambledText>
+                      <p>
+                        I'm passionate about web development, artificial intelligence, and creating interactive digital experiences. I enjoy building modern, visually appealing, and performance-driven projects using the latest technologies. I'm constantly learning new tools and improving my problem-solving skills through hands-on development.
+                      </p>
+                      <p>
+                        Beyond coding, I have a strong interest in UI/UX design, gaming, and sports. I believe in continuous growth, experimenting with new ideas, and turning creativity into meaningful projects. My goal is to build innovative products that combine technology, design, and functionality while learning something new every day.
+                      </p>
+                    </div>
+
 
                     {/* Logo loop embedded in README */}
                     <div className="mt-12 pt-8 border-t border-slate-200/50">
