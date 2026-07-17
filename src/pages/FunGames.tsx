@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScribblePad from '../components/ScribblePad';
+import ErrorBoundary from '../components/ErrorBoundary';
+import MacbookStickers from '../components/MacbookStickers';
 
 /* ──────────────────────────────────────────────
    Game definitions
@@ -449,8 +451,6 @@ const SnakeGame = () => {
    Game Modal
    ────────────────────────────────────────────── */
 
-import MacbookStickers from '../components/MacbookStickers';
-
 const GameModal = ({ game, onClose }: { game: GameDef; onClose: () => void }) => {
   const renderGame = () => {
     switch (game.id) {
@@ -564,7 +564,9 @@ const GameModal = ({ game, onClose }: { game: GameDef; onClose: () => void }) =>
 
         {/* Game Content */}
         <div style={{ padding: '1.5rem' }}>
-          {renderGame()}
+          <ErrorBoundary>
+            {renderGame()}
+          </ErrorBoundary>
         </div>
       </motion.div>
     </motion.div>

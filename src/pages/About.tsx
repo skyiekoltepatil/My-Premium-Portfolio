@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import aboutImage from '../assets/image-1.png';
 import LogoLoop from '../components/LogoLoop';
 import ScrambledText from '../components/ScrambledText';
+import { GitHubCalendar } from 'react-github-calendar';
+import { Users, BookOpen, Star, GitFork, MapPin, Mail, Building2 } from 'lucide-react';
 import {
   SiReact, SiNextdotjs, SiTypescript, SiTailwindcss,
   SiVite, SiNodedotjs, SiPython, SiPostgresql,
@@ -44,58 +47,177 @@ const allLogos = [
 ];
 
 export const About = () => {
-  return (
-    <section id="about-me" className="py-24 relative z-10 bg-white/40">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">About <span className="text-gradient">Me</span></h2>
-        </div>
-        <div className="flex flex-col md:flex-row gap-16 items-start">
-          <div className="w-full md:w-1/2">
-            <div className="rounded-[2.5rem] overflow-hidden group">
-              <motion.img
-                src={aboutImage}
-                alt="About Me"
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 text-slate-800 text-xl leading-relaxed font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <ScrambledText className="space-y-6" radius={100} duration={1.2} speed={0.5} scrambleChars="0123456789!@#%&*ABCDEFGHIJKLMNOPQRSTUVWXYZ">
-              <p>
-                Hi, I'm <strong>Bhushan Kolte</strong>, an Artificial Intelligence and Data Science student at Alard University, Pune, driven by a passion for technology and innovation. I am constantly exploring new ideas, building technical skills, and challenging myself to grow both personally and professionally. My focus is on crafting modern web experiences that perfectly balance sleek visual design with seamless functionality. I add a highly personalized touch to your portfolios and websites to communicate your unique brand identity in the most creative way possible. As an active freelancer, I collaborate with clients to bring their next big vision to life.
-              </p>
-            </ScrambledText>
-          </div>
-        </div>
+  const [profile, setProfile] = useState<any>(null);
+  const [repos, setRepos] = useState<any[]>([]);
+  const username = "skyiekoltepatil";
 
-        {/* Tech Stack Logo Loop */}
-        <motion.div
+  useEffect(() => {
+    // Fetch profile
+    fetch(`https://api.github.com/users/${username}`)
+      .then(res => res.json())
+      .then(data => setProfile(data))
+      .catch(err => console.error(err));
+
+    // Fetch repos
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const excludedRepos = [
+            "Login-Interface", 
+            "learningJs-2025", 
+            "learning-react-JS-2025", 
+            "Data-Structures-Algorithmns-main"
+          ];
+          const filteredRepos = data.filter(repo => !excludedRepos.includes(repo.name));
+          setRepos(filteredRepos.slice(0, 6));
+        }
+      })
+      .catch(err => console.error(err));
+  }, [username]);
+
+  return (
+    <section className="pt-32 pb-24 relative z-10 bg-white/40 min-h-screen flex flex-col items-center font-sans">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mt-20 pt-10 border-t border-slate-200/50"
+          className="flex flex-col lg:flex-row gap-10"
         >
-          <p className="text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest text-center">
-            Technologies I Work With
-          </p>
-          <div style={{ height: '80px', position: 'relative' }}>
-            <LogoLoop
-              logos={allLogos}
-              speed={90}
-              direction="left"
-              logoHeight={44}
-              gap={56}
-              hoverSpeed={0}
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#f8fafc"
-              ariaLabel="Technology stack"
-            />
+          {/* Left Sidebar (GitHub Profile Style) */}
+          <div className="w-full lg:w-1/4 flex flex-col gap-5">
+             <div className="relative group w-[260px] max-w-full mx-auto lg:mx-0">
+                <img 
+                  src={aboutImage} 
+                  alt="Bhushan Kolte" 
+                  className="w-full aspect-square object-cover rounded-full border border-slate-200 shadow-sm z-10 relative bg-white" 
+                />
+             </div>
+             
+             <div>
+                <h1 className="text-2xl font-bold text-slate-900 leading-tight">Bhushan Kolte</h1>
+                <h2 className="text-xl font-light text-slate-500">{username}</h2>
+             </div>
+             
+             <a 
+               href={`https://github.com/${username}`}
+               target="_blank"
+               rel="noopener noreferrer"
+               className="w-full block text-center py-1.5 bg-slate-50 border border-slate-300 rounded-md text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+             >
+               Follow
+             </a>
+
+             <p className="text-slate-700 text-sm leading-relaxed">
+               {profile?.bio || "Artificial Intelligence & Data Science Student at Alard University | Creative Developer"}
+             </p>
+             
+             <div className="flex items-center gap-1.5 text-sm text-slate-600">
+                <Users size={16} />
+                <span className="font-bold text-slate-800">{profile?.followers || 0}</span> followers <span className="mx-0.5">·</span>
+                <span className="font-bold text-slate-800">{profile?.following || 0}</span> following
+             </div>
+
+             <div className="flex flex-col gap-2.5 text-sm text-slate-700 border-t border-slate-200 pt-5 mt-1">
+                <div className="flex items-center gap-2"><Building2 size={16} className="text-slate-400" /> <span className="font-medium">Alard University</span></div>
+                <div className="flex items-center gap-2"><MapPin size={16} className="text-slate-400" /> Pune, India</div>
+                <div className="flex items-center gap-2"><Mail size={16} className="text-slate-400" /> <a href="mailto:bhushankolte20@gmail.com" className="hover:text-blue-600 transition-colors">bhushankolte20@gmail.com</a></div>
+             </div>
+          </div>
+
+          {/* Right Main Content */}
+          <div className="w-full lg:w-3/4 flex flex-col gap-8">
+             
+             {/* README Section */}
+             <div className="border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm">
+                <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    {username} / README.md
+                </div>
+                <div className="p-8 text-slate-800 text-lg leading-relaxed font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <div className="space-y-6">
+                      <p>
+                        Hi, I'm <strong>Bhushan Kolte</strong>, an AI &amp; Data Science student and aspiring developer from India.
+                      </p>
+                      <p>
+                        I'm passionate about web development, artificial intelligence, and creating interactive digital experiences. I enjoy building modern, visually appealing, and performance-driven projects using the latest technologies. I'm constantly learning new tools and improving my problem-solving skills through hands-on development.
+                      </p>
+                      <p>
+                        Beyond coding, I have a strong interest in UI/UX design, gaming, and sports. I believe in continuous growth, experimenting with new ideas, and turning creativity into meaningful projects. My goal is to build innovative products that combine technology, design, and functionality while learning something new every day.
+                      </p>
+                    </div>
+
+
+                    {/* Logo loop embedded in README */}
+                    <div className="mt-12 pt-8 border-t border-slate-200/50">
+                        <p className="text-xs font-sans font-bold text-slate-400 mb-6 uppercase tracking-widest text-center">
+                            Technologies I Work With
+                        </p>
+                        <div style={{ height: '60px', position: 'relative', fontFamily: "sans-serif" }}>
+                            <LogoLoop logos={allLogos} speed={90} direction="left" logoHeight={36} gap={40} hoverSpeed={0} scaleOnHover fadeOut fadeOutColor="#ffffff" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+             {/* Pinned Repos */}
+             <div>
+                <h3 className="text-base font-normal text-slate-800 mb-4">Pinned</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {repos.length > 0 ? repos.slice(0, 6).map((repo: any) => (
+                    <a 
+                      key={repo.id} 
+                      href={repo.html_url} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="flex flex-col p-4 rounded-md border border-slate-200 hover:border-slate-300 transition-colors bg-white group h-32 shadow-sm"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <BookOpen size={16} className="text-slate-500" />
+                        <h4 className="font-semibold text-blue-600 group-hover:underline truncate">{repo.name}</h4>
+                        <span className="ml-auto text-xs font-medium text-slate-500 border border-slate-200 rounded-full px-2 py-0.5">Public</span>
+                      </div>
+                      <p className="text-xs text-slate-600 mb-4 line-clamp-2">{repo.description || "No description provided."}</p>
+                      <div className="flex items-center gap-4 text-xs text-slate-600 mt-auto">
+                        {repo.language && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+                            {repo.language}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                          <Star size={14} />
+                          {repo.stargazers_count}
+                        </div>
+                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                          <GitFork size={14} />
+                          {repo.forks_count}
+                        </div>
+                      </div>
+                    </a>
+                  )) : (
+                    [1, 2, 3, 4, 5, 6].map(i => (
+                      <div key={i} className="h-32 bg-slate-50 rounded-md animate-pulse border border-slate-200 shadow-sm"></div>
+                    ))
+                  )}
+                </div>
+             </div>
+
+             {/* Contributions */}
+             <div className="mt-4">
+                 <div className="border border-slate-200 rounded-lg bg-white p-6 overflow-x-auto shadow-sm">
+                     <div className="min-w-[700px] flex justify-center items-center">
+                        <GitHubCalendar 
+                          username={username} 
+                          year={new Date().getFullYear()} 
+                          colorScheme="light" 
+                        />
+                     </div>
+                 </div>
+             </div>
+
           </div>
         </motion.div>
-
       </div>
     </section>
   );
