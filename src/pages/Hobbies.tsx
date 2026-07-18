@@ -2,6 +2,13 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Medal, Brain, Swords, Gamepad, Gamepad2, Users, CheckCircle2, Play, Pause } from 'lucide-react';
 import dotaVideo from '../assets/Dota 2 Info.mp4';
+const cricketImg = "https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=800&auto=format&fit=crop";
+const badmintonImg = "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=800&auto=format&fit=crop";
+const dotaImg = "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop";
+const phasmophobiaImg = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop";
+import tanjiroImg from '../assets/tanjiro-images.png';
+import nezukoImg from '../assets/nezuko-image.png';
+import spyxfamilyImg from '../assets/spyxfamily-image.png';
 
 const sportsList = ["Badminton", "Cricket", "Basketball", "Table Tennis", "Volleyball", "Swimming", "Relay Race", "100m Sprint"];
 const representations = [
@@ -72,7 +79,7 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
-                src="/@fs/Users/anakolte/.gemini/antigravity-ide/brain/654d7a30-8aa7-4dd2-a528-6538ae759e55/sport_cricket_1784252298188.png"
+                src={cricketImg}
                 alt="Cricket"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -122,7 +129,7 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
-                src="/@fs/Users/anakolte/.gemini/antigravity-ide/brain/654d7a30-8aa7-4dd2-a528-6538ae759e55/sport_badminton_1784252308360.png"
+                src={badmintonImg}
                 alt="Badminton"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -216,7 +223,7 @@ export const Hobbies = () => {
                 }}
               />
               <img
-                src="/@fs/Users/anakolte/.gemini/antigravity-ide/brain/654d7a30-8aa7-4dd2-a528-6538ae759e55/game_dota2_1784252319174.png"
+                src={dotaImg}
                 alt="Dota 2"
                 className={`relative w-full aspect-[4/3] object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'} group-hover:scale-105 z-0`}
               />
@@ -310,7 +317,7 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
-                src="/@fs/Users/anakolte/.gemini/antigravity-ide/brain/654d7a30-8aa7-4dd2-a528-6538ae759e55/game_phasmophobia_1784252329213.png"
+                src={phasmophobiaImg}
                 alt="Phasmophobia"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -410,14 +417,14 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
               <img
-                src="/src/assets/tanjiro-images.png"
+                src={tanjiroImg}
                 alt="Tanjiro Kamado"
                 className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
               <img
-                src="/src/assets/nezuko-image.png"
+                src={nezukoImg}
                 alt="Nezuko Kamado"
                 className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -448,7 +455,7 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
-                src="/src/assets/spyxfamily-image.png"
+                src={spyxfamilyImg}
                 alt="Spy x Family"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
               />
