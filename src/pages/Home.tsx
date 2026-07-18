@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import workingGif from '../assets/workinggif.mp4';
+import RotatingText from '../components/RotatingText';
 
 export const Home = () => {
   const { scrollY } = useScroll();
@@ -21,8 +22,8 @@ export const Home = () => {
           playsInline
           className="w-full h-full object-cover"
         />
-        {/* Subtle dark gradient so white text stays readable */}
-        <div className="absolute inset-0 bg-black/15" />
+        {/* Subtle overlay */}
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Main content on top */}
@@ -30,27 +31,25 @@ export const Home = () => {
         style={{ y, opacity }}
         className="relative z-10 max-w-4xl px-4 md:px-8 w-full text-left flex flex-col items-start mt-4 pointer-events-none"
       >
-        <motion.h1
-          className="text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter leading-[1.05] mb-8 text-white drop-shadow-lg"
-        >
-          <motion.span
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="block"
-          >
-            Creative
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="block text-gradient"
-          >
-            Web Engineer.
-          </motion.span>
-        </motion.h1>
+        <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter leading-[1.05] mb-8 text-[#5C1A1B] drop-shadow-sm">
+          <span className="block">Creative</span>
+          <span className="block">
+            <RotatingText
+              texts={['UI Designer.', 'Thinker.', 'Coder.', 'Developer.', 'Problem Solver.']}
+              mainClassName="text-[#5C1A1B] inline-flex"
+              staggerFrom="last"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-120%' }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-1 md:pb-2"
+              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+              rotationInterval={2500}
+            />
+          </span>
+        </h1>
       </motion.div>
     </section>
   );
 };
+
