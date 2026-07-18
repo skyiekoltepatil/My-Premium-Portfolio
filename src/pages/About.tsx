@@ -10,8 +10,7 @@ import {
   SiVite, SiNodedotjs, SiPython, SiPostgresql,
   SiFirebase, SiFigma,
   SiGooglegemini, SiOllama, SiAnthropic, SiVercel, SiGithub,
-  SiJupyter, SiPandas, SiNumpy, SiScikitlearn, SiTensorflow,
-  SiKaggle, SiOpencv, SiPlotly, SiStreamlit, SiGooglecolab, SiR,
+  SiKaggle,
 } from 'react-icons/si';
 import { FaLinkedin, FaFileExcel, FaChartBar } from 'react-icons/fa';
 
