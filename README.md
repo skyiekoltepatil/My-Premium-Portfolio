@@ -1,4 +1,4 @@
-# 👨‍💻 My Detailed Portfolio
+# 👨‍💻 My Premium Portfolio
 
 ![Website Preview](src/assets/website-image.png)
 
