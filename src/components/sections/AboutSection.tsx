@@ -78,8 +78,6 @@ export const AboutSection = () => {
               logoHeight={44}
               gap={56}
               scaleOnHover
-              fadeOut
-              fadeOutColor="#f8fafc"
               ariaLabel="Technology stack"
             />
           </div>
