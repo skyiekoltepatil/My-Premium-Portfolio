@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, Calendar, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, Calendar, MapPin } from 'lucide-react';
 import AvatarImage from '../../assets/Avatar-1-image.png';
-import { MagneticElement } from '../../components/effects/Shared';
+import { ContactForm } from '../../components/ContactForm';
 
 export const Contact = () => {
   const GithubIcon = ({ size = 20, className = "" }: { size?: number, className?: string }) => (
@@ -117,37 +117,7 @@ export const Contact = () => {
             </div>
 
             {/* Contact Form Section */}
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Contact Form</h3>
-
-            <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input
-                  type="text"
-                  placeholder="Full name"
-                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 shadow-sm"
-                />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 shadow-sm"
-                />
-              </div>
-
-              <textarea
-                placeholder="Your Message"
-                rows={5}
-                className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 resize-none shadow-sm"
-              ></textarea>
-
-              <div className="flex justify-end mt-2">
-                <MagneticElement>
-                  <button type="submit" className="flex items-center gap-3 px-8 py-4 bg-white border border-slate-200 shadow-sm rounded-2xl hover:shadow-md hover:-translate-y-1 hover:border-blue-200 transition-all group">
-                    <Send size={18} className="text-blue-500 group-hover:text-blue-600 transition-colors" />
-                    <span className="font-bold text-slate-600 group-hover:text-blue-600 transition-colors text-[15px]">Send Message</span>
-                  </button>
-                </MagneticElement>
-              </div>
-            </form>
+            <ContactForm />
           </div>
 
         </motion.div>
