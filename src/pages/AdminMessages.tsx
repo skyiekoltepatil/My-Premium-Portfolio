@@ -22,6 +22,17 @@ import {
   clearStoredMessages 
 } from '../services/contactDatabase';
 
+// Hashed passcode for public repository security (SHA-256 hash of password)
+const PASSCODE_HASH = 'deab4b1a1376a899b5275e56156c819acbb34b3f51ee67b3b3eadbb0d7dd8399';
+
+async function hashInput(str: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
 export const AdminMessages: React.FC = () => {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
@@ -29,8 +40,6 @@ export const AdminMessages: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [passError, setPassError] = useState(false);
-
-  const DEFAULT_PIN = '2008';
 
   useEffect(() => {
     // Check if previously unlocked in session
@@ -45,15 +54,29 @@ export const AdminMessages: React.FC = () => {
     setMessages(getStoredMessages());
   };
 
-  const handleUnlock = (e: React.FormEvent) => {
+  const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === DEFAULT_PIN || passcode === 'admin') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('admin_messages_unlocked', 'true');
-      setPassError(false);
+    const envPasscode = import.meta.env.VITE_ADMIN_PASSCODE;
+    const inputTrimmed = passcode.trim();
+
+    if (envPasscode) {
+      if (inputTrimmed === envPasscode) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('admin_messages_unlocked', 'true');
+        setPassError(false);
+        return;
+      }
     } else {
-      setPassError(true);
+      const enteredHash = await hashInput(inputTrimmed);
+      if (enteredHash === PASSCODE_HASH) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('admin_messages_unlocked', 'true');
+        setPassError(false);
+        return;
+      }
     }
+
+    setPassError(true);
   };
 
   const handleMarkRead = (id: string) => {
@@ -125,13 +148,13 @@ export const AdminMessages: React.FC = () => {
                   type="password"
                   value={passcode}
                   onChange={(e) => { setPasscode(e.target.value); setPassError(false); }}
-                  placeholder="Enter Passcode (Default: 2008)"
+                  placeholder="Enter Admin Passcode"
                   className={`w-full px-5 py-3.5 bg-slate-50 border rounded-2xl outline-none text-center font-bold text-slate-800 transition-all ${
                     passError ? 'border-red-400 focus:ring-4 focus:ring-red-100' : 'border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-50'
                   }`}
                 />
                 {passError && (
-                  <p className="text-xs text-red-500 font-semibold mt-2">Incorrect passcode. Default is 2008</p>
+                  <p className="text-xs text-red-500 font-semibold mt-2">Incorrect passcode. Please try again.</p>
                 )}
               </div>
 
