@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, CheckCircle2 } from 'lucide-react';
 import { MagneticElement } from './effects/Shared';
+import { saveMessageToDatabase } from '../services/contactDatabase';
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,22 +13,25 @@ export const ContactForm: React.FC = () => {
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status !== 'idle') return;
 
     setStatus('sending');
 
-    // Simulate sending delay (1.5 seconds)
-    setTimeout(() => {
-      setStatus('sent');
-      setFormData({ name: '', email: '', message: '' });
+    try {
+      await saveMessageToDatabase(formData);
+    } catch (err) {
+      console.error('Contact submission error:', err);
+    }
 
-      // Revert back to idle after 4 seconds
-      setTimeout(() => {
-        setStatus('idle');
-      }, 4000);
-    }, 1500);
+    setStatus('sent');
+    setFormData({ name: '', email: '', message: '' });
+
+    // Revert back to idle after 4 seconds
+    setTimeout(() => {
+      setStatus('idle');
+    }, 4000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
