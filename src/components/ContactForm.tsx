@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, CheckCircle2 } from 'lucide-react';
 import { MagneticElement } from './effects/Shared';
 import { saveMessageToDatabase } from '../services/contactDatabase';
+import emailjs from '@emailjs/browser';
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,21 @@ export const ContactForm: React.FC = () => {
     setStatus('sending');
 
     try {
+      // Send email using EmailJS
+      await emailjs.send(
+        'service_rqxuj9m',
+        'template_psip91t',
+        {
+          name: formData.name,
+          from_name: formData.name,
+          email: formData.email,
+          reply_to: formData.email,
+          message: formData.message,
+        },
+        'N671lSh1SG6Loil1o'
+      );
+      
+      // Also save to local database for admin dashboard
       await saveMessageToDatabase(formData);
     } catch (err) {
       console.error('Contact submission error:', err);
