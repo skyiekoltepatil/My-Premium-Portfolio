@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 
 const EDUCATION = [
