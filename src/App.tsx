@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useIsMobile } from './hooks/useIsMobile';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Desktop Pages
 import { Layout as DesktopLayout } from './components/layout/Layout';
@@ -91,6 +92,7 @@ export default function App() {
         )}
       </BrowserRouter>
       <SpeedInsights />
+      <Analytics />
     </>
   );
 }
