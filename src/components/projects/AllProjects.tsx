@@ -15,10 +15,10 @@ export default function AllProjects() {
           My Projects
         </h2>
         <Link 
-          to="/experience"
+          to="/project"
           className="text-sm md:text-base font-medium text-blue-600 hover:text-blue-800 transition-colors"
         >
-          See more in Selected Work →
+          See more in Project →
         </Link>
       </div>
       <Carousel items={cards} />

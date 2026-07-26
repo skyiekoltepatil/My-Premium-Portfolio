@@ -27,7 +27,7 @@ const Navbar = () => {
           layout
           initial={{ width: 130, height: 32 }}
           animate={{
-            width: isHovered ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 380 : 540) : 130,
+            width: isHovered ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 380 : 400) : 130,
             height: isHovered ? 48 : 32
           }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -50,7 +50,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex items-center gap-6 sm:gap-8 absolute left-8"
+                className="flex items-center justify-end gap-6 sm:gap-4 absolute right-1/2 mr-6 sm:mr-8"
               >
                 <div className="relative group">
                   <button className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">
@@ -69,7 +69,7 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <Link to="/quote" className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap">Quote</Link>
+                <Link to="/project" className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap">Project</Link>
               </motion.div>
             )}
           </AnimatePresence>
@@ -87,9 +87,24 @@ const Navbar = () => {
                 animate={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex items-center gap-6 sm:gap-8 absolute right-8"
+                className="flex items-center justify-start gap-6 sm:gap-4 absolute left-1/2 ml-6 sm:ml-8"
               >
-                <Link to="/fun-games" className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap">Fun Games</Link>
+                <div className="relative group">
+                  <button className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">
+                    More
+                    <svg className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu - using padding to bridge the hover gap perfectly */}
+                  <div className="absolute top-full right-0 pt-4 -mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                    <div className="bg-black/95 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] rounded-2xl py-2 min-w-[160px] flex flex-col transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <Link to="/quote" className="block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">Quote</Link>
+                      <Link to="/fun-games" className="block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">Fun Games</Link>
+                    </div>
+                  </div>
+                </div>
                 <Link to="/contact" className="text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap">Contact</Link>
               </motion.div>
             )}

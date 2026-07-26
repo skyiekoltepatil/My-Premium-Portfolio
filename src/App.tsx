@@ -11,6 +11,7 @@ import { Hobbies as HobbiesDesktop } from './pages/Hobbies';
 import { FunGames as FunGamesDesktop } from './pages/FunGames';
 import { Contact as ContactDesktop } from './pages/Contact';
 import { Quote as QuoteDesktop } from './pages/Quote';
+import { Project as ProjectDesktop } from './pages/Project';
 
 // Mobile Pages
 import { Home as HomeMobile } from './mobile-ui-ux/pages/Home';
@@ -20,6 +21,7 @@ import { Hobbies as HobbiesMobile } from './mobile-ui-ux/pages/Hobbies';
 import { FunGames as FunGamesMobile } from './mobile-ui-ux/pages/FunGames';
 import { Contact as ContactMobile } from './mobile-ui-ux/pages/Contact';
 import { Quote as QuoteMobile } from './mobile-ui-ux/pages/Quote';
+import { Project as ProjectMobile } from './mobile-ui-ux/pages/Project';
 
 import { AdminMessages } from './pages/AdminMessages';
 
@@ -68,6 +70,7 @@ export default function App() {
               <Route path="fun-games" element={<FunGamesMobile />} />
               <Route path="contact" element={<ContactMobile />} />
               <Route path="quote" element={<QuoteMobile />} />
+              <Route path="project" element={<ProjectMobile />} />
               <Route path="admin" element={<AdminMessages />} />
             </Route>
           </Routes>
@@ -81,6 +84,7 @@ export default function App() {
               <Route path="fun-games" element={<FunGamesDesktop />} />
               <Route path="contact" element={<ContactDesktop />} />
               <Route path="quote" element={<QuoteDesktop />} />
+              <Route path="project" element={<ProjectDesktop />} />
               <Route path="admin" element={<AdminMessages />} />
             </Route>
           </Routes>
