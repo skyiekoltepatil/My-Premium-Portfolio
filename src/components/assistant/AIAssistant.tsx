@@ -178,8 +178,7 @@ export const AIAssistant = () => {
               </div>
 
               {isEmptyState ? (
-                // Landing State UI
-                <div className="flex-1 flex flex-col items-center justify-center relative z-20 px-4 w-full max-w-4xl mx-auto overflow-y-auto pb-4">
+                <div className="flex-1 flex flex-col items-center justify-start md:justify-center pt-10 md:pt-0 relative z-20 px-4 w-full max-w-4xl mx-auto overflow-y-auto pb-4">
                   <div className="flex flex-col items-center text-center mt-6">
                     <h2 className="text-gray-600 mt-1 text-lg font-semibold md:text-xl">
                       Hey, I'm Bhushan 👋

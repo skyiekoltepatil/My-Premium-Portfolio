@@ -217,7 +217,7 @@ export const Card = ({
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[110] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
+              className="relative z-[110] mx-auto my-10 h-fit w-[calc(100%-2rem)] md:w-full max-w-5xl rounded-3xl bg-white font-sans"
             >
               {/* Sticky close button */}
               <div className="sticky top-4 z-[120] flex justify-end px-8 pt-8 md:px-14 md:pt-8">

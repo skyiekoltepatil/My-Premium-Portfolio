@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CustomCursor, BackgroundEffects } from '../effects/Shared';
@@ -14,6 +14,16 @@ const AppleLogo = () => (
 
 const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -27,7 +37,7 @@ const Navbar = () => {
           layout
           initial={{ width: 130, height: 32 }}
           animate={{
-            width: isHovered ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 380 : 400) : 130,
+            width: isHovered ? (windowWidth < 640 ? Math.min(380, windowWidth - 32) : 400) : 130,
             height: isHovered ? 48 : 32
           }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
