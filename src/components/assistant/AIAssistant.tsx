@@ -105,16 +105,18 @@ export const AIAssistant = () => {
     <>
       <AnimatePresence>
         {!isExpanded && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            onClick={() => setIsExpanded(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-black rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform"
-          >
-            <span className="text-white font-bold text-2xl tracking-tight">AI</span>
-          </motion.button>
+          <div className="fixed bottom-0 right-0 z-50 w-32 h-32 flex items-center justify-center group cursor-default">
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              onClick={() => setIsExpanded(true)}
+              className="px-6 py-3 bg-black rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-105"
+            >
+              <span className="text-white font-bold text-lg tracking-wide">Aria</span>
+            </motion.button>
+          </div>
         )}
       </AnimatePresence>
 
@@ -171,7 +173,7 @@ export const AIAssistant = () => {
                   <button className="w-3 h-3 rounded-full bg-[#27C93F] hover:bg-[#27C93F]/80 border border-[#1AAB29]" />
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-                  <span className="text-gray-900 font-bold text-lg leading-none">AI</span>
+                  <span className="text-gray-900 font-bold text-lg leading-none">Aria</span>
                   <span className="font-semibold text-sm text-gray-900">Personal Assistant</span>
                 </div>
                 <div className="w-12"></div>
