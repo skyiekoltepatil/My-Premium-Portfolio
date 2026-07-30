@@ -11,7 +11,7 @@ const GithubIcon = ({ size = 24 }: { size?: number }) => (
   </svg>
 );
 
-const PROJECTS = [
+export const PROJECTS = [
   {
     title: 'My Detailed Portfolio',
     description: 'A premium, highly interactive React component library for modern web applications.',

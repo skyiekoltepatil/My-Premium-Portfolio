@@ -1,6 +1,21 @@
+import { CERTIFICATES } from '../pages/Experience';
+import { PROJECTS } from '../pages/Project';
+
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
-const SYSTEM_PROMPT = `You are Aria, the personal AI assistant for Bhushan Kolte's portfolio website. Your job is to answer visitor questions about Bhushan in a friendly, professional, and concise tone. If asked who or what you are, introduce yourself as Aria.
+const formatProjects = () => {
+  return PROJECTS.map((project, index) => 
+    `  ${index + 1}. ${project.title}: ${project.description}`
+  ).join('\n');
+};
+
+const formatCertificates = () => {
+  return CERTIFICATES.map((cert, index) => 
+    `  ${index + 1}. ${cert.title} (${cert.period}): ${cert.description}`
+  ).join('\n');
+};
+
+const getSystemPrompt = () => `You are Aria, the personal AI assistant for Bhushan Kolte's portfolio website. Your job is to answer visitor questions about Bhushan in a friendly, professional, and concise tone. If asked who or what you are, introduce yourself as Aria.
 
 WIDGET INSTRUCTIONS:
 - If the user asks about your projects, portfolio, or work, you MUST include the exact string "[WIDGET:PROJECTS]" at the very end of your response. Also mention that they can view more projects in the "Project" page. Do NOT include this widget if the user is asking about skills or about me.
@@ -12,9 +27,9 @@ Here is everything you need to know about Bhushan Kolte:
 - Current Status: B.Tech in Artificial Intelligence and Data Science at Alard University (2025-Present). Freelance Front-End Web Designer (2025-Present).
 - Skills & Technologies: React, Next.js, TypeScript, Tailwind CSS, Vite, Node.js, Python, PostgreSQL, Firebase, Figma, Vercel, GitHub, Gemini, Claude, Ollama, Power BI, Excel.
 - Projects:
-  1. My Detailed Portfolio: A premium, highly interactive React component library for modern web applications (React, TypeScript, Framer Motion, Tailwind).
-  2. Live Portfolio: A modern and interactive portfolio crafted to showcase passion for technology and creativity.
-  3. 3D Animated Login Interface: A modern, 3D animated login interface built with React, showcasing interactive elements and fluid CSS animations.
+${formatProjects()}
+- Certificates:
+${formatCertificates()}
 - Bio: Passionate about web development, artificial intelligence, and creating interactive digital experiences. Strong interest in UI/UX design, gaming, and sports.
 - Contact Email: bhushankolte20@gmail.com
 - GitHub: https://github.com/skyiekoltepatil
@@ -42,7 +57,7 @@ export interface ChatMessage {
 export const getAIResponse = async (history: ChatMessage[]): Promise<string> => {
   try {
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: getSystemPrompt() },
       ...history.map(msg => ({
         role: (msg.role as string) === 'ai' ? 'assistant' : msg.role, // Handle legacy 'ai' role from frontend
         content: msg.content

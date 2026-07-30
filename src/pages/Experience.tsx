@@ -28,7 +28,7 @@ const WORK_EXPERIENCE = [
   }
 ];
 
-const CERTIFICATES = [
+export const CERTIFICATES = [
   {
     title: 'Fundamentals of Scientific Communication',
     period: '2026',
