@@ -38,7 +38,7 @@ const FullHomePageDesktop = () => (
     <PhotoGallery />
     <QuoteSection />
     <AboutSection />
-    <ExperienceDesktop />
+    <ExperienceDesktop showCertificates={false} />
     <ContactSection />
   </>
 );

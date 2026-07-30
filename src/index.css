@@ -54,6 +54,9 @@
 
   .glass-panel {
     @apply backdrop-blur-xl bg-white/70 border border-white/50 shadow-[0_8px_30px_rgba(0,0,0,0.04)];
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform, backdrop-filter;
   }
 }
 

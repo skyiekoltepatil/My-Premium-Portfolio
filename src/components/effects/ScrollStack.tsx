@@ -48,7 +48,9 @@ export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({
         scale,
         filter,
         zIndex: index + 10,
-        transformOrigin: "top center"
+        transformOrigin: "top center",
+        willChange: "transform, filter",
+        WebkitTransform: "translateZ(0)"
       }}
     >
       {children}

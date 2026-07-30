@@ -48,7 +48,7 @@ const CERTIFICATES = [
   }
 ];
 
-export const Experience = () => {
+export const Experience = ({ showCertificates = true }: { showCertificates?: boolean }) => {
   return (
     <div id="experience" className="py-24 relative z-10">
 
@@ -119,42 +119,46 @@ export const Experience = () => {
       </section>
 
       {/* Certificates Section */}
-      <section>
-        <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
-          <p className="text-slate-500 mt-4 text-lg">Scroll down to explore all certificates</p>
-        </div>
+      {showCertificates && (
+        <section>
+          <div className="mb-16 md:mb-24 text-center">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
+            <p className="text-slate-500 mt-4 text-lg">Scroll down to explore all certificates</p>
+          </div>
 
-        <ScrollStack
-          useWindowScroll={true}
-          itemDistance={60}
-          itemScale={0.04}
-          itemStackDistance={25}
-          baseScale={0.9}
-          blurAmount={1.5}
-        >
-          {CERTIFICATES.map((item, i) => (
-            <ScrollStackItem key={i} itemClassName="cert-card">
-              <div className="cert-image-wrapper">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                />
-              </div>
-              <div className="cert-text">
-                <div className="flex items-center justify-center gap-3 mb-3">
-                  <div className="w-9 h-9 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                    <Award size={18} />
-                  </div>
-                  <span className="text-blue-700 font-bold text-sm">{item.period}</span>
+          <ScrollStack
+            useWindowScroll={true}
+            itemDistance={60}
+            itemScale={0.04}
+            itemStackDistance={25}
+            baseScale={0.9}
+            blurAmount={1.5}
+          >
+            {CERTIFICATES.map((item, i) => (
+              <ScrollStackItem key={i} itemClassName="cert-card">
+                <div className="cert-image-wrapper">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-                <h4 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{item.title}</h4>
-                <p className="text-slate-600 text-sm md:text-base leading-relaxed">{item.description}</p>
-              </div>
-            </ScrollStackItem>
-          ))}
-        </ScrollStack>
-      </section>
+                <div className="cert-text">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <div className="w-9 h-9 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                      <Award size={18} />
+                    </div>
+                    <span className="text-blue-700 font-bold text-sm">{item.period}</span>
+                  </div>
+                  <h4 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{item.title}</h4>
+                  <p className="text-slate-600 text-sm md:text-base leading-relaxed">{item.description}</p>
+                </div>
+              </ScrollStackItem>
+            ))}
+          </ScrollStack>
+        </section>
+      )}
 
     </div>
   );
