@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import aboutImage from '../../assets/image-1.png';
 import LogoLoop from '../effects/LogoLoop';
-import TextType from '../effects/TextType';
+import TypewriterText from '../effects/TypewriterText';
 
 import {
   SiReact, SiNextdotjs, SiTypescript, SiTailwindcss,
@@ -54,7 +54,7 @@ export const AboutSection = () => {
           <div className="w-full md:w-1/2 text-slate-800 text-xl md:text-2xl leading-relaxed font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
             <div className="space-y-6">
               <p>
-                <TextType 
+                <TypewriterText 
                   text="Hi, I'm Bhushan Kolte, an Artificial Intelligence and Data Science student at Alard University, Pune, driven by a passion for technology and innovation. I am constantly exploring new ideas, building technical skills, and challenging myself to grow both personally and professionally. My focus is on crafting modern web experiences that perfectly balance sleek visual design with seamless functionality. I add a highly personalized touch to your portfolios and websites to communicate your unique brand identity in the most creative way possible. As an active freelancer, I collaborate with clients to bring their next big vision to life."
                   typingSpeed={25}
                   loop={false}
