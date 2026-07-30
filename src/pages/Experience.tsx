@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { BookOpen, Award } from 'lucide-react';
 import ScrollStack, { ScrollStackItem } from '../components/effects/ScrollStack';
 import certFundamentals from '../assets/certificate- Fundamentals of Scientific Communication.webp';
@@ -48,7 +49,10 @@ const CERTIFICATES = [
   }
 ];
 
-export const Experience = ({ showCertificates = true }: { showCertificates?: boolean }) => {
+export const Experience = () => {
+  const location = useLocation();
+  const showCertificates = location.pathname === '/experience';
+
   return (
     <div id="experience" className="py-24 relative z-10">
 
