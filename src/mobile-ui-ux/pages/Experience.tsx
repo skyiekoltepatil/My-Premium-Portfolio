@@ -124,9 +124,9 @@ export const Experience = () => {
 
       {/* Certificates Section */}
       {showCertificates && (
-        <section>
+        <section aria-labelledby="certificates-heading-mobile">
           <div className="mb-16 md:mb-24 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
+            <h2 id="certificates-heading-mobile" className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
             <p className="text-slate-500 mt-4 text-lg">Scroll down to explore all certificates</p>
           </div>
 
@@ -137,10 +137,18 @@ export const Experience = () => {
             itemStackDistance={25}
             baseScale={0.9}
             blurAmount={1.5}
+            role="list"
+            aria-label="List of Certificates"
           >
             {CERTIFICATES.map((item, i) => (
-              <ScrollStackItem key={i} itemClassName="cert-card">
-                <div className="cert-image-wrapper">
+              <ScrollStackItem 
+                key={i} 
+                itemClassName="cert-card"
+                role="listitem"
+                aria-labelledby={`cert-title-mobile-${i}`}
+                aria-describedby={`cert-desc-mobile-${i}`}
+              >
+                <div className="cert-image-wrapper" aria-hidden="true">
                   <img
                     src={item.image}
                     alt={item.title}
@@ -155,8 +163,8 @@ export const Experience = () => {
                     </div>
                     <span className="text-blue-700 font-bold text-sm">{item.period}</span>
                   </div>
-                  <h4 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{item.title}</h4>
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed">{item.description}</p>
+                  <h4 id={`cert-title-mobile-${i}`} className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{item.title}</h4>
+                  <p id={`cert-desc-mobile-${i}`} className="text-slate-600 text-sm md:text-base leading-relaxed">{item.description}</p>
                 </div>
               </ScrollStackItem>
             ))}
