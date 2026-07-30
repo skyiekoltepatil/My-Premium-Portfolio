@@ -1,4 +1,5 @@
-import React, { useRef, type ReactNode } from 'react';
+import React, { useRef } from 'react';
+import type { ReactNode } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import './ScrollStack.css';
 
@@ -8,6 +9,9 @@ interface ScrollStackItemProps {
   index?: number;
   totalCards?: number;
   scrollYProgress?: any;
+  role?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
 }
 
 export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({ 
@@ -15,7 +19,10 @@ export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({
   itemClassName = '', 
   index = 0,
   totalCards = 1,
-  scrollYProgress
+  scrollYProgress,
+  role,
+  'aria-labelledby': ariaLabelledby,
+  'aria-describedby': ariaDescribedby
 }) => {
   // Card starts scaling exactly when it reaches its sticky position
   // which roughly correlates to index / totalCards in the container's scroll progress
@@ -42,6 +49,9 @@ export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({
   return (
     <motion.div 
       className={`scroll-stack-card ${itemClassName}`.trim()}
+      role={role}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
       style={{
         position: 'sticky',
         top: `calc(15vh + ${index * 25}px)`,
@@ -68,11 +78,15 @@ interface ScrollStackProps {
   itemStackDistance?: number;
   baseScale?: number;
   blurAmount?: number;
+  role?: string;
+  'aria-label'?: string;
 }
 
 const ScrollStack: React.FC<ScrollStackProps> = ({
   children,
   className = '',
+  role,
+  'aria-label': ariaLabel
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -85,7 +99,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const count = React.Children.count(children);
 
   return (
-    <div ref={containerRef} className={`scroll-stack-container ${className}`.trim()}>
+    <div ref={containerRef} className={`scroll-stack-container ${className}`.trim()} role={role} aria-label={ariaLabel}>
       {React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child as React.ReactElement<any>, { 
