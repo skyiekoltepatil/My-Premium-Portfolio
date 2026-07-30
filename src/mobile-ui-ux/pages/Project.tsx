@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
-import Project1Image from '../../assets/Project-1-image.png';
-import Project2Image from '../../assets/Project-2-image.png';
-import Project3Image from '../../assets/Project-3-image.png';
+import Project1Image from '../../assets/Project-1-image.webp';
+import Project2Image from '../../assets/Project-2-image.webp';
+import Project3Image from '../../assets/Project-3-image.webp';
 
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

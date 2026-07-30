@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import aboutImage from '../../assets/image-1.png';
+import aboutImage from '../../assets/image-1.webp';
 import LogoLoop from '../effects/LogoLoop';
 import TypewriterText from '../effects/TypewriterText';
 

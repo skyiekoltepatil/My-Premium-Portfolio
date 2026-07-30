@@ -5,7 +5,7 @@ import { Laugh, BriefcaseBusiness, Layers, UserRoundSearch, ArrowUp, ChevronDown
 import FluidCursor from '../FluidCursor';
 import AllProjects from '../projects/AllProjects';
 import { ContactForm } from '../ContactForm';
-import myAvatar from '../../assets/my-avatar.png';
+import myAvatar from '../../assets/my-avatar.webp';
 
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
@@ -43,7 +43,7 @@ export const AIAssistant = () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }
-    
+
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
@@ -63,10 +63,10 @@ export const AIAssistant = () => {
     try {
       const history = newMessages.map(msg => ({ role: msg.sender, content: msg.text })) as any;
       let aiResponseText = await getAIResponse(history);
-      
+
       let isWidget = false;
       let widgetType = '';
-      
+
       if (aiResponseText.includes('[WIDGET:PROJECTS]')) {
         isWidget = true;
         widgetType = 'PROJECTS';
@@ -144,16 +144,16 @@ export const AIAssistant = () => {
               {/* Wavy Background (For Landing State) */}
               {isEmptyState && (
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                   <div className="absolute top-[-20%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100/70 via-white/20 to-transparent blur-[80px]"></div>
-                   <div className="absolute top-[20%] right-[-20%] w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-100/60 via-transparent to-transparent blur-[80px]"></div>
-                   <div className="absolute bottom-[-10%] left-[20%] w-[100%] h-[60%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-50/70 via-transparent to-transparent blur-[100px]"></div>
-                   <FluidCursor />
-                   {/* Large Bhushan Watermark */}
-                   <div className="absolute bottom-0 w-full flex justify-center overflow-hidden">
-                     <div className="text-[10rem] md:text-[14rem] font-black text-gray-900/5 select-none leading-none mb-[-2rem] md:mb-[-4rem]">
-                       Bhushan
-                     </div>
-                   </div>
+                  <div className="absolute top-[-20%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100/70 via-white/20 to-transparent blur-[80px]"></div>
+                  <div className="absolute top-[20%] right-[-20%] w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-100/60 via-transparent to-transparent blur-[80px]"></div>
+                  <div className="absolute bottom-[-10%] left-[20%] w-[100%] h-[60%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-50/70 via-transparent to-transparent blur-[100px]"></div>
+                  <FluidCursor />
+                  {/* Large Bhushan Watermark */}
+                  <div className="absolute bottom-0 w-full flex justify-center overflow-hidden">
+                    <div className="text-[10rem] md:text-[14rem] font-black text-gray-900/5 select-none leading-none mb-[-2rem] md:mb-[-4rem]">
+                      Bhushan
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -189,57 +189,57 @@ export const AIAssistant = () => {
                       VIBE CODER
                     </h1>
                   </div>
-                  
+
                   <div className="relative h-48 w-48 sm:h-64 sm:w-64 mt-4 mb-4 flex items-center justify-center pointer-events-none">
-                     <img 
-                        src={myAvatar} 
-                        alt="Hero memoji" 
-                        className="w-full h-full object-cover scale-[1.1] translate-y-2 drop-shadow-xl"
-                     />
+                    <img
+                      src={myAvatar}
+                      alt="Hero memoji"
+                      className="w-full h-full object-cover scale-[1.1] translate-y-2 drop-shadow-xl"
+                    />
                   </div>
-                  
+
                   <div className="w-full max-w-3xl mx-auto mt-6 pb-8">
-                     <form
-                       onSubmit={(e) => {
-                         e.preventDefault();
-                         submitMessage(inputValue);
-                       }}
-                       className="relative w-full max-w-xl mx-auto"
-                     >
-                       <div className="flex items-center rounded-full border border-gray-200/60 bg-white/80 py-2.5 pr-2 pl-6 backdrop-blur-xl transition-all shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20">
-                         <input
-                           type="text"
-                           value={inputValue}
-                           onChange={(e) => setInputValue(e.target.value)}
-                           disabled={isLoading}
-                           placeholder="Ask me anything…"
-                           className="w-full border-none bg-transparent text-base text-gray-900 placeholder:text-gray-500 focus:outline-none"
-                         />
-                         <button
-                           type="submit"
-                           disabled={!inputValue.trim() || isLoading}
-                           className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-50 shadow-sm"
-                         >
-                           <ArrowUp className="h-5 w-5" />
-                         </button>
-                       </div>
-                     </form>
-                     
-                     <div className="mt-10 grid w-full grid-cols-2 sm:grid-cols-4 gap-4">
-                       {quickQuestions.map(({ key, color, icon: Icon, text }) => (
-                         <button
-                           key={key}
-                           onClick={() => submitMessage(text)}
-                           disabled={isLoading}
-                           className="flex flex-col items-center justify-center gap-3 rounded-3xl border border-gray-200/50 bg-white/70 py-8 shadow-sm backdrop-blur-xl hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all disabled:opacity-50 active:scale-95"
-                         >
-                           <div className="p-3 rounded-2xl bg-white shadow-sm border border-gray-100">
-                             <Icon size={24} strokeWidth={2.5} color={color} />
-                           </div>
-                           <span className="text-sm font-semibold text-gray-700">{key}</span>
-                         </button>
-                       ))}
-                     </div>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        submitMessage(inputValue);
+                      }}
+                      className="relative w-full max-w-xl mx-auto"
+                    >
+                      <div className="flex items-center rounded-full border border-gray-200/60 bg-white/80 py-2.5 pr-2 pl-6 backdrop-blur-xl transition-all shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20">
+                        <input
+                          type="text"
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          disabled={isLoading}
+                          placeholder="Ask me anything…"
+                          className="w-full border-none bg-transparent text-base text-gray-900 placeholder:text-gray-500 focus:outline-none"
+                        />
+                        <button
+                          type="submit"
+                          disabled={!inputValue.trim() || isLoading}
+                          className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-50 shadow-sm"
+                        >
+                          <ArrowUp className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </form>
+
+                    <div className="mt-10 grid w-full grid-cols-2 sm:grid-cols-4 gap-4">
+                      {quickQuestions.map(({ key, color, icon: Icon, text }) => (
+                        <button
+                          key={key}
+                          onClick={() => submitMessage(text)}
+                          disabled={isLoading}
+                          className="flex flex-col items-center justify-center gap-3 rounded-3xl border border-gray-200/50 bg-white/70 py-8 shadow-sm backdrop-blur-xl hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all disabled:opacity-50 active:scale-95"
+                        >
+                          <div className="p-3 rounded-2xl bg-white shadow-sm border border-gray-100">
+                            <Icon size={24} strokeWidth={2.5} color={color} />
+                          </div>
+                          <span className="text-sm font-semibold text-gray-700">{key}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -249,15 +249,15 @@ export const AIAssistant = () => {
                     <div className="w-full max-w-4xl mx-auto flex flex-col space-y-12">
                       {/* Avatar at the very top of all text, acts as Home Button */}
                       <div className="w-full flex justify-center animate-in fade-in slide-in-from-top-4 duration-500">
-                        <button 
+                        <button
                           onClick={() => setMessages([])}
                           className="group relative focus:outline-none flex flex-col items-center"
                           title="Return to Home"
                         >
-                          <img 
-                            src={myAvatar} 
-                            alt="AI Avatar" 
-                            className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-lg group-hover:scale-105 group-active:scale-95 transition-transform duration-300" 
+                          <img
+                            src={myAvatar}
+                            alt="AI Avatar"
+                            className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-lg group-hover:scale-105 group-active:scale-95 transition-transform duration-300"
                           />
                           <span className="text-xs font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity mt-2">
                             Go back home
@@ -285,12 +285,12 @@ export const AIAssistant = () => {
                               <div className="w-full mb-8 flex flex-col bg-white rounded-[2rem] p-6 sm:p-10 border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] max-w-2xl mx-auto">
                                 <ContactForm />
                                 <div className="mt-8 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center">
-                                   <span className="text-gray-500 font-medium">Or email me directly at:</span>
-                                   <a href="mailto:bhushankolte20@gmail.com" className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors text-lg">bhushankolte20@gmail.com</a>
+                                  <span className="text-gray-500 font-medium">Or email me directly at:</span>
+                                  <a href="mailto:bhushankolte20@gmail.com" className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors text-lg">bhushankolte20@gmail.com</a>
                                 </div>
                               </div>
                             )}
-                            
+
                             {/* Plain Text Area */}
                             {msg.text && (
                               <div className="text-gray-800 text-base sm:text-lg leading-relaxed text-left w-full max-w-4xl">
@@ -314,20 +314,20 @@ export const AIAssistant = () => {
                           </div>
                         ) : (
                           <div key={msg.id} className="flex justify-end w-full max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-                             <div className="bg-[#0171E3] text-white px-5 py-3.5 rounded-3xl rounded-tr-md text-base sm:text-lg max-w-[85%] shadow-sm leading-relaxed">
-                               {msg.text}
-                             </div>
+                            <div className="bg-[#0171E3] text-white px-5 py-3.5 rounded-3xl rounded-tr-md text-base sm:text-lg max-w-[85%] shadow-sm leading-relaxed">
+                              {msg.text}
+                            </div>
                           </div>
                         );
                       })}
-                      
+
                       {isLoading && (
                         <div className="flex flex-col items-center w-full animate-in fade-in duration-300">
-                           <div className="flex gap-2 items-center text-gray-400">
-                             <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                             <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                             <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                           </div>
+                          <div className="flex gap-2 items-center text-gray-400">
+                            <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                            <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                            <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                          </div>
                         </div>
                       )}
                       <div ref={messagesEndRef} />
@@ -349,7 +349,7 @@ export const AIAssistant = () => {
 
                     <AnimatePresence>
                       {showQuickQuestions && (
-                        <motion.div 
+                        <motion.div
                           initial={{ height: 0, opacity: 0, translateY: 10 }}
                           animate={{ height: 'auto', opacity: 1, translateY: 0 }}
                           exit={{ height: 0, opacity: 0, translateY: 10 }}

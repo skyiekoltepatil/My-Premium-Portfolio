@@ -11,7 +11,7 @@ export const CustomCursor = () => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
     };
-    
+
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (['A', 'BUTTON', 'INPUT', 'TEXTAREA'].includes(target.tagName) || target.closest('button') || target.closest('a')) {
@@ -33,7 +33,7 @@ export const CustomCursor = () => {
     <motion.div
       className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-slate-900/40 pointer-events-none z-[100] hidden md:flex items-center justify-center mix-blend-difference"
       style={{ x: cursorX, y: cursorY }}
-      animate={{ 
+      animate={{
         scale: isHovering ? 2 : 1,
         backgroundColor: isHovering ? 'rgba(15,23,42,1)' : 'rgba(15,23,42,0)'
       }}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import githubImage from '../assets/github-image.jpeg';
+import githubImage from '../assets/github-image.webp';
 import LogoLoop from '../components/effects/LogoLoop';
 import { GitHubCalendar } from 'react-github-calendar';
 import { Users, BookOpen, Star, GitFork, MapPin, Mail, Building2 } from 'lucide-react';

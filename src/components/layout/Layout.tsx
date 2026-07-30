@@ -127,7 +127,7 @@ const Navbar = () => {
 
 export const Layout = () => {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-hidden w-full relative">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-clip w-full relative">
       <CustomCursor />
       <BackgroundEffects />
 
