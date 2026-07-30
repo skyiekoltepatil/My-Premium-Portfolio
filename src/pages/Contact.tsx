@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail, Phone, Calendar, MapPin } from 'lucide-react';
-import AvatarImage from '../assets/Avatar-1-image.png';
+import AvatarImage from '../assets/Avatar-1-image.webp';
 import { ContactForm } from '../components/ContactForm';
 
 export const Contact = () => {

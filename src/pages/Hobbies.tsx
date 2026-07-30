@@ -2,13 +2,13 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Medal, Brain, Swords, Gamepad, Gamepad2, Users, CheckCircle2, Play, Pause } from 'lucide-react';
 import dotaVideo from '../assets/Dota 2 Info.mp4';
-import cricketImg from '../assets/cricket-image.png';
-import badmintonImg from '../assets/badminton-image.jpeg';
-import dotaImg from '../assets/dota 2-image.jpeg';
-import phasmophobiaImg from '../assets/Phasmophobia-image.png';
-import tanjiroImg from '../assets/tanjiro-images.png';
-import nezukoImg from '../assets/nezuko-image.png';
-import spyxfamilyImg from '../assets/spyxfamily-image.png';
+import cricketImg from '../assets/cricket-image.webp';
+import badmintonImg from '../assets/badminton-image.webp';
+import dotaImg from '../assets/dota 2-image.webp';
+import phasmophobiaImg from '../assets/Phasmophobia-image.webp';
+import tanjiroImg from '../assets/tanjiro-images.webp';
+import nezukoImg from '../assets/nezuko-image.webp';
+import spyxfamilyImg from '../assets/spyxfamily-image.webp';
 
 const sportsList = ["Badminton", "Cricket", "Basketball", "Table Tennis", "Volleyball", "Swimming", "Relay Race", "100m Sprint"];
 const representations = [

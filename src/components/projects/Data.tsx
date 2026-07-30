@@ -1,8 +1,9 @@
 
 import { ChevronRight, Link } from 'lucide-react';
-import project1Img from '../../assets/Project-1-image.png';
-import project2Img from '../../assets/Project-2-image.png';
-import project3Img from '../../assets/Project-3-image.png';
+import project1Img from '../../assets/Project-1-image.webp';
+import project2Img from '../../assets/Project-2-image.webp';
+import project3Img from '../../assets/Project-3-image.webp';
+import weatherImg from '../../assets/weather-image.webp';
 
 export interface ProjectProps {
   title: string;
@@ -43,6 +44,16 @@ const PROJECT_CONTENT: ProjectProps[] = [
     date: '2024',
     links: [
       { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/Login-Interface' }
+    ],
+    images: []
+  },
+  {
+    title: 'Weather App',
+    description: 'A modern weather application providing real-time forecasts and conditions.',
+    techStack: ['HTML', 'CSS', 'JS'],
+    date: '2024',
+    links: [
+      { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/weather-app' }
     ],
     images: []
   }
@@ -137,5 +148,6 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
 export const data = [
   { category: 'Web Development', title: 'My Detailed Portfolio', src: project1Img, content: <ProjectContent project={{ title: 'My Detailed Portfolio' }} /> },
   { category: 'Web Development', title: 'Live Portfolio', src: project2Img, content: <ProjectContent project={{ title: 'Live Portfolio' }} /> },
-  { category: 'UI/UX', title: '3D Animated Login Interface', src: project3Img, content: <ProjectContent project={{ title: '3D Animated Login Interface' }} /> }
+  { category: 'UI/UX', title: '3D Animated Login Interface', src: project3Img, content: <ProjectContent project={{ title: '3D Animated Login Interface' }} /> },
+  { category: 'Web Development', title: 'Weather App', src: weatherImg, content: <ProjectContent project={{ title: 'Weather App' }} /> }
 ];

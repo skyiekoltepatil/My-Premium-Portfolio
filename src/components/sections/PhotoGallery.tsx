@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import innovateImage from '../../assets/INNOVATE-image.jpeg';
-import gymImage from '../../assets/GYM-image.png';
+import innovateImage from '../../assets/INNOVATE-image.webp';
+import gymImage from '../../assets/GYM-image.webp';
 
 const PHOTOS = [
   {

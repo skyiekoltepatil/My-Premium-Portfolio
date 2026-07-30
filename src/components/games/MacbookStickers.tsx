@@ -1148,13 +1148,13 @@ function StickerDrag({
 }
 
 
-import sticker1 from '../../assets/image-1-stricker.png';
-import sticker2 from '../../assets/image-2-stricker.png';
-import sticker3 from '../../assets/image-3-stricker.png';
-import sticker4 from '../../assets/image-4-stricker.png';
-import sticker6 from '../../assets/image-6-stricker.png';
-import sticker7 from '../../assets/image-7-stricker.png';
-import sticker8 from '../../assets/image-8-stricker.png';
+import sticker1 from '../../assets/image-1-stricker.webp';
+import sticker2 from '../../assets/image-2-stricker.webp';
+import sticker3 from '../../assets/image-3-stricker.webp';
+import sticker4 from '../../assets/image-4-stricker.webp';
+import sticker6 from '../../assets/image-6-stricker.webp';
+import sticker7 from '../../assets/image-7-stricker.webp';
+import sticker8 from '../../assets/image-8-stricker.webp';
 
 
 
