@@ -4,12 +4,14 @@ import { getAIResponse } from '../../services/aiService';
 import { Laugh, BriefcaseBusiness, Layers, UserRoundSearch, ArrowUp, ChevronDown, ChevronUp } from 'lucide-react';
 import FluidCursor from '../FluidCursor';
 import AllProjects from '../projects/AllProjects';
+import AllCertificates from './AllCertificates';
 import { ContactForm } from '../ContactForm';
 import myAvatar from '../../assets/my-avatar.webp';
 
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness, text: 'What are your projects?' },
+  { key: 'Certificates', color: '#0171E3', icon: BriefcaseBusiness, text: 'What certificates do you have?' },
   { key: 'Skills', color: '#856ED9', icon: Layers, text: 'What are your skills?' },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch, text: 'How can I reach you?' },
 ];
@@ -71,6 +73,10 @@ export const AIAssistant = () => {
         isWidget = true;
         widgetType = 'PROJECTS';
         aiResponseText = aiResponseText.replace('[WIDGET:PROJECTS]', '').trim();
+      } else if (aiResponseText.includes('[WIDGET:CERTIFICATES]')) {
+        isWidget = true;
+        widgetType = 'CERTIFICATES';
+        aiResponseText = aiResponseText.replace('[WIDGET:CERTIFICATES]', '').trim();
       } else if (aiResponseText.includes('[WIDGET:CONTACT]')) {
         isWidget = true;
         widgetType = 'CONTACT';
@@ -277,6 +283,14 @@ export const AIAssistant = () => {
                                 <h2 className="text-3xl font-extrabold text-gray-900 mb-6 tracking-tight">My Projects</h2>
                                 <div className="w-full -mx-4 sm:mx-0 sm:w-full overflow-hidden">
                                   <AllProjects />
+                                </div>
+                              </div>
+                            )}
+
+                            {msg.isWidget && msg.widgetType === 'CERTIFICATES' && (
+                              <div className="w-full mb-8 flex flex-col items-start">
+                                <div className="w-full -mx-4 sm:mx-0 sm:w-full overflow-hidden">
+                                  <AllCertificates />
                                 </div>
                               </div>
                             )}
