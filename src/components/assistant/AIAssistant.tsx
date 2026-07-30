@@ -11,7 +11,6 @@ import myAvatar from '../../assets/my-avatar.webp';
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness, text: 'What are your projects?' },
-  { key: 'Certificates', color: '#0171E3', icon: BriefcaseBusiness, text: 'What certificates do you have?' },
   { key: 'Skills', color: '#856ED9', icon: Layers, text: 'What are your skills?' },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch, text: 'How can I reach you?' },
 ];
