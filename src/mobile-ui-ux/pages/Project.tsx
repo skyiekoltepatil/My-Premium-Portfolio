@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import Project1Image from '../../assets/Project-1-image.webp';
 import Project2Image from '../../assets/Project-2-image.webp';
 import Project3Image from '../../assets/Project-3-image.webp';
+import WeatherImage from '../../assets/weather-image.webp';
 
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -34,6 +35,14 @@ const PROJECTS = [
     image: Project3Image,
     link: 'https://github.com/skyiekoltepatil/Login-Interface',
     github: 'https://github.com/skyiekoltepatil/Login-Interface'
+  },
+  {
+    title: 'Weather App',
+    description: 'A modern weather application providing real-time forecasts and conditions.',
+    tech: ['HTML', 'CSS', 'JS'],
+    image: WeatherImage,
+    link: 'https://github.com/skyiekoltepatil/weather-app',
+    github: 'https://github.com/skyiekoltepatil/weather-app'
   }
 ];
 

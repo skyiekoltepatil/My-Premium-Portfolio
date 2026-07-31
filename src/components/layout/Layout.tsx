@@ -169,7 +169,7 @@ export const Layout = () => {
           </div>
 
           <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
-            Designed with <span className="text-red-500 animate-pulse">❤️</span> in React
+            Designed with <span className="text-red-500 animate-pulse">❤️</span> by Bhushan Kolte
           </div>
         </div>
       </footer>
