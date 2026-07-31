@@ -5,7 +5,7 @@ export const Quote = () => {
     <section className="py-24 relative z-10 min-h-screen flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12">
         <div className="mb-16 md:mb-32 text-center relative z-20">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -66,6 +66,7 @@ export const Quote = () => {
             </div>
           </motion.div>
 
+
           {/* Albert Einstein Quote - Left Aligned */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -81,7 +82,7 @@ export const Quote = () => {
               <p className="quote-text text-4xl md:text-5xl lg:text-7xl font-black italic tracking-tight leading-tight mb-8 py-4 px-4 md:py-6 md:px-8">
                 I have no special talent. I am only passionately curious.
               </p>
-              
+
               <div className="flex items-center justify-start gap-4 mt-8">
                 <div className="w-12 h-1 bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
                 <p className="text-lg md:text-2xl font-semibold text-slate-600 uppercase tracking-widest">

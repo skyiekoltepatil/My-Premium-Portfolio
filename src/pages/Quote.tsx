@@ -66,6 +66,7 @@ export const Quote = () => {
             </div>
           </motion.div>
 
+
           {/* Albert Einstein Quote - Left Aligned */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
