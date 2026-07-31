@@ -1,6 +1,6 @@
 # 👨‍💻 My Premium Portfolio
 
-![Website Preview](src/assets/website-image.png)
+![Website Preview](src/assets/website-image.webp)
 
 **🌐 Live Website:** [bhushankolte.vercel.app](https://bhushankolte.vercel.app)
 
