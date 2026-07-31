@@ -30,12 +30,12 @@ To keep the codebase organized, scalable, and easy to navigate, the project is s
   - `Hobbies.tsx`: Personal interests and off-screen activities.
   - `FunGames.tsx`: Interactive mini-games and experiments.
   - `Contact.tsx`: Forms and links to reach out.
-  - `Quote.tsx`: A dedicated page for displaying inspiring quotes.
+  - `Quote.tsx`: A dedicated page for displaying additional inspiring quotes that are not featured on the home page.
 
 - **`src/components/`** - Reusable building blocks divided into logical sub-directories:
   - `effects/`: Contains advanced visual effects and animations (e.g., `CursorGrid`, `LogoLoop`, `RotatingText`, `ScrambledText`).
   - `layout/`: Houses the foundational page layout components (`Layout.tsx`), ensuring consistent navigation menus and footers across all pages.
-  - `sections/`: Larger, reusable page segments that are shared across different views (e.g., `AboutSection`, `ContactSection`, `PhotoGallery`, `QuoteSection`).
+  - `sections/`: Larger, reusable page segments that are shared across different views (e.g., `AboutSection`, `ContactSection`, `PhotoGallery`, `QuoteSection` which displays a select few quotes on the home page).
   - `games/`: The logic and UI for the interactive games found on the `FunGames` page.
 
 - **`src/assets/`** - Static media files including images, CSS styles (like `index.css`), videos, and fonts that are bundled by Vite during the build process.
