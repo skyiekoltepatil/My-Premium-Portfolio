@@ -77,9 +77,8 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       return `${wrapped}px`;
     });
 
-    useAnimationFrame((t, delta) => {
-      // delta is in milliseconds. delta / 1000 converts to seconds.
-      // moveBy is how many pixels we move this frame.
+    useAnimationFrame((time, delta) => {
+      void time; // suppress TS6133 unused parameter
       const moveBy = baseVelocity * (delta / 1000);
       baseX.set(baseX.get() + moveBy);
     });
