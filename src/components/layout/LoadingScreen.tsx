@@ -22,21 +22,26 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         const target = targetPauses[currentTargetIndex];
         
         if (currentProgress < target) {
-          // Increment progress towards the target (even slower, 1% at a time)
+          // Increment progress towards the target (1% at a time)
           currentProgress += 1;
           if (currentProgress > target) {
              currentProgress = target;
           }
           setProgress(currentProgress);
-          // Even slower delay between ticks (70ms to 150ms per percent)
-          setTimeout(incrementProgress, Math.random() * 80 + 70);
+          // Faster delay between ticks (25ms to 55ms)
+          setTimeout(incrementProgress, Math.random() * 30 + 25);
         } else {
           // We hit a target percentage, pause here
           setProgress(target);
           currentTargetIndex++;
           
-          // Longer pause duration at this specific percentage (500ms to 1000ms)
-          setTimeout(incrementProgress, Math.random() * 500 + 500);
+          if (target === 98) {
+            // Longer pause at 98% (500ms to 1000ms)
+            setTimeout(incrementProgress, Math.random() * 500 + 500);
+          } else {
+            // Shorter pause at 25% and 67% (150ms to 350ms)
+            setTimeout(incrementProgress, Math.random() * 200 + 150);
+          }
         }
       } else {
         // We've passed all pauses (we are at 98%), now go to 100%
