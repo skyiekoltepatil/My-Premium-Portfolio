@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useIsMobile } from './hooks/useIsMobile';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -54,8 +55,15 @@ const FullHomePageMobile = () => (
   </>
 );
 
+import { LoadingScreen } from './components/layout/LoadingScreen';
+
 export default function App() {
   const isMobile = useIsMobile();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  if (isInitialLoading) {
+    return <LoadingScreen onComplete={() => setIsInitialLoading(false)} />;
+  }
 
   return (
     <>
