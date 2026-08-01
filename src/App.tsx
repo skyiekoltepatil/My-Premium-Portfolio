@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useIsMobile } from './hooks/useIsMobile';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
+import { LoadingScreen } from './components/layout/LoadingScreen';
 
 // Desktop Pages
 import { Layout as DesktopLayout } from './components/layout/Layout';
@@ -55,7 +56,6 @@ const FullHomePageMobile = () => (
   </>
 );
 
-import { LoadingScreen } from './components/layout/LoadingScreen';
 
 export default function App() {
   const isMobile = useIsMobile();
