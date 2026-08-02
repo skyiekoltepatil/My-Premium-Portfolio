@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useIsMobile } from './hooks/useIsMobile';
 import { SpeedInsights } from '@vercel/speed-insights/react';
