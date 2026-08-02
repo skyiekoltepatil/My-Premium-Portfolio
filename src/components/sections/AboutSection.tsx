@@ -54,7 +54,7 @@ export const AboutSection = () => {
           <div className="w-full md:w-1/2 text-slate-800 text-xl md:text-2xl leading-relaxed font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
             <div className="space-y-6">
               <p>
-                <TypewriterText 
+                <TypewriterText
                   text="Hi, I'm Bhushan Kolte, an Artificial Intelligence and Data Science student at Alard University, Pune, driven by a passion for technology and innovation. I am constantly exploring new ideas, building technical skills, and challenging myself to grow both personally and professionally. My focus is on crafting modern web experiences that perfectly balance sleek visual design with seamless functionality. I add a highly personalized touch to your portfolios and websites to communicate your unique brand identity in the most creative way possible. As an active freelancer, I collaborate with clients to bring their next big vision to life."
                   typingSpeed={25}
                   loop={false}
@@ -65,32 +65,32 @@ export const AboutSection = () => {
             </div>
           </div>
         </div>
-
-        {/* Tech Stack Logo Loop */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mt-20 pt-10 border-t border-slate-200/50"
-        >
-          <p className="text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest text-center">
-            Technologies I Work With
-          </p>
-          <div style={{ height: '80px', position: 'relative' }}>
-            <LogoLoop
-              logos={allLogos}
-              speed={45}
-              direction="left"
-              logoHeight={44}
-              gap={56}
-              scaleOnHover
-              ariaLabel="Technology stack"
-            />
-          </div>
-        </motion.div>
-
       </div>
+
+      {/* Tech Stack Logo Loop - Full width */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mt-20 pt-10 border-t border-slate-200/50 w-full"
+      >
+        <p className="text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest text-center px-6 md:px-12">
+          Technologies I Work With
+        </p>
+        <div style={{ height: '80px', position: 'relative' }} className="w-full overflow-hidden">
+          <LogoLoop
+            logos={allLogos}
+            speed={45}
+            direction="left"
+            logoHeight={44}
+            gap={56}
+            scaleOnHover
+            fadeOut={true}
+            ariaLabel="Technology stack"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 };
