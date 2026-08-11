@@ -79,6 +79,8 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
+                loading="lazy"
+                decoding="async"
                 src={cricketImg}
                 alt="Cricket"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
@@ -129,6 +131,8 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
+                loading="lazy"
+                decoding="async"
                 src={badmintonImg}
                 alt="Badminton"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
@@ -223,6 +227,8 @@ export const Hobbies = () => {
                 }}
               />
               <img
+                loading="lazy"
+                decoding="async"
                 src={dotaImg}
                 alt="Dota 2"
                 className={`relative w-full aspect-[4/3] object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'} group-hover:scale-105 z-0`}
@@ -317,6 +323,8 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
+                loading="lazy"
+                decoding="async"
                 src={phasmophobiaImg}
                 alt="Phasmophobia"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
@@ -417,6 +425,8 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
               <img
+                loading="lazy"
+                decoding="async"
                 src={tanjiroImg}
                 alt="Tanjiro Kamado"
                 className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
@@ -424,6 +434,8 @@ export const Hobbies = () => {
             </div>
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
               <img
+                loading="lazy"
+                decoding="async"
                 src={nezukoImg}
                 alt="Nezuko Kamado"
                 className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
@@ -455,6 +467,8 @@ export const Hobbies = () => {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
               <img
+                loading="lazy"
+                decoding="async"
                 src={spyxfamilyImg}
                 alt="Spy x Family"
                 className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
