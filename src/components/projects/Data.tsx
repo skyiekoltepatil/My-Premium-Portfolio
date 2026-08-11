@@ -4,6 +4,7 @@ import project1Img from '../../assets/Project-1-image.webp';
 import project2Img from '../../assets/Project-2-image.webp';
 import project3Img from '../../assets/Project-3-image.webp';
 import weatherImg from '../../assets/weather-image.webp';
+import sculptureHoverImg from '../../assets/sculpture-hover.webp';
 
 export interface ProjectProps {
   title: string;
@@ -54,6 +55,17 @@ const PROJECT_CONTENT: ProjectProps[] = [
     date: '2024',
     links: [
       { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/weather-app' }
+    ],
+    images: []
+  },
+  {
+    title: 'Liquid Hover Reveal',
+    description: 'A premium, interactive portfolio landing page featuring a stunning liquid hover reveal effect built using the HTML5 Canvas API and SVG filters.',
+    techStack: ['HTML', 'CSS', 'JavaScript', 'Canvas API'],
+    date: '2024',
+    links: [
+      { name: 'Website', url: 'https://immersive-g.com/' },
+      { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/sculpture-hover' }
     ],
     images: []
   }
@@ -149,5 +161,6 @@ export const data = [
   { category: 'Web Development', title: 'My Detailed Portfolio', src: project1Img, content: <ProjectContent project={{ title: 'My Detailed Portfolio' }} /> },
   { category: 'Web Development', title: 'Live Portfolio', src: project2Img, content: <ProjectContent project={{ title: 'Live Portfolio' }} /> },
   { category: 'UI/UX', title: '3D Animated Login Interface', src: project3Img, content: <ProjectContent project={{ title: '3D Animated Login Interface' }} /> },
-  { category: 'Web Development', title: 'Weather App', src: weatherImg, content: <ProjectContent project={{ title: 'Weather App' }} /> }
+  { category: 'Web Development', title: 'Weather App', src: weatherImg, content: <ProjectContent project={{ title: 'Weather App' }} /> },
+  { category: 'Web Development', title: 'Liquid Hover Reveal', src: sculptureHoverImg, content: <ProjectContent project={{ title: 'Liquid Hover Reveal' }} /> }
 ];

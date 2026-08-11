@@ -10,7 +10,7 @@ export const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-start justify-start z-10 overflow-hidden -mt-24 pt-24"
+      className="relative min-h-[100svh] flex items-start justify-start z-10 overflow-hidden -mt-24 pt-24"
     >
       {/* Background Video — fills the entire hero section */}
       <div className="absolute inset-0 z-0">
@@ -31,7 +31,7 @@ export const Home = () => {
         style={{ y, opacity }}
         className="relative z-10 max-w-4xl px-4 md:px-8 w-full text-left flex flex-col items-start mt-4 pointer-events-none"
       >
-        <h1 className="text-4xl leading-[1.1] sm:text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter sm:leading-[1.05] mb-8 text-black drop-shadow-sm break-words w-full">
+        <h1 className="text-[clamp(3.5rem,8vw,7rem)] leading-[1.1] font-black tracking-tighter sm:leading-[1.05] mb-8 text-black drop-shadow-sm break-words w-full">
           <span className="block">Creative</span>
           <span className="block">
             <RotatingText

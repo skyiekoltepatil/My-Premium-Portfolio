@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useIsMobile } from './hooks/useIsMobile';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -13,16 +12,6 @@ import { FunGames as FunGamesDesktop } from './pages/FunGames';
 import { Contact as ContactDesktop } from './pages/Contact';
 import { Quote as QuoteDesktop } from './pages/Quote';
 import { Project as ProjectDesktop } from './pages/Project';
-
-// Mobile Pages
-import { Home as HomeMobile } from './mobile-ui-ux/pages/Home';
-import { About as AboutMobile } from './mobile-ui-ux/pages/About';
-import { Experience as ExperienceMobile } from './mobile-ui-ux/pages/Experience';
-import { Hobbies as HobbiesMobile } from './mobile-ui-ux/pages/Hobbies';
-import { FunGames as FunGamesMobile } from './mobile-ui-ux/pages/FunGames';
-import { Contact as ContactMobile } from './mobile-ui-ux/pages/Contact';
-import { Quote as QuoteMobile } from './mobile-ui-ux/pages/Quote';
-import { Project as ProjectMobile } from './mobile-ui-ux/pages/Project';
 
 import { AdminMessages } from './pages/AdminMessages';
 
@@ -42,55 +31,23 @@ const FullHomePageDesktop = () => (
     <ContactSection />
   </>
 );
-
-const FullHomePageMobile = () => (
-  <>
-    <HomeMobile />
-    <PhotoGallery />
-    <QuoteSection />
-    <AboutSection />
-    <ExperienceMobile />
-    <ContactSection />
-  </>
-);
-
-
 export default function App() {
-  const isMobile = useIsMobile();
-
   return (
     <>
       <BrowserRouter>
-        {isMobile ? (
-          <Routes>
-            {/* Reusing DesktopLayout for now since we didn't clone the Layout component */}
-            <Route path="/" element={<DesktopLayout />}>
-              <Route index element={<FullHomePageMobile />} />
-              <Route path="about" element={<AboutMobile />} />
-              <Route path="experience" element={<ExperienceMobile />} />
-              <Route path="hobbies" element={<HobbiesMobile />} />
-              <Route path="fun-games" element={<FunGamesMobile />} />
-              <Route path="contact" element={<ContactMobile />} />
-              <Route path="quote" element={<QuoteMobile />} />
-              <Route path="project" element={<ProjectMobile />} />
-              <Route path="admin" element={<AdminMessages />} />
-            </Route>
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/" element={<DesktopLayout />}>
-              <Route index element={<FullHomePageDesktop />} />
-              <Route path="about" element={<AboutDesktop />} />
-              <Route path="experience" element={<ExperienceDesktop />} />
-              <Route path="hobbies" element={<HobbiesDesktop />} />
-              <Route path="fun-games" element={<FunGamesDesktop />} />
-              <Route path="contact" element={<ContactDesktop />} />
-              <Route path="quote" element={<QuoteDesktop />} />
-              <Route path="project" element={<ProjectDesktop />} />
-              <Route path="admin" element={<AdminMessages />} />
-            </Route>
-          </Routes>
-        )}
+        <Routes>
+          <Route path="/" element={<DesktopLayout />}>
+            <Route index element={<FullHomePageDesktop />} />
+            <Route path="about" element={<AboutDesktop />} />
+            <Route path="experience" element={<ExperienceDesktop />} />
+            <Route path="hobbies" element={<HobbiesDesktop />} />
+            <Route path="fun-games" element={<FunGamesDesktop />} />
+            <Route path="contact" element={<ContactDesktop />} />
+            <Route path="quote" element={<QuoteDesktop />} />
+            <Route path="project" element={<ProjectDesktop />} />
+            <Route path="admin" element={<AdminMessages />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
       <SpeedInsights />
       <Analytics />

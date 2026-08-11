@@ -407,10 +407,10 @@ export const FunGames = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           {/* Section Header */}
           <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-4">
+            <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900 mb-4">
               Fun <span className="text-gradient">Games</span>
             </h2>
-            <p className="text-slate-500 text-lg font-medium max-w-2xl mx-auto">
+            <p className="text-slate-500 text-[clamp(1rem,1.5vw,1.125rem)] font-medium max-w-2xl mx-auto">
               Take a break and have some fun with these interactive experiences.
             </p>
           </div>

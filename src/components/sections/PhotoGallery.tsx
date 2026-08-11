@@ -55,7 +55,7 @@ export const PhotoGallery = () => {
           >
             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-500 z-10" />
             <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-              <span className="text-white font-bold text-xs sm:text-base md:text-xl lg:text-2xl tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <span className="text-white font-bold text-[clamp(0.75rem,1.5vw,1.5rem)] tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 {photo.hoverText}
               </span>
             </div>

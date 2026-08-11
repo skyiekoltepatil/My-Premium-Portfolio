@@ -4,6 +4,7 @@ import Project1Image from '../../assets/Project-1-image.webp';
 import Project2Image from '../../assets/Project-2-image.webp';
 import Project3Image from '../../assets/Project-3-image.webp';
 import WeatherImage from '../../assets/weather-image.webp';
+import SculptureHoverImage from '../../assets/sculpture-hover.webp';
 
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -43,6 +44,14 @@ const PROJECTS = [
     image: WeatherImage,
     link: 'https://github.com/skyiekoltepatil/weather-app',
     github: 'https://github.com/skyiekoltepatil/weather-app'
+  },
+  {
+    title: 'Liquid Hover Reveal',
+    description: 'A premium, interactive portfolio landing page featuring a stunning liquid hover reveal effect built using the HTML5 Canvas API and SVG filters.',
+    tech: ['HTML', 'CSS', 'JavaScript', 'Canvas API'],
+    image: SculptureHoverImage,
+    link: 'https://immersive-g.com/',
+    github: 'https://github.com/skyiekoltepatil/sculpture-hover'
   }
 ];
 

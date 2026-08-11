@@ -13,22 +13,7 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-  /* Smoothly scale down all sizes (fonts, paddings, margins) on smaller devices */
-  @media (max-width: 1440px) {
-    html { font-size: 15px; } /* Laptops */
-  }
-  
-  @media (max-width: 1024px) {
-    html { font-size: 14px; } /* Tablets & Small Laptops */
-  }
-  
-  @media (max-width: 768px) {
-    html { font-size: 14px; } /* Mobile */
-  }
-
-  @media (max-width: 480px) {
-    html { font-size: 13px; } /* Small Mobile */
-  }
+  /* Fluid typography and spacing will be handled by Tailwind classes (e.g. text-[clamp(...)]) */
 
   html::-webkit-scrollbar {
     display: none;

@@ -10,7 +10,7 @@ export const QuoteSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900"
+            className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900"
           >
             <span className="text-gradient">Quote</span>
           </motion.h2>
@@ -29,13 +29,13 @@ export const QuoteSection = () => {
               "
             </span>
             <div className="relative z-10">
-              <p className="quote-text text-4xl md:text-5xl lg:text-7xl font-black italic tracking-tight leading-tight mb-8">
+              <p className="quote-text text-[clamp(2rem,6vw,4.5rem)] font-black italic tracking-tight leading-tight mb-8">
                 You can sleep while you are dead.
               </p>
 
               <div className="flex items-center justify-start gap-4 mt-8">
                 <div className="w-12 h-1 bg-orange-500 rounded-full shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div>
-                <p className="text-lg md:text-2xl font-semibold text-slate-600 uppercase tracking-widest">
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
                   Max Verstappen
                 </p>
               </div>
@@ -54,12 +54,12 @@ export const QuoteSection = () => {
               "
             </span>
             <div className="relative z-10">
-              <p className="quote-text text-4xl md:text-5xl lg:text-7xl font-black italic tracking-tight leading-tight mb-8">
+              <p className="quote-text text-[clamp(2rem,6vw,4.5rem)] font-black italic tracking-tight leading-tight mb-8">
                 Don't forget who you are mate.
               </p>
 
               <div className="flex items-center justify-end gap-4 mt-8">
-                <p className="text-lg md:text-2xl font-semibold text-slate-600 uppercase tracking-widest">
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
                   Lewis Hamilton
                 </p>
                 <div className="w-12 h-1 bg-teal-400 rounded-full shadow-[0_0_10px_rgba(45,212,191,0.5)]"></div>

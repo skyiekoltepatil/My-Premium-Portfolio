@@ -59,7 +59,7 @@ export const Experience = () => {
       {/* Experience Timeline Section */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-32">
         <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Experience</span></h2>
+          <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Experience</span></h2>
         </div>
 
         <div className="flex flex-col gap-16 max-w-4xl mx-auto">
@@ -126,8 +126,8 @@ export const Experience = () => {
       {showCertificates && (
         <section aria-labelledby="certificates-heading">
           <div className="mb-16 md:mb-24 text-center">
-            <h2 id="certificates-heading" className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
-            <p className="text-slate-500 mt-4 text-lg">Scroll down to explore all certificates</p>
+            <h2 id="certificates-heading" className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900">My <span className="text-gradient">Certificates</span></h2>
+            <p className="text-slate-500 mt-4 text-[clamp(1rem,2vw,1.125rem)]">Scroll down to explore all certificates</p>
           </div>
 
           <ScrollStack

@@ -99,7 +99,7 @@ export const Contact = () => {
 
           {/* Right Main Content Area */}
           <div className="w-full lg:w-2/3 bg-white p-6 sm:p-10 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-200/60">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2">Contact</h2>
+            <h2 className="text-[clamp(1.875rem,4vw,2.5rem)] font-extrabold text-slate-800 mb-2">Contact</h2>
             <div className="w-12 h-1.5 bg-blue-600 rounded-full mb-8"></div>
 
             {/* Map Section */}
