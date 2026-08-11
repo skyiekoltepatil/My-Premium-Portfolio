@@ -62,7 +62,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex items-center justify-end gap-6 sm:gap-4 absolute right-1/2 mr-6 sm:mr-8"
+                className="flex items-center justify-end gap-2 sm:gap-4 absolute right-1/2 mr-3 sm:mr-8"
               >
                 <div className="relative group">
                   <button className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">
@@ -99,7 +99,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex items-center justify-start gap-6 sm:gap-4 absolute left-1/2 ml-6 sm:ml-8"
+                className="flex items-center justify-start gap-2 sm:gap-4 absolute left-1/2 ml-3 sm:ml-8"
               >
                 <div className="relative group">
                   <button className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">

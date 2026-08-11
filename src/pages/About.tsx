@@ -99,7 +99,7 @@ export const About = () => {
         >
           {/* Left Sidebar (GitHub Profile Style) */}
           <div className="w-full lg:w-1/4 flex flex-col gap-5">
-            <div className="relative group w-[260px] max-w-full mx-auto lg:mx-0">
+            <div className="relative group w-full max-w-[260px] mx-auto lg:mx-0">
               <img
                 src={githubImage}
                 alt="Bhushan Kolte"
@@ -108,8 +108,8 @@ export const About = () => {
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-black leading-tight">Bhushan Kolte</h1>
-              <h2 className="text-xl font-light text-slate-500">{username}</h2>
+              <h1 className="text-[clamp(1.5rem,4vw,2rem)] font-bold text-black leading-tight">Bhushan Kolte</h1>
+              <h2 className="text-[clamp(1rem,3vw,1.25rem)] font-light text-slate-500">{username}</h2>
             </div>
 
             <a

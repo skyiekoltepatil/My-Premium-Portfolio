@@ -12,8 +12,8 @@ export const ContactSection = () => {
           className="flex flex-col gap-10 bg-white p-6 sm:p-10 md:p-14 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-200/60"
         >
           <div className="w-full text-center mb-4">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Get in Touch</h2>
-            <p className="text-lg text-slate-500 font-medium max-w-xl mx-auto">I'm currently available for freelance work and open to new opportunities. Let's create something amazing together!</p>
+            <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold text-slate-900 mb-6 tracking-tight">Get in Touch</h2>
+            <p className="text-[clamp(1rem,1.5vw,1.125rem)] text-slate-500 font-medium max-w-xl mx-auto">I'm currently available for freelance work and open to new opportunities. Let's create something amazing together!</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">

@@ -39,7 +39,7 @@ export const AboutSection = () => {
     <section id="about-me" className="py-24 relative z-10 bg-white/40">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900">About <span className="text-gradient">Me</span></h2>
+          <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900">About <span className="text-gradient">Me</span></h2>
         </div>
         <div className="flex flex-col md:flex-row gap-16 items-start">
           <div className="w-full md:w-1/2">
@@ -51,7 +51,7 @@ export const AboutSection = () => {
               />
             </div>
           </div>
-          <div className="w-full md:w-1/2 text-slate-800 text-xl md:text-2xl leading-relaxed font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <div className="w-full md:w-1/2 text-slate-800 text-[clamp(1.125rem,2vw,1.5rem)] leading-relaxed font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
             <div className="space-y-6">
               <p>
                 <TypewriterText

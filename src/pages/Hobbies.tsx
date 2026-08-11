@@ -51,7 +51,7 @@ export const Hobbies = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tighter text-slate-900"
+            className="text-[clamp(2.5rem,6vw,4rem)] font-extrabold tracking-tighter text-slate-900"
           >
             Beyond the <span className="text-gradient">Screen</span>
           </motion.h2>
@@ -64,7 +64,7 @@ export const Hobbies = () => {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h3 className="text-4xl font-extrabold text-slate-800 border-b-4 border-orange-400 inline-block pb-2 mb-16">
+          <h3 className="text-[clamp(1.875rem,5vw,2.5rem)] font-extrabold text-slate-800 border-b-4 border-orange-400 inline-block pb-2 mb-16">
             Sports & Athletics
           </h3>
         </motion.div>
@@ -92,7 +92,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Cricket</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Cricket</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>Cricket is more than just a game to me; it's a test of patience, strategy, and explosive skill.</p>
               <p>Standing at the crease, every delivery is a mind game against the bowler, requiring complete focus.</p>
@@ -111,7 +111,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Badminton</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Badminton</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>Badminton requires lightning-fast reflexes, intense agility, and split-second decision making.</p>
               <p>The sheer speed of a powerful jump smash is exhilarating, demanding physical power and precision.</p>
@@ -196,7 +196,7 @@ export const Hobbies = () => {
           viewport={{ once: true }}
           className="mb-12 pt-16 border-t border-slate-200/60"
         >
-          <h3 className="text-4xl font-extrabold text-slate-800 border-b-4 border-indigo-500 inline-block pb-2 mb-16">
+          <h3 className="text-[clamp(1.875rem,5vw,2.5rem)] font-extrabold text-slate-800 border-b-4 border-indigo-500 inline-block pb-2 mb-16">
             Gaming
           </h3>
         </motion.div>
@@ -280,7 +280,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Dota 2</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Dota 2</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>Dota 2 is the ultimate test of strategic depth, teamwork, and demanding mechanical mastery.</p>
               <p>Every match is a complex puzzle with infinite variables, requiring deep game knowledge.</p>
@@ -299,7 +299,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Phasmophobia</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Phasmophobia</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>Phasmophobia offers a highly immersive atmospheric experience focused on suspense and investigation.</p>
               <p>Walking through haunted corridors armed with nothing but a flashlight is genuinely terrifying.</p>
@@ -402,7 +402,7 @@ export const Hobbies = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-black text-slate-900 mb-8 tracking-tight"
+            className="text-[clamp(2rem,5vw,3rem)] font-black text-slate-900 mb-8 tracking-tight"
           >
             Exploring <span className="text-red-500">Different Worlds</span>
           </motion.h3>
@@ -437,7 +437,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Demon Slayer</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Demon Slayer</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>I'm a passionate anime enthusiast who loves exploring different worlds and stories.</p>
               <p>My favorite character is Tanjiro Kamado for his determination, kindness, and never-give-up attitude.</p>
@@ -468,7 +468,7 @@ export const Hobbies = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/2 space-y-6"
           >
-            <h4 className="text-3xl font-bold text-slate-900">Favorite Watches</h4>
+            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Favorite Watches</h4>
             <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
               <p>I've watched Death Note and loved its psychological battles and brilliant storytelling.</p>
               <p>Jujutsu Kaisen impressed me with its action and powerful characters.</p>
