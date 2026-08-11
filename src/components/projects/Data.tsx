@@ -147,6 +147,8 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
                   src={image.src}
                   alt={image.alt}
                   className="object-cover transition-transform w-full h-full"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}

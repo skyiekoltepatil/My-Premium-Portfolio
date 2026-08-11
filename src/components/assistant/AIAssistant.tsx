@@ -198,6 +198,8 @@ export const AIAssistant = () => {
 
                   <div className="relative h-48 w-48 sm:h-64 sm:w-64 mt-4 mb-4 flex items-center justify-center pointer-events-none">
                     <img
+                    loading="lazy"
+                    decoding="async"
                       src={myAvatar}
                       alt="Hero memoji"
                       className="w-full h-full object-cover scale-[1.1] translate-y-2 drop-shadow-xl"
@@ -261,6 +263,8 @@ export const AIAssistant = () => {
                           title="Return to Home"
                         >
                           <img
+                    loading="lazy"
+                    decoding="async"
                             src={myAvatar}
                             alt="AI Avatar"
                             className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-lg group-hover:scale-105 group-active:scale-95 transition-transform duration-300"

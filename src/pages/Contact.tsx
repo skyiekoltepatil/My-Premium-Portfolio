@@ -31,7 +31,7 @@ export const Contact = () => {
           <div className="w-full lg:w-1/3 bg-white p-8 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-200/60 flex flex-col items-center">
             {/* Avatar */}
             <div className="w-32 h-32 bg-blue-100 rounded-3xl mb-6 flex items-center justify-center shadow-inner border border-blue-200 overflow-hidden">
-              <img src={AvatarImage} alt="Bhushan Kolte" className="w-full h-full object-cover" />
+              <img src={AvatarImage} alt="Bhushan Kolte" className="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
 
             <h2 className="text-2xl font-bold text-slate-800 mb-2">Bhushan Kolte</h2>
