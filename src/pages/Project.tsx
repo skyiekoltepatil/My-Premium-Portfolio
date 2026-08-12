@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
 import { InteractiveHoverButton } from '../components/ui/interactive-hover-button';
 import Project1Image from '../assets/Project-1-image.webp';
 import Project2Image from '../assets/Project-2-image.webp';
