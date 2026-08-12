@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
+import { InteractiveHoverButton } from '../../components/ui/interactive-hover-button';
 import Project1Image from '../../assets/Project-1-image.webp';
 import Project2Image from '../../assets/Project-2-image.webp';
 import Project3Image from '../../assets/Project-3-image.webp';
@@ -82,9 +83,9 @@ export const Project = () => {
                     className="w-full h-[450px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute bottom-8 left-8 right-8 z-20 flex justify-between items-end opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    <a href={project.link} className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
-                      <ExternalLink size={24} />
-                    </a>
+                    <InteractiveHoverButton href={project.link} target="_blank" rel="noopener noreferrer">
+                      View Project
+                    </InteractiveHoverButton>
                   </div>
                 </div>
               </div>
