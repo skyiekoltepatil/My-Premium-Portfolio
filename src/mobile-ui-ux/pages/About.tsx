@@ -108,7 +108,7 @@ export const About = () => {
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-black leading-tight">Bhushan Kolte</h1>
+              <h1 className="text-2xl font-bold text-black leading-tight whitespace-nowrap">Bhushan Kolte</h1>
               <h2 className="text-xl font-light text-slate-500">{username}</h2>
             </div>
 
