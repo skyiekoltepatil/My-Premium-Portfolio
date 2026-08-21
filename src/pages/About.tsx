@@ -108,7 +108,7 @@ export const About = () => {
             </div>
 
             <div>
-              <h1 className="text-[clamp(1.5rem,4vw,2rem)] font-bold text-black leading-tight">Bhushan Kolte</h1>
+              <h1 className="text-[clamp(1.5rem,4vw,2rem)] font-bold text-black leading-tight whitespace-nowrap">Bhushan Kolte</h1>
               <h2 className="text-[clamp(1rem,3vw,1.25rem)] font-light text-slate-500">{username}</h2>
             </div>
 
