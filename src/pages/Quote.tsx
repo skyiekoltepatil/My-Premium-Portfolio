@@ -91,6 +91,31 @@ export const Quote = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* Walter Bagehot Quote - Right Aligned */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+            className="relative text-right pl-12 md:pl-32"
+          >
+            <span className="absolute -top-16 -right-8 md:-right-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
+              "
+            </span>
+            <div className="relative z-10">
+              <p className="quote-text text-[clamp(1.75rem,5vw,3.8rem)] font-black italic tracking-tight leading-tight mb-8">
+                The greatest pleasure I've had is trying to do something that everybody says could not be done.
+              </p>
+
+              <div className="flex items-center justify-end gap-4 mt-8">
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
+                  Walter Bagehot
+                </p>
+                <div className="w-12 h-1 bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

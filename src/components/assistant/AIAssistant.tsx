@@ -16,6 +16,18 @@ const quickQuestions = [
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch, text: 'How can I reach you?' },
 ];
 
+const placeholders = [
+  "What sparks your curiosity?...",
+  "Unleash your questions...",
+  "What's on your mind today?",
+  "Let's dive into some details...",
+  "Hit me with your best question...",
+  "Ready when you are...",
+  "Seeking some insights?",
+  "What can I help you uncover?",
+  "Got a question? I've got answers...",
+];
+
 interface Message {
   id: string;
   sender: 'user' | 'ai';
@@ -31,6 +43,14 @@ export const AIAssistant = () => {
   const [inputValue, setInputValue] = useState('');
   const [showQuickQuestions, setShowQuickQuestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  const [placeholderText, setPlaceholderText] = useState("Ask me anything...");
+
+  useEffect(() => {
+    if (isExpanded) {
+      setPlaceholderText(placeholders[Math.floor(Math.random() * placeholders.length)]);
+    }
+  }, [isExpanded, messages.length]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -220,7 +240,7 @@ export const AIAssistant = () => {
                           value={inputValue}
                           onChange={(e) => setInputValue(e.target.value)}
                           disabled={isLoading}
-                          placeholder="Ask me anything…"
+                          placeholder={placeholderText}
                           className="w-full border-none bg-transparent text-base text-gray-900 placeholder:text-gray-500 focus:outline-none"
                         />
                         <button
@@ -396,7 +416,7 @@ export const AIAssistant = () => {
                           value={inputValue}
                           onChange={(e) => setInputValue(e.target.value)}
                           disabled={isLoading}
-                          placeholder="Ask me anything"
+                          placeholder={placeholderText}
                           className="w-full border-none bg-transparent text-gray-900 text-base placeholder-gray-500 focus:outline-none"
                         />
                         <button
