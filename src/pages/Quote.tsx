@@ -116,6 +116,32 @@ export const Quote = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* User Quote - Left Aligned */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+            className="relative text-left pr-12 md:pr-32"
+          >
+            <span className="absolute -top-16 -left-8 md:-left-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
+              "
+            </span>
+            <div className="relative z-10">
+              <p className="quote-text text-[clamp(2rem,6vw,4.5rem)] font-black italic tracking-tight leading-tight mb-8">
+                nothing is free. Even the gifts, got in birthday’s aren’t free
+              </p>
+
+              <div className="flex items-center justify-start gap-4 mt-8">
+                <div className="w-12 h-1 bg-pink-500 rounded-full shadow-[0_0_10px_rgba(236,72,153,0.5)]"></div>
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
+                  Bhushan Kolte
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>
