@@ -142,6 +142,31 @@ export const Quote = () => {
             </div>
           </motion.div>
 
+          {/* Shane Parrish Quote - Right Aligned */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 1.0 }}
+            className="relative text-right pl-12 md:pl-32"
+          >
+            <span className="absolute -top-16 -right-8 md:-right-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
+              "
+            </span>
+            <div className="relative z-10">
+              <p className="quote-text text-[clamp(1.75rem,5vw,3.8rem)] font-black italic tracking-tight leading-tight mb-8">
+                the curse of discipline is that every day looks the same and the curse of indiscipline is that every year looks the same.
+              </p>
+
+              <div className="flex items-center justify-end gap-4 mt-8">
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
+                  Shane Parrish
+                </p>
+                <div className="w-12 h-1 bg-yellow-500 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
+              </div>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>
