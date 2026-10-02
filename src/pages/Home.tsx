@@ -145,12 +145,8 @@ export const Home = () => {
         return;
       }
 
-      // A) Draw the mask
+      // A) Draw the overlay image first
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(maskCanvas, 0, 0);
-
-      // B) Draw the overlay image, keeping only the masked pixels
-      ctx.globalCompositeOperation = 'source-in';
       if (overlayImg.complete && overlayImg.naturalWidth > 0) {
         // Scale overlay 5% larger to push dark edges off-screen
         const scale = 1.05;
@@ -167,6 +163,11 @@ export const Home = () => {
         ctx.drawImage(overlayImg, drawX, drawY, scaledW, scaledH);
         ctx.restore();
       }
+
+      // B) Apply the mask using destination-in to keep only the hovered pixels of the overlay
+      // This completely ignores the black RGB color of the mask, using only its alpha!
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(maskCanvas, 0, 0);
 
       // C) Draw the base image BEHIND everything
       ctx.globalCompositeOperation = 'destination-over';
@@ -203,14 +204,14 @@ export const Home = () => {
       {/* Aria introduction text - lower left */}
       <div
         ref={textContainerRef}
-        className="absolute left-8 md:left-12 bottom-[10%] z-20 max-w-sm pointer-events-none"
+        className="absolute left-8 md:left-12 bottom-[10%] z-20 w-[450px] max-w-[85vw] pointer-events-none"
         style={{ position: 'absolute' }}
       >
-        <div className="text-base md:text-lg text-gray-500 leading-relaxed tracking-wide">
-          <span className="text-xl">✨</span>{' '}
+        <div className="text-lg md:text-xl text-gray-800 leading-relaxed tracking-wide min-h-[120px]">
+          <span className="text-2xl">✨</span>{' '}
           <VariableProximity
             label="Meet Aria, She's here to guide you through my portfolio. Chat with her to discover more about my technical skills, creative projects, and professional journey. Ask her anything!"
-            className="text-gray-500"
+            className="text-gray-800"
             fromFontVariationSettings="'wght' 400, 'opsz' 9"
             toFontVariationSettings="'wght' 900, 'opsz' 40"
             containerRef={textContainerRef}
@@ -220,7 +221,7 @@ export const Home = () => {
         </div>
         <button
           onClick={() => {
-            const ariaBtn = document.querySelector('[class*="fixed bottom-0 right-0"]') as HTMLElement;
+            const ariaBtn = document.querySelector('[class*="fixed bottom-0 right-0"] button') as HTMLElement;
             if (ariaBtn) ariaBtn.click();
           }}
           className="pointer-events-auto mt-5 px-7 py-3 bg-black text-white font-bold text-base tracking-wide rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:scale-105 hover:shadow-[0_15px_50px_rgba(0,0,0,0.4)] transition-all duration-300 cursor-pointer"
