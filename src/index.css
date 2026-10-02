@@ -8,7 +8,7 @@
   html {
     font-size: 16px; /* Base size for large screens */
     scroll-behavior: smooth;
-    background-color: #f8fafc;
+    background-color: #ffffff;
     color: #334155;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -21,7 +21,7 @@
   }
 
   body {
-    background-color: #f8fafc;
+    background-color: #ffffff;
     overflow-x: hidden;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */

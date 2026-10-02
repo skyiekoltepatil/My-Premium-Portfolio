@@ -1,55 +1,233 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import workingGif from '../../assets/workinggif.mp4';
-import RotatingText from '../../components/effects/RotatingText';
+import { useEffect, useRef } from 'react';
+import baseImgSrc from '../assets/hero_images/image 2.png';
+import overlayImgSrc from '../assets/hero_images/image 3.png';
+import VariableProximity from '../components/effects/VariableProximity';
 
 export const Home = () => {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 1000], [0, 300]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    // Offscreen canvas to hold the brush mask trail (the splash effect)
+    const maskCanvas = document.createElement('canvas');
+    const maskCtx = maskCanvas.getContext('2d', { alpha: true });
+    if (!maskCtx) return;
+
+    const baseImg = new Image();
+    baseImg.src = baseImgSrc;
+
+    const overlayImg = new Image();
+    overlayImg.src = overlayImgSrc;
+
+    let width = 0;
+    let height = 0;
+
+    const resize = () => {
+      width = container.clientWidth;
+      height = container.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
+      maskCanvas.width = width;
+      maskCanvas.height = height;
+    };
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    let lastMoveTime = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      lastMoveTime = Date.now();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const rect = container.getBoundingClientRect();
+      mouseX = e.touches[0].clientX - rect.left;
+      mouseY = e.touches[0].clientY - rect.top;
+      lastMoveTime = Date.now();
+    };
+
+    const handleMouseLeave = () => {
+      lastMoveTime = 0;
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('touchend', handleMouseLeave);
+
+    // Use base image dimensions for BOTH images so they align perfectly
+    const getFitDimensions = (img: HTMLImageElement) => {
+      if (!img.complete || !img.naturalWidth || !img.naturalHeight) return null;
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const canvasRatio = width / height;
+      let drawWidth = width;
+      let drawHeight = height;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (canvasRatio > imgRatio) {
+        drawHeight = height;
+        drawWidth = height * imgRatio;
+        offsetX = (width - drawWidth) / 2;
+        offsetY = 0;
+      } else {
+        drawWidth = width;
+        drawHeight = width / imgRatio;
+        offsetX = 0;
+        offsetY = (height - drawHeight) / 2;
+      }
+
+      return { drawWidth, drawHeight, offsetX, offsetY };
+    };
+
+    let animationFrameId: number;
+
+    const animate = () => {
+      // 1. Fade out the brush trail over time, or clear completely if inactive
+      if (Date.now() - lastMoveTime > 1500) {
+        maskCtx.clearRect(0, 0, width, height);
+      } else {
+        maskCtx.globalCompositeOperation = 'destination-out';
+        maskCtx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+        maskCtx.fillRect(0, 0, width, height);
+      }
+
+      // 2. Instantly track the mouse
+      const prevX = currentX;
+      const prevY = currentY;
+      currentX = mouseX;
+      currentY = mouseY;
+
+      const dist = Math.hypot(currentX - prevX, currentY - prevY);
+
+      // 3. Draw the new brush stroke on the mask ONLY if moving
+      if (dist > 0.2) {
+        maskCtx.globalCompositeOperation = 'source-over';
+        const radius = 200;
+        const gradient = maskCtx.createRadialGradient(
+          currentX, currentY, 0,
+          currentX, currentY, radius
+        );
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+        gradient.addColorStop(0.4, 'rgba(0, 0, 0, 0.8)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        maskCtx.beginPath();
+        maskCtx.arc(currentX, currentY, radius, 0, Math.PI * 2);
+        maskCtx.fillStyle = gradient;
+        maskCtx.fill();
+      }
+
+      // 4. Render the final composite to the screen
+      ctx.clearRect(0, 0, width, height);
+
+      // Get exact fit dimensions from the BASE image
+      const dims = getFitDimensions(baseImg);
+
+      if (!dims) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
+      // A) Draw the mask
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(maskCanvas, 0, 0);
+
+      // B) Draw the overlay image, keeping only the masked pixels
+      ctx.globalCompositeOperation = 'source-in';
+      if (overlayImg.complete && overlayImg.naturalWidth > 0) {
+        // Scale overlay 5% larger to push dark edges off-screen
+        const scale = 1.05;
+        const scaledW = dims.drawWidth * scale;
+        const scaledH = dims.drawHeight * scale;
+        const drawX = dims.offsetX - (scaledW - dims.drawWidth) / 2;
+        const drawY = dims.offsetY - (scaledH - dims.drawHeight) / 2;
+
+        // Clip to the base image bounds so edges don't bleed
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(dims.offsetX, dims.offsetY, dims.drawWidth, dims.drawHeight);
+        ctx.clip();
+        ctx.drawImage(overlayImg, drawX, drawY, scaledW, scaledH);
+        ctx.restore();
+      }
+
+      // C) Draw the base image BEHIND everything
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.drawImage(baseImg, dims.offsetX, dims.offsetY, dims.drawWidth, dims.drawHeight);
+
+      // Reset
+      ctx.globalCompositeOperation = 'source-over';
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('touchend', handleMouseLeave);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-start justify-start z-10 overflow-hidden -mt-24 pt-24"
+      ref={containerRef}
+      className="relative min-h-[100svh] w-full flex items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-crosshair select-none"
     >
-      {/* Background Video — fills the entire hero section */}
-      <div className="absolute inset-0 z-0">
-        <video
-          src={workingGif}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-[60%_center] sm:object-center"
-        />
-        {/* Subtle overlay */}
-        <div className="absolute inset-0 bg-black/10" />
-      </div>
-
-      {/* Main content on top */}
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 max-w-4xl px-4 md:px-8 w-full text-left flex flex-col items-start mt-4 pointer-events-none"
+      <canvas
+        ref={canvasRef}
+        className="absolute top-0 left-0 w-full h-full pointer-events-auto z-10"
+      />
+      {/* Aria introduction text - lower left */}
+      <div
+        ref={textContainerRef}
+        className="absolute left-8 md:left-12 bottom-[10%] z-20 max-w-sm pointer-events-none"
+        style={{ position: 'absolute' }}
       >
-        <h1 className="text-[2.75rem] leading-[1.1] sm:text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter sm:leading-[1.05] mb-8 text-black drop-shadow-sm break-words w-full">
-          <span className="block">Creative</span>
-          <span className="block">
-            <RotatingText
-              texts={['UI Designer.', 'Thinker.', 'Coder.', 'Developer.', 'Problem Solver.']}
-              mainClassName="text-black inline-flex"
-              staggerFrom="last"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-120%' }}
-              staggerDuration={0.025}
-              splitLevelClassName="overflow-hidden pb-1 md:pb-2"
-              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-              rotationInterval={2500}
-            />
-          </span>
-        </h1>
-      </motion.div>
+        <div className="text-base md:text-lg text-gray-500 leading-relaxed tracking-wide">
+          <span className="text-xl">✨</span>{' '}
+          <VariableProximity
+            label="Meet Aria, She's here to guide you through my portfolio. Chat with her to discover more about my technical skills, creative projects, and professional journey. Ask her anything!"
+            className="text-gray-500"
+            fromFontVariationSettings="'wght' 400, 'opsz' 9"
+            toFontVariationSettings="'wght' 900, 'opsz' 40"
+            containerRef={textContainerRef}
+            radius={100}
+            falloff="linear"
+          />
+        </div>
+        <button
+          onClick={() => {
+            const ariaBtn = document.querySelector('[class*="fixed bottom-0 right-0"]') as HTMLElement;
+            if (ariaBtn) ariaBtn.click();
+          }}
+          className="pointer-events-auto mt-5 px-7 py-3 bg-black text-white font-bold text-base tracking-wide rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:scale-105 hover:shadow-[0_15px_50px_rgba(0,0,0,0.4)] transition-all duration-300 cursor-pointer"
+        >
+          Aria
+        </button>
+      </div>
     </section>
   );
 };
-

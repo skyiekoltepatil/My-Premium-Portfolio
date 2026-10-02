@@ -7,7 +7,6 @@ import AllProjects from '../projects/AllProjects';
 import AllCertificates from './AllCertificates';
 import { ContactForm } from '../ContactForm';
 import myAvatar from '../../assets/my-avatar.webp';
-import { RollingText } from '../effects/RollingText';
 
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
@@ -140,7 +139,7 @@ export const AIAssistant = () => {
               onClick={() => setIsExpanded(true)}
               className="group/text px-6 py-3 bg-black rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-105"
             >
-              <span className="text-white font-bold text-lg tracking-wide"><RollingText text="Aria" heightClass="h-[28px]" leadingClass="leading-[28px]" /></span>
+              <span className="text-white font-bold text-lg tracking-wide">Aria</span>
             </motion.button>
           </div>
         )}
