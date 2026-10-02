@@ -61,18 +61,24 @@ const FRAGMENT_SHADER = `
     // Add detail noise
     n += 0.5 * snoise(st * 3.0 - vec2(uTime * 0.04, 0.0));
     
+    float dist = distance(st, m);
+    // Smooth hover influence (disabled on mobile)
+    float hoverInfluence = mix(smoothstep(0.35, 0.0, dist), 0.0, uIsMobile);
+    
     // Contours
     float spacing = 0.12;
     float lineDist = abs(fract(n / spacing) - 0.5);
-    float thickness = 0.025;
+    
+    // Expand line thickness on hover to fill white space
+    float thickness = mix(0.025, 0.5, hoverInfluence);
     float aa = 0.03; // anti-aliasing edge
     float line = smoothstep(thickness + aa, thickness - aa, lineDist);
     
     // Colors
     vec3 bg = vec3(1.0); // white
-    vec3 lineColor = vec3(0.92); // very light gray
+    vec3 lineColor = vec3(0.94); // very light gray
     
-    vec3 color = mix(bg, lineColor, line * 0.85);
+    vec3 color = mix(bg, lineColor, line);
     
     gl_FragColor = vec4(color, 1.0);
   }
