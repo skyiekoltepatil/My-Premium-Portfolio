@@ -46,6 +46,12 @@ export const AIAssistant = () => {
   const [placeholderText, setPlaceholderText] = useState("Ask me anything...");
 
   useEffect(() => {
+    const handleOpenAria = () => setIsExpanded(true);
+    window.addEventListener('openAria', handleOpenAria);
+    return () => window.removeEventListener('openAria', handleOpenAria);
+  }, []);
+
+  useEffect(() => {
     if (isExpanded) {
       setPlaceholderText(placeholders[Math.floor(Math.random() * placeholders.length)]);
     }
@@ -128,22 +134,6 @@ export const AIAssistant = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {!isExpanded && (
-          <div className="fixed bottom-0 right-0 z-50 w-32 h-32 flex items-center justify-center group cursor-default">
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              onClick={() => setIsExpanded(true)}
-              className="group/text px-6 py-3 bg-black rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-105"
-            >
-              <span className="text-white font-bold text-lg tracking-wide">Aria</span>
-            </motion.button>
-          </div>
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {isExpanded && (
