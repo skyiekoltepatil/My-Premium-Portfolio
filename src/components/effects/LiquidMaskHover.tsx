@@ -90,7 +90,19 @@ const FRAGMENT_SHADER = `
     float baseRadius = mix(0.2, 0.0, uIsMobile);
     float radius = baseRadius + n * 0.06;
     
-    float mask = 1.0 - smoothstep(radius * 0.5, radius, dist);
+    float mouseMask = 1.0 - smoothstep(radius * 0.5, radius, dist);
+    
+    // Autonomous wandering hover influence
+    vec2 wanderPos = vec2(
+      snoise(vec2(uTime * 0.2, 0.0)) * 0.5 + 0.5,
+      snoise(vec2(0.0, uTime * 0.2)) * 0.5 + 0.5
+    ) * vec2(canvasAspect, 1.0);
+    
+    float wanderDist = distance(st, wanderPos);
+    float wanderMask = 1.0 - smoothstep(radius * 0.5, radius, wanderDist);
+    
+    // Combine mouse and wandering masks
+    float mask = max(mouseMask, wanderMask * 0.7); // Wandering mask is slightly more transparent
     
     // Smooth, simple scale reveal without inner displacement
     vec2 scaledHoverUv = (imgUv - 0.5) * (1.0 / 1.05) + 0.5;

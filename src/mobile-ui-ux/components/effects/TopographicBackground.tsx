@@ -63,14 +63,25 @@ const FRAGMENT_SHADER = `
     
     float dist = distance(st, m);
     // Smooth hover influence (disabled on mobile)
-    float hoverInfluence = mix(smoothstep(0.35, 0.0, dist), 0.0, uIsMobile);
+    float mouseInfluence = mix(smoothstep(0.35, 0.0, dist), 0.0, uIsMobile);
+    
+    // Autonomous wandering hover influence
+    vec2 wanderPos = vec2(
+      snoise(vec2(uTime * 0.15, 0.0)) * 0.5 + 0.5,
+      snoise(vec2(0.0, uTime * 0.15)) * 0.5 + 0.5
+    ) * vec2(aspect, 1.0);
+    
+    float wanderDist = distance(st, wanderPos);
+    float wanderInfluence = smoothstep(0.5, 0.0, wanderDist) * 0.65; // Slightly larger, softer, weaker
+    
+    float totalInfluence = max(mouseInfluence, wanderInfluence);
     
     // Contours
     float spacing = 0.12;
     float lineDist = abs(fract(n / spacing) - 0.5);
     
     // Expand line thickness on hover to fill white space
-    float thickness = mix(0.025, 0.5, hoverInfluence);
+    float thickness = mix(0.025, 0.5, totalInfluence);
     float aa = 0.03; // anti-aliasing edge
     float line = smoothstep(thickness + aa, thickness - aa, lineDist);
     
