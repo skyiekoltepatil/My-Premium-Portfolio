@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { BookOpen, Award } from 'lucide-react';
+import { BookOpen, Award, X } from 'lucide-react';
 import certFundamentals from '../assets/certificate- Fundamentals of Scientific Communication.webp';
 import certCVs from '../assets/certificate Crafting Impactful CVs and Resumes.webp';
 import certAMD from '../assets/AMDcertificate.webp';
@@ -51,6 +53,7 @@ export const CERTIFICATES = [
 export const Experience = () => {
   const location = useLocation();
   const showCertificates = location.pathname === '/experience';
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
     <div id="experience" className="py-24 relative z-10">
@@ -139,7 +142,8 @@ export const Experience = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
-                className="relative w-full aspect-[4/5] bg-slate-50 border border-indigo-900/5 rounded-[2.5rem] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-700 overflow-hidden group"
+                className="relative w-full aspect-[4/5] bg-slate-50 border border-indigo-900/5 rounded-[2.5rem] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-700 overflow-hidden group cursor-pointer"
+                onClick={() => setSelectedImage(cert.image)}
               >
                 {/* Top Image Section */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -200,6 +204,44 @@ export const Experience = () => {
             ))}
           </div>
         </section>
+      )}
+
+      {/* Image Modal */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedImage(null)}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative max-w-5xl max-h-[90vh] w-full rounded-2xl overflow-hidden shadow-2xl bg-transparent flex justify-center items-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/70 text-white rounded-full backdrop-blur-md transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X size={24} />
+                </button>
+                <img
+                  src={selectedImage}
+                  alt="Certificate Full View"
+                  className="max-w-full max-h-[90vh] object-contain rounded-xl"
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
       )}
 
     </div>
