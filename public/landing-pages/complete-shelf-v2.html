@@ -2110,7 +2110,9 @@
     let viewWidth = window.innerWidth;
     let viewHeight = window.innerHeight;
     let detailViewOffsetX = 0;
+    let detailViewOffsetY = 0;
     let currentViewOffsetX = 0;
+    let currentViewOffsetY = 0;
     let detailSafeWidth = viewWidth * 0.6;
     let themeInitialized = false;
     let themeMoving = false;
@@ -2223,7 +2225,9 @@
     const DETAIL_TRANSITION_DURATION = 0.92;
     const SHELF_TRANSITION_DURATION = 0.92;
     let openingViewOffsetX = 0;
+    let openingViewOffsetY = 0;
     let closingViewOffsetX = 0;
+    let closingViewOffsetY = 0;
 
     const shared = {
       box: new THREE.BoxGeometry(1, 1, 1),
@@ -4072,9 +4076,12 @@
 
       if (narrow) {
         detailViewOffsetX = 0;
+        detailViewOffsetY = viewHeight * 0.22;
         detailSafeWidth = viewWidth;
         return;
       }
+      
+      detailViewOffsetY = 0;
 
       const panelBounds = detailPanel.getBoundingClientRect();
       const panelLeft = panelBounds.left > 0 ? panelBounds.left : viewWidth * 0.64;
@@ -4097,7 +4104,7 @@
     }
 
     function applyDetailViewOffset() {
-      if (Math.abs(currentViewOffsetX) < 0.5) {
+      if (Math.abs(currentViewOffsetX) < 0.5 && Math.abs(currentViewOffsetY) < 0.5) {
         camera.clearViewOffset();
         return;
       }
@@ -4105,7 +4112,7 @@
         viewWidth,
         viewHeight,
         currentViewOffsetX,
-        0,
+        currentViewOffsetY,
         viewWidth,
         viewHeight
       );
@@ -5285,6 +5292,7 @@
       openingMotionPosition.copy(activeBook.motion.position);
       openingMotionQuaternion.copy(activeBook.motion.quaternion);
       openingViewOffsetX = currentViewOffsetX;
+      openingViewOffsetY = currentViewOffsetY;
       scene.add(activeBook.root);
       activeBook.root.position.copy(openingBookPosition);
       activeBook.root.quaternion.copy(openingBookQuaternion);
@@ -5344,6 +5352,7 @@
         eased
       );
       currentViewOffsetX = lerp(openingViewOffsetX, detailViewOffsetX, eased);
+      currentViewOffsetY = lerp(openingViewOffsetY, detailViewOffsetY, eased);
       applyDetailViewOffset();
       camera.lookAt(transitionCameraTarget);
     }
@@ -5383,6 +5392,7 @@
       closingCameraTarget.copy(controls.target);
       closingShelfPosition.copy(shelfStage.position);
       closingViewOffsetX = currentViewOffsetX;
+      closingViewOffsetY = currentViewOffsetY;
       transitionCameraTarget.copy(closingCameraTarget);
       experience.classList.remove("is-opening");
       alignShelfToSelection();
@@ -5452,6 +5462,7 @@
         eased
       );
       currentViewOffsetX = lerp(closingViewOffsetX, 0, eased);
+      currentViewOffsetY = lerp(closingViewOffsetY, 0, eased);
       applyDetailViewOffset();
       camera.lookAt(transitionCameraTarget);
     }
@@ -5606,6 +5617,7 @@
         camera.position.z = damp(camera.position.z, shelfCameraPosition.z, 8, delta);
         transitionCameraTarget.copy(shelfCameraTarget);
         currentViewOffsetX = 0;
+        currentViewOffsetY = 0;
         applyDetailViewOffset();
         camera.lookAt(shelfCameraTarget);
       }
@@ -5659,6 +5671,15 @@
           );
         }
         controls.update();
+        
+        const narrow = viewWidth < 820;
+        const readingScaleMod = (readingOpen && narrow) ? 0.52 : 1.0;
+        const targetScale = getInspectScale() * readingScaleMod;
+        activeBook.root.scale.setScalar(damp(activeBook.root.scale.x, targetScale, 10.5, delta));
+        
+        const shiftX = (readingOpen && narrow) ? (activeBook.base.width * targetScale * 0.5) : 0;
+        activeBook.root.position.x = damp(activeBook.root.position.x, inspectPosition.x + shiftX, 10.5, delta);
+        
         updatePaginatedBook(activeBook, delta, getDetailOpenAmount());
       }
 
@@ -5686,6 +5707,7 @@
         camera.position.copy(shelfCameraPosition);
         transitionCameraTarget.copy(shelfCameraTarget);
         currentViewOffsetX = 0;
+        currentViewOffsetY = 0;
         applyDetailViewOffset();
         camera.lookAt(shelfCameraTarget);
       } else if (mode === "detail" && activeBook) {
@@ -5693,6 +5715,7 @@
         activeBook.root.scale.setScalar(getInspectScale());
         transitionCameraTarget.copy(inspectCameraTarget);
         currentViewOffsetX = detailViewOffsetX;
+        currentViewOffsetY = detailViewOffsetY;
         applyDetailViewOffset();
         resetInspectionView();
       }

@@ -126,7 +126,7 @@ export const Experience = () => {
 
       {/* Certificates Section */}
       {showCertificates && (
-        <section aria-labelledby="certificates-heading" className="max-w-7xl mx-auto px-6 md:px-12 mt-16">
+        <section aria-labelledby="certificates-heading" className="w-full max-w-[1600px] mx-auto px-6 md:px-12 mt-16">
           <div className="mb-12 md:mb-20 text-center">
             <h2 id="certificates-heading" className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900">
               My <span className="text-gradient">Certificates</span>
@@ -134,7 +134,7 @@ export const Experience = () => {
           </div>
 
           {/* Premium 3-Column Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-[1600px] mx-auto pb-16">
             {CERTIFICATES.map((cert, i) => (
               <motion.div
                 key={i}
