@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CustomCursor, BackgroundEffects } from '../effects/Shared';
 // @ts-ignore
@@ -127,6 +127,9 @@ const Navbar = () => {
 };
 
 export const Layout = () => {
+  const location = useLocation();
+  const isProjectPage = location.pathname === '/project';
+
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-clip w-full relative">
       <CustomCursor />
@@ -154,12 +157,13 @@ export const Layout = () => {
       <Navbar />
       <AIAssistant />
 
-      <main className="flex-grow pt-24">
+      <main className={`flex-grow ${isProjectPage ? '' : 'pt-24'}`}>
         <Outlet />
       </main>
 
       {/* Premium Footer */}
-      <footer className="relative z-10 mt-auto border-t border-slate-200/60 bg-white/50 backdrop-blur-xl">
+      {!isProjectPage && (
+        <footer className="relative z-10 mt-auto border-t border-slate-200/60 bg-white/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
             <p className="text-slate-800 font-bold text-lg tracking-tight group/text cursor-default w-max">Bhushan Kolte</p>
@@ -173,7 +177,8 @@ export const Layout = () => {
             Designed with <span className="text-red-500 animate-pulse">❤️</span> by Bhushan Kolte
           </div>
         </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 };
