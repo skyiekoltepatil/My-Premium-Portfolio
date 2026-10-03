@@ -63,6 +63,8 @@ export const PhotoGallery = () => {
               src={photo.url}
               alt={photo.alt}
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
         ))}
