@@ -5,6 +5,8 @@ import Project2Image from '../assets/Project-2-image.webp';
 import Project3Image from '../assets/Project-3-image.webp';
 import WeatherImage from '../assets/weather-image.webp';
 import SculptureHoverImage from '../assets/sculpture-hover.webp';
+import { CompleteShelfLandingPage } from '../shaders/landing-pages/LandingPages';
+import '../shaders/threeui.css';
 
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -57,59 +59,20 @@ export const PROJECTS = [
 
 export const Project = () => {
   return (
-    <div id="project" className="py-24 relative z-10">
-      <section className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="mb-16 md:mb-24 text-center">
-          <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900">Selected <span className="text-gradient">Work</span></h2>
-        </div>
-
-        <div className="space-y-32">
-          {PROJECTS.map((project, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-              className={`flex flex-col ${i % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 lg:gap-20 items-center`}
-            >
-              <div className="w-full md:w-3/5">
-                <div className="relative rounded-[2.5rem] overflow-hidden group border border-slate-200 shadow-2xl shadow-slate-300/50">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute bottom-8 left-8 right-8 z-20 flex justify-between items-end opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    <InteractiveHoverButton href={project.link} target="_blank" rel="noopener noreferrer">
-                      View Project
-                    </InteractiveHoverButton>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full md:w-2/5 space-y-6">
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((t, j) => (
-                    <span key={j} className="text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full glass-panel text-slate-700 border border-slate-200">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="text-[clamp(1.5rem,5vw,3rem)] font-bold text-slate-900">{project.title}</h3>
-                <p className="text-slate-600 text-[clamp(1rem,1.5vw,1.125rem)] leading-relaxed font-medium">{project.description}</p>
-
-                <div className="pt-8 flex items-center gap-8">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 text-sm font-bold tracking-widest uppercase text-slate-700 hover:text-blue-600 transition-colors">
-                    <GithubIcon size={20} /> GitHub
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+    <div id="project" className="relative z-10 w-full">
+      {/* 3D Bookshelf Component */}
+      <div className="w-full h-screen min-h-[700px] overflow-hidden">
+        <CompleteShelfLandingPage
+          headingFont="iowan-old-style"
+          bodyFont="inter"
+          headingWeight="400"
+          bodyWeight="400"
+          primaryColor="#c87046"
+          headingSize={60}
+          bodySize={12}
+          headingLetterSpacing={-0.055}
+        />
+      </div>
     </div>
   );
 };
