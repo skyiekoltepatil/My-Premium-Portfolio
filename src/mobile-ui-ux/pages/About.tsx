@@ -67,7 +67,7 @@ export const About = () => {
       .catch(err => console.error(err));
 
     // Fetch real-time today commits
-    getTodayCommits(username).then(commits => {
+    getTodayCommits(username).then((commits: number) => {
       setRealtimeCommits(commits);
     });
   }, [username]);
