@@ -86,8 +86,8 @@ const FRAGMENT_SHADER = `
     
     // Liquid noise radius
     float n = snoise(st * 4.0 + uTime * 0.4);
-    // Base radius is 0 if mobile
-    float baseRadius = mix(0.2, 0.0, uIsMobile);
+    // Base radius
+    float baseRadius = 0.2;
     float radius = baseRadius + n * 0.06;
     
     float mouseMask = 1.0 - smoothstep(radius * 0.5, radius, dist);
@@ -101,8 +101,9 @@ const FRAGMENT_SHADER = `
     float wanderDist = distance(st, wanderPos);
     float wanderMask = 1.0 - smoothstep(radius * 0.5, radius, wanderDist);
     
-    // Combine mouse and wandering masks
-    float mask = max(mouseMask, wanderMask * 0.7); // Wandering mask is slightly more transparent
+    // Disable wander mask on mobile
+    float activeWander = mix(wanderMask * 0.7, 0.0, uIsMobile);
+    float mask = max(mouseMask, activeWander);
     
     // Smooth, simple scale reveal without inner displacement
     vec2 scaledHoverUv = (imgUv - 0.5) * (1.0 / 1.05) + 0.5;
@@ -255,8 +256,20 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
       targetMouseY = -10.0;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const rect = container.getBoundingClientRect();
+        const touch = e.touches[0];
+        targetMouseX = (touch.clientX - rect.left) / rect.width;
+        targetMouseY = (touch.clientY - rect.top) / rect.height;
+      }
+    };
+
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('touchstart', handleTouchMove, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleMouseLeave);
 
     // Blending setup for transparent background
     gl.enable(gl.BLEND);

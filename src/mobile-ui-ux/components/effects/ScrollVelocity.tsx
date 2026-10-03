@@ -1,8 +1,11 @@
 import React, { useRef, useLayoutEffect, useState } from 'react';
 import {
   motion,
+  useScroll,
+  useSpring,
   useTransform,
   useMotionValue,
+  useVelocity,
   useAnimationFrame
 } from 'framer-motion';
 import './ScrollVelocity.css';
@@ -11,32 +14,28 @@ function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
   const [width, setWidth] = useState(0);
 
   useLayoutEffect(() => {
-    if (!ref.current) return;
-    
-    const updateWidth = () => {
+    function updateWidth() {
       if (ref.current) {
-        setWidth(ref.current.getBoundingClientRect().width);
+        setWidth(ref.current.offsetWidth);
       }
-    };
-
+    }
     updateWidth();
-    
-    const observer = new ResizeObserver(updateWidth);
-    observer.observe(ref.current);
-    
-    return () => {
-      observer.disconnect();
-    };
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
   }, [ref]);
 
   return width;
 }
 
 interface ScrollVelocityProps {
+  scrollContainerRef?: React.RefObject<HTMLElement>;
   texts?: React.ReactNode[];
   velocity?: number;
   className?: string;
+  damping?: number;
+  stiffness?: number;
   numCopies?: number;
+  velocityMapping?: { input: number[]; output: number[] };
   parallaxClassName?: string;
   scrollerClassName?: string;
   parallaxStyle?: React.CSSProperties;
@@ -44,10 +43,14 @@ interface ScrollVelocityProps {
 }
 
 export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
+  scrollContainerRef,
   texts = [],
-  velocity = -50,
+  velocity = 100,
   className = '',
+  damping = 50,
+  stiffness = 400,
   numCopies = 6,
+  velocityMapping = { input: [0, 1000], output: [0, 5] },
   parallaxClassName = 'parallax',
   scrollerClassName = 'scroller',
   parallaxStyle,
@@ -56,30 +59,58 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   function VelocityText({
     children,
     baseVelocity = velocity,
+    scrollContainerRef,
     className = '',
+    damping,
+    stiffness,
     numCopies,
+    velocityMapping,
     parallaxClassName,
     scrollerClassName,
     parallaxStyle,
     scrollerStyle
   }: any) {
     const baseX = useMotionValue(0);
+    const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
+    const { scrollY } = useScroll(scrollOptions);
+    const scrollVelocity = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollVelocity, {
+      damping: damping ?? 50,
+      stiffness: stiffness ?? 400
+    });
+    const velocityFactor = useTransform(
+      smoothVelocity,
+      velocityMapping?.input || [0, 1000],
+      velocityMapping?.output || [0, 5],
+      { clamp: false }
+    );
 
     const copyRef = useRef<HTMLSpanElement>(null);
     const copyWidth = useElementWidth(copyRef);
 
+    function wrap(min: number, max: number, v: number) {
+      const range = max - min;
+      const mod = (((v - min) % range) + range) % range;
+      return mod + min;
+    }
+
     const x = useTransform(baseX, (v) => {
       if (copyWidth === 0) return '0px';
-      let wrapped = v % copyWidth;
-      if (wrapped > 0) {
-        wrapped -= copyWidth;
-      }
-      return `${wrapped}px`;
+      return `${wrap(-copyWidth, 0, v)}px`;
     });
 
-    useAnimationFrame((time, delta) => {
-      void time; // suppress TS6133 unused parameter
-      const moveBy = baseVelocity * (delta / 1000);
+    const directionFactor = useRef(1);
+    useAnimationFrame((t, delta) => {
+      void t;
+      let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+      if ((velocityFactor as any).get() < 0) {
+        directionFactor.current = -1;
+      } else if ((velocityFactor as any).get() > 0) {
+        directionFactor.current = 1;
+      }
+
+      moveBy += directionFactor.current * moveBy * (velocityFactor as any).get();
       baseX.set(baseX.get() + moveBy);
     });
 
@@ -107,8 +138,12 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
         <VelocityText
           key={index}
           className={className}
-          baseVelocity={velocity}
+          baseVelocity={index % 2 !== 0 ? -velocity : velocity}
+          scrollContainerRef={scrollContainerRef}
+          damping={damping}
+          stiffness={stiffness}
           numCopies={numCopies}
+          velocityMapping={velocityMapping}
           parallaxClassName={parallaxClassName}
           scrollerClassName={scrollerClassName}
           parallaxStyle={parallaxStyle}
