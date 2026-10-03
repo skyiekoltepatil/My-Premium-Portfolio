@@ -2479,7 +2479,7 @@
       key.name = "shadow-key";
       key.position.set(-4.6, 7.4, 5.8);
       key.castShadow = true;
-      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.mapSize.set(window.innerWidth < 820 ? 512 : 2048, window.innerWidth < 820 ? 512 : 2048);
       key.shadow.camera.left = -6;
       key.shadow.camera.right = 6;
       key.shadow.camera.top = 6;
@@ -3958,7 +3958,7 @@
       viewHeight = window.innerHeight;
       configureResponsiveTargets();
       renderer.setSize(viewWidth, viewHeight, false);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, viewWidth < 820 ? 1.5 : 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, viewWidth < 820 ? 1 : 2));
       camera.aspect = viewWidth / viewHeight;
       camera.updateProjectionMatrix();
 
@@ -4145,7 +4145,7 @@
       try {
         renderer = new THREE.WebGLRenderer({
           canvas,
-          antialias: true,
+          antialias: window.innerWidth > 820,
           alpha: true,
           powerPreference: "high-performance"
         });
