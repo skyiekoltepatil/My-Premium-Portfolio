@@ -4,6 +4,7 @@ import overlayImgSrc from '../assets/hero_images/image 3.png';
 import VariableProximity from '../components/effects/VariableProximity';
 import TopographicBackground from '../components/effects/TopographicBackground';
 import LiquidMaskHover from '../components/effects/LiquidMaskHover';
+import ScrollVelocity from '../components/effects/ScrollVelocity';
 import { RainbowButton } from '../components/ui/RainbowButton';
 
 export const Home = () => {
@@ -15,6 +16,23 @@ export const Home = () => {
       className="relative min-h-[100svh] w-full flex items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-default select-none"
     >
       <TopographicBackground />
+      
+      {/* Background Scrolling Text */}
+      <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 z-[5] pointer-events-none">
+        <ScrollVelocity
+          texts={['SKYIE@ ✦ BHUSHAN KOLTE ✦ AI & DATA SCIENCE ✦ CREATIVE DEVELOPER ✦ ']} 
+          velocity={50} 
+          velocityMapping={{ input: [0, 1000], output: [0, 0] }}
+          className="text-black/20"
+        />
+        <ScrollVelocity
+          texts={['MACHINE LEARNING ✦ NEXT-GEN PORTFOLIO ✦ FRONT END DEVELOPER ✦ INNOVATION ✦ ']} 
+          velocity={-50} 
+          velocityMapping={{ input: [0, 1000], output: [0, 0] }}
+          className="text-black/20"
+        />
+      </div>
+
       <LiquidMaskHover
         baseImage={baseImgSrc}
         hoverImage={overlayImgSrc}
