@@ -104,8 +104,15 @@ const FRAGMENT_SHADER = `
     // Combine mouse and wandering masks
     float mask = max(mouseMask, wanderMask * 0.7); // Wandering mask is slightly more transparent
     
+    // Calculate mouse offset from center for parallax
+    vec2 center = vec2(0.5 * canvasAspect, 0.5);
+    vec2 mouseOffset = (m - center);
+    
+    // Add subtle parallax shifting to the hover image
+    vec2 parallax = mouseOffset * 0.04;
+    
     // Smooth, simple scale reveal without inner displacement
-    vec2 scaledHoverUv = (imgUv - 0.5) * (1.0 / 1.05) + 0.5;
+    vec2 scaledHoverUv = (imgUv - 0.5) * (1.0 / 1.05) + 0.5 + parallax;
     
     vec4 baseColor = texture2D(uBaseTexture, imgUv);
     vec4 hoverColor = texture2D(uHoverTexture, scaledHoverUv);
