@@ -61,7 +61,7 @@ export const Project = () => {
   return (
     <div id="project" className="relative z-10 w-full">
       {/* 3D Bookshelf Component */}
-      <div className="w-full h-screen min-h-[700px] overflow-hidden">
+      <div className="w-full h-[100dvh] overflow-hidden">
         <CompleteShelfLandingPage
           headingFont="iowan-old-style"
           bodyFont="inter"
