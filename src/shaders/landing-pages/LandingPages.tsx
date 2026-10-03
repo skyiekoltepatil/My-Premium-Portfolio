@@ -1,5 +1,5 @@
 import { LandingPageFrame, type LandingPageFrameProps } from "./LandingPageFrame";
-import type { CSSProperties } from "react";
+
 
 export type PageTypographyProps = {
   headingFont?: string;

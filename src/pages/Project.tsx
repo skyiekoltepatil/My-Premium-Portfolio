@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-import { InteractiveHoverButton } from '../components/ui/interactive-hover-button';
 import Project1Image from '../assets/Project-1-image.webp';
 import Project2Image from '../assets/Project-2-image.webp';
 import Project3Image from '../assets/Project-3-image.webp';
@@ -7,12 +5,6 @@ import WeatherImage from '../assets/weather-image.webp';
 import SculptureHoverImage from '../assets/sculpture-hover.webp';
 import { CompleteShelfLandingPage } from '../shaders/landing-pages/LandingPages';
 import '../shaders/threeui.css';
-
-const GithubIcon = ({ size = 24 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.24c3-.3 6-1.5 6-6.76 0-1.4-.5-2.6-1.4-3.5.1-.3.6-1.7-.1-3.5 0 0-1-.3-3.3 1.2a11.3 11.3 0 0 0-6 0C6 2.7 5 3 5 3c-.7 1.8-.2 3.2-.1 3.5-1 .9-1.5 2.1-1.5 3.5 0 5.2 3 6.5 6 6.8-.7.3-1.3 1-1.5 2.1-.2 0-.8.3-2.3-1-1-.8-1.5-1.5-1.5-1-.2-1.8.2-1.8.2.8.1 1.2 1 1.2 1 .7 1.2 2 1.7 3 1.2 0 1 .1 2.3.1 3" />
-  </svg>
-);
 
 export const PROJECTS = [
   {

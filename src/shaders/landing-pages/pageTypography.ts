@@ -2,7 +2,7 @@ export type PageTypographyProps = any;
 export function splitTypographyProps(props: any) {
   return [props, props];
 }
-export function usePageTypography(recipe: any, type: any) {
+export function usePageTypography(_recipe?: any, _type?: any) {
   return undefined;
 }
 export function applyPageCustomization() {}
