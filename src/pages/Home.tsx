@@ -12,7 +12,7 @@ export const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100svh] w-full flex items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-crosshair select-none"
+      className="relative min-h-[100svh] w-full flex items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-default select-none"
     >
       <TopographicBackground />
       <LiquidMaskHover
