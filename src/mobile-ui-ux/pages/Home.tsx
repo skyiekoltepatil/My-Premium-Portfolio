@@ -1,55 +1,53 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import workingGif from '../../assets/workinggif.mp4';
-import RotatingText from '../../components/effects/RotatingText';
+import { useRef } from 'react';
+import baseImgSrc from '../assets/hero_images/image 2.png';
+import overlayImgSrc from '../assets/hero_images/image 3.png';
+import VariableProximity from '../components/effects/VariableProximity';
+import TopographicBackground from '../components/effects/TopographicBackground';
+import LiquidMaskHover from '../components/effects/LiquidMaskHover';
+import { RainbowButton } from '../components/ui/RainbowButton';
 
 export const Home = () => {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 1000], [0, 300]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const textContainerRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-start justify-start z-10 overflow-hidden -mt-24 pt-24"
+      className="relative min-h-[100svh] w-full flex items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-default select-none"
     >
-      {/* Background Video — fills the entire hero section */}
-      <div className="absolute inset-0 z-0">
-        <video
-          src={workingGif}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-[60%_center] sm:object-center"
-        />
-        {/* Subtle overlay */}
-        <div className="absolute inset-0 bg-black/10" />
-      </div>
-
-      {/* Main content on top */}
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 max-w-4xl px-4 md:px-8 w-full text-left flex flex-col items-start mt-4 pointer-events-none"
+      <TopographicBackground />
+      <LiquidMaskHover
+        baseImage={baseImgSrc}
+        hoverImage={overlayImgSrc}
+        className="absolute top-0 left-0 w-full h-full z-10"
+      />
+      {/* Aria introduction text - lower left */}
+      <div
+        ref={textContainerRef}
+        className="absolute left-8 md:left-12 bottom-[15%] z-20 w-[450px] max-w-[85vw] pointer-events-none"
+        style={{ position: 'absolute' }}
       >
-        <h1 className="text-[2.75rem] leading-[1.1] sm:text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter sm:leading-[1.05] mb-8 text-black drop-shadow-sm break-words w-full">
-          <span className="block">Creative</span>
-          <span className="block">
-            <RotatingText
-              texts={['UI Designer.', 'Thinker.', 'Coder.', 'Developer.', 'Problem Solver.']}
-              mainClassName="text-black inline-flex"
-              staggerFrom="last"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-120%' }}
-              staggerDuration={0.025}
-              splitLevelClassName="overflow-hidden pb-1 md:pb-2"
-              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-              rotationInterval={2500}
-            />
-          </span>
-        </h1>
-      </motion.div>
+        <div className="text-lg md:text-xl text-gray-800 leading-relaxed tracking-wide min-h-[120px]">
+          <span className="text-2xl">✨</span>{' '}
+          <VariableProximity
+            label="Meet Aria, She's here to guide you through my portfolio. Chat with her to discover more about my technical skills, creative projects, and professional journey. Ask her anything!"
+            className="text-gray-800"
+            fromFontVariationSettings="'wght' 400, 'opsz' 9"
+            toFontVariationSettings="'wght' 900, 'opsz' 40"
+            containerRef={textContainerRef}
+            radius={100}
+            falloff="linear"
+          />
+        </div>
+        <div className="mt-5 pointer-events-auto">
+          <RainbowButton
+            onClick={() => {
+              window.dispatchEvent(new Event('openAria'));
+            }}
+          >
+            Aria
+          </RainbowButton>
+        </div>
+      </div>
     </section>
   );
 };
-

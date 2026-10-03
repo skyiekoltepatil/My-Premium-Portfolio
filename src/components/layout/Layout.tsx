@@ -6,7 +6,6 @@ import { CustomCursor, BackgroundEffects } from '../effects/Shared';
 import CursorGrid from '../effects/CursorGrid';
 import { AIAssistant } from '../assistant/AIAssistant';
 
-import { RollingText } from '../effects/RollingText';
 
 const AppleLogo = () => (
   <svg viewBox="0 0 384 512" className="w-5 h-5 sm:w-6 sm:h-6 text-white hover:scale-110 transition-transform" fill="currentColor">
@@ -66,7 +65,7 @@ const Navbar = () => {
               >
                 <div className="relative group">
                   <button className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">
-                    <RollingText text="About Me" />
+                    About Me
                     <svg className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                     </svg>
@@ -75,13 +74,13 @@ const Navbar = () => {
                   {/* Dropdown Menu - using padding to bridge the hover gap perfectly */}
                   <div className="absolute top-full left-0 pt-4 -mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
                     <div className="bg-black/95 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] rounded-2xl py-2 min-w-[160px] flex flex-col transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <Link to="/about" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors"><RollingText text="About Me" /></Link>
-                      <Link to="/experience" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors"><RollingText text="My Experience" /></Link>
-                      <Link to="/hobbies" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors"><RollingText text="Hobbies" /></Link>
+                      <Link to="/about" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">About Me</Link>
+                      <Link to="/experience" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">My Experience</Link>
+                      <Link to="/hobbies" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">Hobbies</Link>
                     </div>
                   </div>
                 </div>
-                <Link to="/project" className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center py-2"><RollingText text="Project" /></Link>
+                <Link to="/project" className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center py-2">Project</Link>
               </motion.div>
             )}
           </AnimatePresence>
@@ -103,7 +102,7 @@ const Navbar = () => {
               >
                 <div className="relative group">
                   <button className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center gap-1.5 py-2">
-                    <RollingText text="More" />
+                    More
                     <svg className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                     </svg>
@@ -112,12 +111,12 @@ const Navbar = () => {
                   {/* Dropdown Menu - using padding to bridge the hover gap perfectly */}
                   <div className="absolute top-full right-0 pt-4 -mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
                     <div className="bg-black/95 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] rounded-2xl py-2 min-w-[160px] flex flex-col transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <Link to="/quote" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors"><RollingText text="Quote" /></Link>
-                      <Link to="/fun-games" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors"><RollingText text="Fun Games" /></Link>
+                      <Link to="/quote" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">Quote</Link>
+                      <Link to="/fun-games" className="group/text block px-4 py-2.5 text-sm font-semibold text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl mx-1 transition-colors">Fun Games</Link>
                     </div>
                   </div>
                 </div>
-                <Link to="/contact" className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center py-2"><RollingText text="Contact" /></Link>
+                <Link to="/contact" className="group/text text-zinc-400 hover:text-white transition-colors text-sm sm:text-[15px] font-medium whitespace-nowrap flex items-center py-2">Contact</Link>
               </motion.div>
             )}
           </AnimatePresence>
@@ -129,7 +128,7 @@ const Navbar = () => {
 
 export const Layout = () => {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-clip w-full relative">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-clip w-full relative">
       <CustomCursor />
       <BackgroundEffects />
 
@@ -163,7 +162,7 @@ export const Layout = () => {
       <footer className="relative z-10 mt-auto border-t border-slate-200/60 bg-white/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
-            <p className="text-slate-800 font-bold text-lg tracking-tight group/text cursor-default w-max"><RollingText text="Bhushan Kolte" /></p>
+            <p className="text-slate-800 font-bold text-lg tracking-tight group/text cursor-default w-max">Bhushan Kolte</p>
             <p className="text-slate-500 font-medium text-sm">© {new Date().getFullYear()} All rights reserved.</p>
           </div>
 
@@ -171,7 +170,7 @@ export const Layout = () => {
           </div>
 
           <div className="flex items-center gap-2 text-slate-500 text-sm font-medium group/text cursor-default w-max">
-            Designed with <span className="text-red-500 animate-pulse">❤️</span> by <RollingText text="Bhushan Kolte" />
+            Designed with <span className="text-red-500 animate-pulse">❤️</span> by Bhushan Kolte
           </div>
         </div>
       </footer>

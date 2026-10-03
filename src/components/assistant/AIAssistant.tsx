@@ -7,7 +7,6 @@ import AllProjects from '../projects/AllProjects';
 import AllCertificates from './AllCertificates';
 import { ContactForm } from '../ContactForm';
 import myAvatar from '../../assets/my-avatar.webp';
-import { RollingText } from '../effects/RollingText';
 
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
@@ -45,6 +44,12 @@ export const AIAssistant = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const [placeholderText, setPlaceholderText] = useState("Ask me anything...");
+
+  useEffect(() => {
+    const handleOpenAria = () => setIsExpanded(true);
+    window.addEventListener('openAria', handleOpenAria);
+    return () => window.removeEventListener('openAria', handleOpenAria);
+  }, []);
 
   useEffect(() => {
     if (isExpanded) {
@@ -129,22 +134,6 @@ export const AIAssistant = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {!isExpanded && (
-          <div className="fixed bottom-0 right-0 z-50 w-32 h-32 flex items-center justify-center group cursor-default">
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              onClick={() => setIsExpanded(true)}
-              className="group/text px-6 py-3 bg-black rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-105"
-            >
-              <span className="text-white font-bold text-lg tracking-wide"><RollingText text="Aria" heightClass="h-[28px]" leadingClass="leading-[28px]" /></span>
-            </motion.button>
-          </div>
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {isExpanded && (

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import githubImage from '../../assets/github-image.webp';
-import LogoLoop from '../../components/effects/LogoLoop';
+import profileImage from '../assets/image1.webp';
+import LogoLoop from '../components/effects/LogoLoop';
 import { GitHubCalendar } from 'react-github-calendar';
 import { Users, BookOpen, Star, GitFork, MapPin, Mail, Building2 } from 'lucide-react';
-import { getTodayCommits } from '../../utils/github';
+import { getTodayCommits } from '../utils/github';
 import {
   SiReact, SiNextdotjs, SiTypescript, SiTailwindcss,
   SiVite, SiNodedotjs, SiPython, SiPostgresql,
@@ -67,7 +67,7 @@ export const About = () => {
       .catch(err => console.error(err));
 
     // Fetch real-time today commits
-    getTodayCommits(username).then(commits => {
+    getTodayCommits(username).then((commits: number) => {
       setRealtimeCommits(commits);
     });
   }, [username]);
@@ -99,17 +99,17 @@ export const About = () => {
         >
           {/* Left Sidebar (GitHub Profile Style) */}
           <div className="w-full lg:w-1/4 flex flex-col gap-5">
-            <div className="relative group w-[260px] max-w-full mx-auto lg:mx-0">
+            <div className="relative group w-full max-w-[260px] mx-auto lg:mx-0">
               <img
-                src={githubImage}
+                src={profileImage}
                 alt="Bhushan Kolte"
                 className="w-full aspect-square object-cover rounded-full border border-slate-200 shadow-sm z-10 relative bg-white"
               />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-black leading-tight whitespace-nowrap">Bhushan Kolte</h1>
-              <h2 className="text-xl font-light text-slate-500">{username}</h2>
+              <h1 className="text-[clamp(1.5rem,4vw,2rem)] font-bold text-black leading-tight whitespace-nowrap">Bhushan Kolte</h1>
+              <h2 className="text-[clamp(1rem,3vw,1.25rem)] font-light text-slate-500">{username}</h2>
             </div>
 
             <a
@@ -166,7 +166,7 @@ export const About = () => {
                     Technologies I Work With
                   </p>
                   <div style={{ height: '60px', position: 'relative', fontFamily: "sans-serif" }}>
-                    <LogoLoop logos={allLogos} speed={45} direction="left" logoHeight={36} gap={40} scaleOnHover />
+                    <LogoLoop logos={allLogos} speed={90} direction="left" logoHeight={36} gap={40} scaleOnHover />
                   </div>
                 </div>
               </div>

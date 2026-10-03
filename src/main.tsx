@@ -1,3 +1,4 @@
+console.log("main.tsx is running!");
 /// <reference types="vite/client" />
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

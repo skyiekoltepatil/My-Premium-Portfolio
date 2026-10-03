@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import githubImage from '../assets/github-image.webp';
+import profileImage from '../assets/image1.webp';
 import LogoLoop from '../components/effects/LogoLoop';
 import { GitHubCalendar } from 'react-github-calendar';
 import { Users, BookOpen, Star, GitFork, MapPin, Mail, Building2 } from 'lucide-react';
@@ -67,7 +67,7 @@ export const About = () => {
       .catch(err => console.error(err));
 
     // Fetch real-time today commits
-    getTodayCommits(username).then(commits => {
+    getTodayCommits(username).then((commits: number) => {
       setRealtimeCommits(commits);
     });
   }, [username]);
@@ -101,7 +101,7 @@ export const About = () => {
           <div className="w-full lg:w-1/4 flex flex-col gap-5">
             <div className="relative group w-full max-w-[260px] mx-auto lg:mx-0">
               <img
-                src={githubImage}
+                src={profileImage}
                 alt="Bhushan Kolte"
                 className="w-full aspect-square object-cover rounded-full border border-slate-200 shadow-sm z-10 relative bg-white"
               />
