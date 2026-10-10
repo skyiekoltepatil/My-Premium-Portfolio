@@ -2,18 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useTransform, useMotionValue } from 'framer-motion';
 
 export const CustomCursor = () => {
+  const [hasPointer, setHasPointer] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia('(pointer: fine)').matches) {
+      return;
+    }
+    setHasPointer(true);
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
       if (['A', 'BUTTON', 'INPUT', 'TEXTAREA'].includes(target.tagName) || target.closest('button') || target.closest('a')) {
         setIsHovering(true);
       } else {
@@ -21,13 +28,15 @@ export const CustomCursor = () => {
       }
     };
 
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', moveCursor, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
     };
   }, [cursorX, cursorY]);
+
+  if (!hasPointer) return null;
 
   return (
     <motion.div
@@ -42,7 +51,7 @@ export const CustomCursor = () => {
   );
 };
 
-export const MagneticElement = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+export const MagneticElement = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -73,7 +82,7 @@ export const MagneticElement = ({ children, className }: { children: React.React
   );
 };
 
-export const TiltCard = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+export const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [10, -10]);
@@ -103,9 +112,9 @@ export const TiltCard = ({ children, className }: { children: React.ReactNode, c
 };
 
 export const BackgroundEffects = () => (
-  <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-400/20 rounded-full blur-[120px] animate-float" />
-    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-400/20 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
-    <div className="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-pink-400/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: '4s' }} />
+  <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden will-change-transform">
+    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-400/15 rounded-full blur-[60px]" />
+    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-400/15 rounded-full blur-[60px]" />
+    <div className="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-pink-400/10 rounded-full blur-[60px]" />
   </div>
 );

@@ -1,12 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getAIResponse } from '../../services/aiService';
 import { Laugh, BriefcaseBusiness, Layers, UserRoundSearch, ArrowUp, ChevronDown, ChevronUp } from 'lucide-react';
-import FluidCursor from '../FluidCursor';
-import AllProjects from '../projects/AllProjects';
-import AllCertificates from './AllCertificates';
-import { ContactForm } from '../ContactForm';
 import myAvatar from '../../assets/my-avatar.webp';
+
+const FluidCursor = lazy(() => import('../FluidCursor'));
+const AllProjects = lazy(() => import('../projects/AllProjects'));
+const AllCertificates = lazy(() => import('./AllCertificates'));
+const ContactForm = lazy(() => import('../ContactForm').then(m => ({ default: m.ContactForm })));
 
 const quickQuestions = [
   { key: 'Me', color: '#329696', icon: Laugh, text: 'Who are you? I want to know more about you.' },
@@ -131,6 +132,12 @@ export const AIAssistant = () => {
   };
 
   const isEmptyState = messages.length === 0;
+  const isLowEnd = typeof window !== 'undefined' && (
+    window.innerWidth < 768 ||
+    window.matchMedia('(pointer: coarse)').matches ||
+    ('deviceMemory' in navigator && (navigator as any).deviceMemory <= 4) ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
 
   return (
     <>
@@ -162,7 +169,11 @@ export const AIAssistant = () => {
                   <div className="absolute top-[-20%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100/70 via-white/20 to-transparent blur-[80px]"></div>
                   <div className="absolute top-[20%] right-[-20%] w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-100/60 via-transparent to-transparent blur-[80px]"></div>
                   <div className="absolute bottom-[-10%] left-[20%] w-[100%] h-[60%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-50/70 via-transparent to-transparent blur-[100px]"></div>
-                  <FluidCursor />
+                  {!isLowEnd && (
+                    <Suspense fallback={null}>
+                      <FluidCursor />
+                    </Suspense>
+                  )}
                   {/* Large Bhushan Watermark */}
                   <div className="absolute bottom-0 w-full flex justify-center overflow-hidden">
                     <div className="text-[10rem] md:text-[14rem] font-black text-gray-900/5 select-none leading-none mb-[-2rem] md:mb-[-4rem]">
@@ -295,7 +306,9 @@ export const AIAssistant = () => {
                               <div className="w-full mb-8 flex flex-col items-start">
                                 <h2 className="text-3xl font-extrabold text-gray-900 mb-6 tracking-tight">My Projects</h2>
                                 <div className="w-full -mx-4 sm:mx-0 sm:w-full overflow-hidden">
-                                  <AllProjects />
+                                  <Suspense fallback={<div className="w-full py-8 text-center text-sm text-gray-400">Loading projects...</div>}>
+                                    <AllProjects />
+                                  </Suspense>
                                 </div>
                               </div>
                             )}
@@ -303,14 +316,18 @@ export const AIAssistant = () => {
                             {msg.isWidget && msg.widgetType === 'CERTIFICATES' && (
                               <div className="w-full mb-8 flex flex-col items-start">
                                 <div className="w-full -mx-4 sm:mx-0 sm:w-full overflow-hidden">
-                                  <AllCertificates />
+                                  <Suspense fallback={<div className="w-full py-8 text-center text-sm text-gray-400">Loading certificates...</div>}>
+                                    <AllCertificates />
+                                  </Suspense>
                                 </div>
                               </div>
                             )}
 
                             {msg.isWidget && msg.widgetType === 'CONTACT' && (
                               <div className="w-full mb-8 flex flex-col bg-white rounded-[2rem] p-6 sm:p-10 border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] max-w-2xl mx-auto">
-                                <ContactForm />
+                                <Suspense fallback={<div className="w-full py-8 text-center text-sm text-gray-400">Loading form...</div>}>
+                                  <ContactForm />
+                                </Suspense>
                                 <div className="mt-8 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center">
                                   <span className="text-gray-500 font-medium">Or email me directly at:</span>
                                   <a href="mailto:bhushankolte20@gmail.com" className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors text-lg">bhushankolte20@gmail.com</a>

@@ -470,8 +470,6 @@
     const closingCameraTarget = new THREE.Vector3();
     const closingShelfPosition = new THREE.Vector3();
     const shelfRestPosition = new THREE.Vector3();
-    const scratchBox = new THREE.Box3();
-    const scratchVector = new THREE.Vector3();
     const shelfBoardTop = 0.47;
     const spacing = 1.5;
     const PAGINATED_LEAF_COUNT = 4;

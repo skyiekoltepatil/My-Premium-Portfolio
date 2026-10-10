@@ -57,7 +57,10 @@ const CursorGrid = ({
     if (!container || !canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+    const isLowMemory = typeof navigator !== 'undefined' && 'deviceMemory' in navigator && navigator.deviceMemory <= 4;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, isTouch || isLowMemory ? 1 : 1.5);
 
     let cols = 0;
     let rows = 0;
@@ -219,7 +222,7 @@ const CursorGrid = ({
         ctx.stroke();
       }
 
-      if (anyVisible) {
+      if (anyVisible && !document.hidden) {
         raf = requestAnimationFrame(draw);
       } else {
         running = false;
@@ -228,7 +231,7 @@ const CursorGrid = ({
     };
 
     const wake = () => {
-      if (running) return;
+      if (running || document.hidden) return;
       running = true;
       const now = performance.now();
       lastFrame = now;
@@ -249,10 +252,19 @@ const CursorGrid = ({
     };
 
     const onPointerDown = e => {
-      if (!propsRef.current.clickPulse) return;
+      if (!propsRef.current.clickPulse || prefersReducedMotion) return;
       const [x, y] = toLocal(e);
       pulses.push({ x, y, t0: performance.now() });
       wake();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        running = false;
+      } else {
+        wake();
+      }
     };
 
     const ro = new ResizeObserver(() => {
@@ -263,14 +275,16 @@ const CursorGrid = ({
     rebuild();
     wake();
 
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellSize]);

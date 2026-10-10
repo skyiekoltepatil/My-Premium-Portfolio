@@ -217,6 +217,7 @@ export const Hobbies = () => {
               <video
                 ref={videoRef}
                 src={dotaVideo}
+                preload="none"
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                 loop
                 playsInline

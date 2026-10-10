@@ -1,48 +1,31 @@
 // @ts-nocheck
 'use client';
 
-import { forwardRef, useMemo, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { forwardRef, useMemo, useRef, useEffect, useState } from 'react';
 import './VariableProximity.css';
 
-function useAnimationFrame(callback) {
-  useEffect(() => {
-    let frameId;
-    const loop = () => {
-      callback();
-      frameId = requestAnimationFrame(loop);
-    };
-    frameId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback]);
-}
-
-function useMousePositionRef(containerRef) {
-  const positionRef = useRef({ x: 0, y: 0 });
+function useMousePositionRef(containerRef: React.RefObject<HTMLDivElement | null>, enabled: boolean) {
+  const positionRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
-    const updatePosition = (x, y) => {
+    if (!enabled) return;
+
+    const updatePosition = (clientX: number, clientY: number) => {
       if (containerRef?.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        positionRef.current = { x: x - rect.left, y: y - rect.top };
+        positionRef.current = { x: clientX - rect.left, y: clientY - rect.top };
       } else {
-        positionRef.current = { x, y };
+        positionRef.current = { x: clientX, y: clientY };
       }
     };
 
-    const handleMouseMove = ev => updatePosition(ev.clientX, ev.clientY);
-    const handleTouchMove = ev => {
-      const touch = ev.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-    };
+    const handleMouseMove = (ev: MouseEvent) => updatePosition(ev.clientX, ev.clientY);
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [containerRef]);
+  }, [containerRef, enabled]);
 
   return positionRef;
 }
@@ -73,13 +56,25 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     ...restProps
   } = props;
 
-  const letterRefs = useRef([]);
-  const interpolatedSettingsRef = useRef([]);
-  const mousePositionRef = useMousePositionRef(containerRef);
-  const lastPositionRef = useRef({ x: null, y: null });
+  const [isCapable, setIsCapable] = useState(false);
+
+  useEffect(() => {
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isSmallScreen = window.innerWidth < 768;
+    const isLowMemory = 'deviceMemory' in navigator && (navigator as any).deviceMemory <= 4;
+
+    setIsCapable(!isTouch && !prefersReducedMotion && !isSmallScreen && !isLowMemory);
+  }, []);
+
+  const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const letterCentersRef = useRef<{ x: number; y: number }[]>([]);
+  const activeIndicesRef = useRef(new Set<number>());
+  const mousePositionRef = useMousePositionRef(containerRef, isCapable);
+  const lastPositionRef = useRef({ x: -1000, y: -1000 });
 
   const parsedSettings = useMemo(() => {
-    const parseSettings = settingsStr =>
+    const parseSettings = (settingsStr: string) =>
       new Map(
         settingsStr
           .split(',')
@@ -100,9 +95,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }));
   }, [fromFontVariationSettings, toFontVariationSettings]);
 
-  const calculateDistance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-
-  const calculateFalloff = distance => {
+  const calculateFalloff = (distance: number) => {
     const norm = Math.min(Math.max(1 - distance / radius, 0), 1);
     switch (falloff) {
       case 'exponential':
@@ -115,46 +108,98 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }
   };
 
-  useAnimationFrame(() => {
-    if (!containerRef?.current) return;
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const { x, y } = mousePositionRef.current;
-    if (lastPositionRef.current.x === x && lastPositionRef.current.y === y) {
-      return;
-    }
-    lastPositionRef.current = { x, y };
+  // Pre-measure letter centers once and on resize (avoids layout thrashing during animation)
+  useEffect(() => {
+    if (!isCapable) return;
 
-    letterRefs.current.forEach((letterRef, index) => {
-      if (!letterRef) return;
+    const measureCenters = () => {
+      if (!containerRef?.current) return;
+      const containerRect = containerRef.current.getBoundingClientRect();
+      letterCentersRef.current = letterRefs.current.map(el => {
+        if (!el) return { x: 0, y: 0 };
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2 - containerRect.left,
+          y: rect.top + rect.height / 2 - containerRect.top
+        };
+      });
+    };
 
-      const rect = letterRef.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
-      const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
+    // Small delay to ensure layout is complete
+    const timeoutId = setTimeout(measureCenters, 100);
+    window.addEventListener('resize', measureCenters, { passive: true });
 
-      const distance = calculateDistance(
-        mousePositionRef.current.x,
-        mousePositionRef.current.y,
-        letterCenterX,
-        letterCenterY
-      );
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', measureCenters);
+    };
+  }, [containerRef, isCapable, label]);
 
-      if (distance >= radius) {
-        letterRef.style.fontVariationSettings = fromFontVariationSettings;
+  // Frame loop with zero synchronous layout queries
+  useEffect(() => {
+    if (!isCapable) return;
+
+    let rafId: number;
+
+    const tick = () => {
+      if (document.hidden) {
+        rafId = requestAnimationFrame(tick);
         return;
       }
 
-      const falloffValue = calculateFalloff(distance);
-      const newSettings = parsedSettings
-        .map(({ axis, fromValue, toValue }) => {
-          const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue;
-          return `'${axis}' ${interpolatedValue}`;
-        })
-        .join(', ');
+      const { x, y } = mousePositionRef.current;
+      if (lastPositionRef.current.x !== x || lastPositionRef.current.y !== y) {
+        lastPositionRef.current = { x, y };
 
-      interpolatedSettingsRef.current[index] = newSettings;
-      letterRef.style.fontVariationSettings = newSettings;
-    });
-  });
+        const centers = letterCentersRef.current;
+        const letters = letterRefs.current;
+        const newActive = new Set<number>();
+
+        for (let i = 0; i < centers.length; i++) {
+          const center = centers[i];
+          const letterRef = letters[i];
+          if (!letterRef || !center) continue;
+
+          const distance = Math.hypot(x - center.x, y - center.y);
+          if (distance < radius) {
+            newActive.add(i);
+            const falloffValue = calculateFalloff(distance);
+            const newSettings = parsedSettings
+              .map(({ axis, fromValue, toValue }) => {
+                const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue;
+                return `'${axis}' ${interpolatedValue}`;
+              })
+              .join(', ');
+            letterRef.style.fontVariationSettings = newSettings;
+          } else if (activeIndicesRef.current.has(i)) {
+            letterRef.style.fontVariationSettings = fromFontVariationSettings;
+          }
+        }
+
+        activeIndicesRef.current = newActive;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [isCapable, radius, parsedSettings, fromFontVariationSettings]);
+
+  // For touch/low-end devices, render high-performance semantic markup
+  if (!isCapable) {
+    return (
+      <span
+        ref={ref}
+        className={`${className} variable-proximity`}
+        onClick={onClick}
+        style={{ display: 'inline', ...style }}
+        {...restProps}
+      >
+        {label}
+      </span>
+    );
+  }
 
   const words = label.split(' ');
   let letterIndex = 0;
@@ -172,19 +217,20 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
           {word.split('').map(letter => {
             const currentLetterIndex = letterIndex++;
             return (
-              <motion.span
+              <span
                 key={currentLetterIndex}
                 ref={el => {
                   letterRefs.current[currentLetterIndex] = el;
                 }}
                 style={{
                   display: 'inline-block',
-                  fontVariationSettings: interpolatedSettingsRef.current[currentLetterIndex]
+                  fontVariationSettings: fromFontVariationSettings,
+                  willChange: 'font-variation-settings'
                 }}
                 aria-hidden="true"
               >
                 {letter}
-              </motion.span>
+              </span>
             );
           })}
           {wordIndex < words.length - 1 && <span style={{ display: 'inline-block' }}>&nbsp;</span>}

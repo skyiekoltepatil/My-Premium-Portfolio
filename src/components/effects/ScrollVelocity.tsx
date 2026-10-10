@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import {
   motion,
   useScroll,
@@ -86,7 +86,19 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     );
 
     const copyRef = useRef<HTMLSpanElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isVisibleRef = useRef(true);
     const copyWidth = useElementWidth(copyRef);
+
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      }, { threshold: 0.05 });
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
 
     function wrap(min: number, max: number, v: number) {
       const range = max - min;
@@ -100,8 +112,12 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     });
 
     const directionFactor = useRef(1);
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     useAnimationFrame((t, delta) => {
       void t;
+      if (!isVisibleRef.current || document.hidden || prefersReducedMotion) return;
+
       let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
       if ((velocityFactor as any).get() < 0) {
@@ -124,7 +140,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     }
 
     return (
-      <div className={parallaxClassName} style={parallaxStyle}>
+      <div ref={containerRef} className={parallaxClassName} style={parallaxStyle}>
         <motion.div className={scrollerClassName} style={{ x, ...scrollerStyle }}>
           {spans}
         </motion.div>

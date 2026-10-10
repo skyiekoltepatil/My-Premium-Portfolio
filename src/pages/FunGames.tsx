@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ScribblePad from '../components/games/ScribblePad';
 import ErrorBoundary from '../components/effects/ErrorBoundary';
-import MacbookStickers from '../components/games/MacbookStickers';
 
-import TicTacToe from '../components/games/TicTacToe';
-import MemoryMatch from '../components/games/MemoryMatch';
-import SnakeGame from '../components/games/SnakeGame';
+const ScribblePad = lazy(() => import('../components/games/ScribblePad'));
+const MacbookStickers = lazy(() => import('../components/games/MacbookStickers'));
+const TicTacToe = lazy(() => import('../components/games/TicTacToe'));
+const MemoryMatch = lazy(() => import('../components/games/MemoryMatch'));
+const SnakeGame = lazy(() => import('../components/games/SnakeGame'));
 
 
 /* ──────────────────────────────────────────────
@@ -231,7 +231,13 @@ const GameModal = ({ game, onClose }: { game: GameDef; onClose: () => void }) =>
         {/* Game Content */}
         <div style={{ padding: '1.5rem' }}>
           <ErrorBoundary>
-            {renderGame()}
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-64 text-slate-400">
+                <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+              </div>
+            }>
+              {renderGame()}
+            </Suspense>
           </ErrorBoundary>
         </div>
       </motion.div>

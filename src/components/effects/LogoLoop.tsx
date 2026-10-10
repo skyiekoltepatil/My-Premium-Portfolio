@@ -47,8 +47,15 @@ const useAnimationLoop = (
     const track = trackRef.current;
     if (!track) return;
     const seqSize = isVertical ? seqHeight : seqWidth;
+    let isIntersecting = true;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const animate = (timestamp: number) => {
+      if (!isIntersecting || document.hidden || prefersReducedMotion) {
+        lastTimestampRef.current = null;
+        return;
+      }
+
       if (lastTimestampRef.current === null) lastTimestampRef.current = timestamp;
       const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
       lastTimestampRef.current = timestamp;
@@ -71,10 +78,41 @@ const useAnimationLoop = (
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    rafRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    const startAnimation = () => {
+      if (rafRef.current === null && isIntersecting && !document.hidden && !prefersReducedMotion) {
+        lastTimestampRef.current = null;
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    const stopAnimation = () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       lastTimestampRef.current = null;
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) startAnimation();
+      else stopAnimation();
+    }, { threshold: 0.05 });
+
+    observer.observe(track);
+
+    const handleVisibility = () => {
+      if (document.hidden) stopAnimation();
+      else startAnimation();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    startAnimation();
+
+    return () => {
+      stopAnimation();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef, dragOffsetRef]);
 };
@@ -259,8 +297,8 @@ export const LogoLoop = memo(({
       <div
         className="logoloop__track"
         ref={trackRef}
-        onMouseEnter={() => effectiveHoverSpeed !== undefined && setIsHovered(true)}
-        onMouseLeave={() => { effectiveHoverSpeed !== undefined && setIsHovered(false); isDraggingRef.current = false; }}
+        onMouseEnter={() => { if (effectiveHoverSpeed !== undefined) setIsHovered(true); }}
+        onMouseLeave={() => { if (effectiveHoverSpeed !== undefined) setIsHovered(false); isDraggingRef.current = false; }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}

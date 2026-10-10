@@ -155,7 +155,7 @@ export const Quote = () => {
             </span>
             <div className="relative z-10">
               <p className="quote-text text-[clamp(1.75rem,5vw,3.8rem)] font-black italic tracking-tight leading-tight mb-8">
-                the curse of discipline is that every day looks the same and the curse of indiscipline is that every year looks the same.
+                The curse of discipline is that every day looks the same and the curse of indiscipline is that every year looks the same.
               </p>
 
               <div className="flex items-center justify-end gap-4 mt-8">
@@ -163,6 +163,31 @@ export const Quote = () => {
                   Shane Parrish
                 </p>
                 <div className="w-12 h-1 bg-yellow-500 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Sushant Singh Rajput Quote - Left Aligned */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 1.2 }}
+            className="relative text-left pr-12 md:pr-32"
+          >
+            <span className="absolute -top-16 -left-8 md:-left-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
+              "
+            </span>
+            <div className="relative z-10">
+              <p className="quote-text text-[clamp(1.75rem,5vw,3.8rem)] font-black italic tracking-tight leading-tight mb-8">
+                Till the time you know the why of doing what you do you don't need Inspiration
+              </p>
+
+              <div className="flex items-center justify-start gap-4 mt-8">
+                <div className="w-12 h-1 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
+                  Sushant Singh Rajput
+                </p>
               </div>
             </div>
           </motion.div>
