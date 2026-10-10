@@ -43,10 +43,42 @@ export const About = () => {
   const username = "skyiekoltepatil";
 
   useEffect(() => {
+    const CACHE_KEY = `gh_cache_${username}`;
+    const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_TTL) {
+          if (data.profile) setProfile(data.profile);
+          if (data.repos) setRepos(data.repos);
+          if (data.commits !== undefined) setRealtimeCommits(data.commits);
+          return;
+        }
+      }
+    } catch {
+      // sessionStorage unavailable or parse error; continue to fetch
+    }
+
+    const fetchedData: { profile?: any; repos?: any[]; commits?: number } = {};
+
+    const updateCache = () => {
+      try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: fetchedData, timestamp: Date.now() }));
+      } catch {
+        // Ignore cache write errors
+      }
+    };
+
     // Fetch profile
     fetch(`https://api.github.com/users/${username}`)
       .then(res => res.json())
-      .then(data => setProfile(data))
+      .then(data => {
+        setProfile(data);
+        fetchedData.profile = data;
+        updateCache();
+      })
       .catch(err => console.error(err));
 
     // Fetch repos
@@ -61,7 +93,10 @@ export const About = () => {
             "Data-Structures-Algorithmns-main"
           ];
           const filteredRepos = data.filter(repo => !excludedRepos.includes(repo.name));
-          setRepos(filteredRepos.slice(0, 6));
+          const slice = filteredRepos.slice(0, 6);
+          setRepos(slice);
+          fetchedData.repos = slice;
+          updateCache();
         }
       })
       .catch(err => console.error(err));
@@ -69,6 +104,8 @@ export const About = () => {
     // Fetch real-time today commits
     getTodayCommits(username).then((commits: number) => {
       setRealtimeCommits(commits);
+      fetchedData.commits = commits;
+      updateCache();
     });
   }, [username]);
 

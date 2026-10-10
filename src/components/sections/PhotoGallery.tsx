@@ -18,21 +18,21 @@ const PHOTOS = [
     hoverText: 'Innovate'
   },
   {
-    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1473&auto=format&fit=crop',
+    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=75&w=600&auto=format&fit=crop',
     alt: 'Sunset',
     rotation: '-rotate-6',
     translateY: '-translate-y-6',
     hoverText: 'Inspire'
   },
   {
-    url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1471&auto=format&fit=crop',
+    url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=75&w=600&auto=format&fit=crop',
     alt: 'Nature',
     rotation: 'rotate-6',
     translateY: '-translate-y-2',
     hoverText: 'Collaborate'
   },
   {
-    url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1470&auto=format&fit=crop',
+    url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=75&w=600&auto=format&fit=crop',
     alt: 'Portrait',
     rotation: '-rotate-6',
     translateY: 'translate-y-0',
@@ -62,6 +62,8 @@ export const PhotoGallery = () => {
             <img
               src={photo.url}
               alt={photo.alt}
+              width={300}
+              height={450}
               className="w-full h-full object-cover"
               loading="lazy"
               decoding="async"

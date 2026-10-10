@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CustomCursor, BackgroundEffects } from '../effects/Shared';
 // @ts-ignore
 import CursorGrid from '../effects/CursorGrid';
-import { AIAssistant } from '../assistant/AIAssistant';
+
+const AIAssistant = lazy(() => import('../assistant/AIAssistant').then(m => ({ default: m.AIAssistant })));
 
 
 const AppleLogo = () => (
@@ -21,9 +22,16 @@ const Navbar = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    let timeoutId: number;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => setWindowWidth(window.innerWidth), 150);
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
@@ -129,7 +137,6 @@ const Navbar = () => {
 export const Layout = () => {
   const location = useLocation();
   const isProjectPage = location.pathname === '/project';
-
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col overflow-x-clip w-full relative">
       <CustomCursor />
@@ -155,7 +162,9 @@ export const Layout = () => {
       </div>
 
       <Navbar />
-      <AIAssistant />
+      <Suspense fallback={null}>
+        <AIAssistant />
+      </Suspense>
 
       <main className={`flex-grow ${isProjectPage ? '' : 'pt-24'}`}>
         <Outlet />

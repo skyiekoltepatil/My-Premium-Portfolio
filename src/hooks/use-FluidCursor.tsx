@@ -275,46 +275,7 @@ const useFluidCursor = () => {
    `
   );
 
-  const blurVertexShader = compileShader(
-    gl.VERTEX_SHADER,
-    `
-       precision highp float;
-   
-       attribute vec2 aPosition;
-       varying vec2 vUv;
-       varying vec2 vL;
-       varying vec2 vR;
-       uniform vec2 texelSize;
-   
-       void main () {
-           vUv = aPosition * 0.5 + 0.5;
-           float offset = 1.33333333;
-           vL = vUv - texelSize * offset;
-           vR = vUv + texelSize * offset;
-           gl_Position = vec4(aPosition, 0.0, 1.0);
-       }
-   `
-  );
 
-  const blurShader = compileShader(
-    gl.FRAGMENT_SHADER,
-    `
-       precision mediump float;
-       precision mediump sampler2D;
-   
-       varying vec2 vUv;
-       varying vec2 vL;
-       varying vec2 vR;
-       uniform sampler2D uTexture;
-   
-       void main () {
-           vec4 sum = texture2D(uTexture, vUv) * 0.29411764;
-           sum += texture2D(uTexture, vL) * 0.35294117;
-           sum += texture2D(uTexture, vR) * 0.35294117;
-           gl_FragColor = sum;
-       }
-   `
-  );
 
   const copyShader = compileShader(
     gl.FRAGMENT_SHADER,
@@ -347,18 +308,7 @@ const useFluidCursor = () => {
    `
   );
 
-  const colorShader = compileShader(
-    gl.FRAGMENT_SHADER,
-    `
-       precision mediump float;
-   
-       uniform vec4 color;
-   
-       void main () {
-           gl_FragColor = color;
-       }
-   `
-  );
+
 
   const displayShaderSource = `
        precision highp float;
@@ -849,47 +799,7 @@ const useFluidCursor = () => {
     return target;
   }
 
-  function createTextureAsync(url) {
-    let texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGB,
-      1,
-      1,
-      0,
-      gl.RGB,
-      gl.UNSIGNED_BYTE,
-      new Uint8Array([255, 255, 255])
-    );
 
-    let obj = {
-      texture,
-      width: 1,
-      height: 1,
-      attach(id) {
-        gl.activeTexture(gl.TEXTURE0 + id);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        return id;
-      },
-    };
-
-    let image = new Image();
-    image.onload = () => {
-      obj.width = image.width;
-      obj.height = image.height;
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-    };
-    image.src = url;
-
-    return obj;
-  }
 
   function updateKeywords() {
     let displayKeywords = [];
@@ -1284,22 +1194,22 @@ const useFluidCursor = () => {
 
     switch (i % 6) {
       case 0:
-        (r = v), (g = t), (b = p);
+        r = v; g = t; b = p;
         break;
       case 1:
-        (r = q), (g = v), (b = p);
+        r = q; g = v; b = p;
         break;
       case 2:
-        (r = p), (g = v), (b = t);
+        r = p; g = v; b = t;
         break;
       case 3:
-        (r = p), (g = q), (b = v);
+        r = p; g = q; b = v;
         break;
       case 4:
-        (r = t), (g = p), (b = v);
+        r = t; g = p; b = v;
         break;
       case 5:
-        (r = v), (g = p), (b = q);
+        r = v; g = p; b = q;
         break;
     }
 

@@ -3,6 +3,8 @@ import type { ErrorInfo, ReactNode } from "react";
 
 interface Props {
   children?: ReactNode;
+  fallback?: ReactNode;
+  title?: string;
 }
 
 interface State {
@@ -26,10 +28,13 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
       return (
-        <div style={{ padding: "20px", color: "red", background: "#fdd", borderRadius: "10px" }}>
-          <h1 style={{fontSize: "20px"}}>Something went wrong in this game!</h1>
-          <pre style={{whiteSpace: "pre-wrap", fontSize: "12px"}}>{this.state.error?.toString()}</pre>
+        <div style={{ padding: "20px", color: "#b91c1c", background: "#fef2f2", borderRadius: "10px", margin: "20px" }}>
+          <h1 style={{fontSize: "18px", fontWeight: "bold"}}>{this.props.title || "Something went wrong while rendering this section."}</h1>
+          <pre style={{whiteSpace: "pre-wrap", fontSize: "12px", marginTop: "8px"}}>{this.state.error?.toString()}</pre>
         </div>
       );
     }

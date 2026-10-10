@@ -188,23 +188,32 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
     const uHoverTexture = gl.getUniformLocation(program, 'uHoverTexture');
 
     let animationFrameId: number;
+    let isRunning = false;
+    let isIntersecting = true;
     let startTime = Date.now();
     let currentMouseX = -10.0;
     let currentMouseY = -10.0;
     let targetMouseX = -10.0;
     let targetMouseY = -10.0;
     let isMobile = window.innerWidth <= 768;
+    const isLowMemory = 'deviceMemory' in navigator && (navigator as any).deviceMemory <= 4;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let baseTexture: WebGLTexture | null = null;
+    let hoverTexture: WebGLTexture | null = null;
     
     // Texture loading
     const loadTexture = (url: string, index: number) => {
       const texture = gl.createTexture();
+      if (index === 0) baseTexture = texture;
+      else hoverTexture = texture;
+
       gl.activeTexture(gl.TEXTURE0 + index);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       // Placeholder while loading
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 0]));
       
       const image = new Image();
-      // Remove crossOrigin to avoid local CORS issues on dev server
       image.src = url;
       return new Promise<HTMLImageElement>((resolve, reject) => {
         image.onload = () => {
@@ -236,13 +245,15 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
 
     const resize = () => {
       isMobile = window.innerWidth <= 768;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = container.clientWidth * dpr;
-      canvas.height = container.clientHeight * dpr;
+      // Cap DPR to 1 on mobile/low-memory, and 1.5 on high-end desktop to prevent GPU strain
+      const maxDpr = isMobile || isLowMemory ? 1.0 : 1.5;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+      canvas.width = Math.round(container.clientWidth * dpr);
+      canvas.height = Math.round(container.clientHeight * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
     };
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
     resize();
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -265,17 +276,22 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
       }
     };
 
-    container.addEventListener('mousemove', handleMouseMove);
-    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('mousemove', handleMouseMove, { passive: true });
+    container.addEventListener('mouseleave', handleMouseLeave, { passive: true });
     container.addEventListener('touchstart', handleTouchMove, { passive: true });
     container.addEventListener('touchmove', handleTouchMove, { passive: true });
-    container.addEventListener('touchend', handleMouseLeave);
+    container.addEventListener('touchend', handleMouseLeave, { passive: true });
 
     // Blending setup for transparent background
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     const render = () => {
+      if (!isIntersecting || document.hidden) {
+        isRunning = false;
+        return;
+      }
+
       const time = (Date.now() - startTime) * 0.001;
       
       // Interpolate mouse for smooth inertia
@@ -286,11 +302,11 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
       gl.clear(gl.COLOR_BUFFER_BIT);
 
       gl.useProgram(program);
-      gl.uniform1f(uTime, time);
+      gl.uniform1f(uTime, prefersReducedMotion ? 0 : time);
       gl.uniform2f(uMouse, currentMouseX, currentMouseY);
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform2f(uImageResolution, baseImgRes.width, baseImgRes.height);
-      gl.uniform1f(uIsMobile, isMobile ? 1.0 : 0.0);
+      gl.uniform1f(uIsMobile, isMobile || prefersReducedMotion ? 1.0 : 0.0);
       
       gl.uniform1i(uBaseTexture, 0);
       gl.uniform1i(uHoverTexture, 1);
@@ -298,13 +314,54 @@ export const LiquidMaskHover: React.FC<LiquidMaskHoverProps> = ({
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       animationFrameId = requestAnimationFrame(render);
     };
-    render();
+
+    const startLoop = () => {
+      if (!isRunning && isIntersecting && !document.hidden) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      isRunning = false;
+      cancelAnimationFrame(animationFrameId);
+    };
+
+    // Pause rendering when off-screen to save 100% of GPU/CPU when scrolled
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) startLoop();
+      else stopLoop();
+    }, { threshold: 0.05 });
+
+    observer.observe(container);
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startLoop();
 
     return () => {
+      stopLoop();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', resize);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
-      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener('touchstart', handleTouchMove);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleMouseLeave);
+
+      // Clean up WebGL resources to prevent memory leaks on 3-4 GB RAM devices
+      if (baseTexture) gl.deleteTexture(baseTexture);
+      if (hoverTexture) gl.deleteTexture(hoverTexture);
+      gl.deleteBuffer(positionBuffer);
+      gl.deleteProgram(program);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
     };
   }, [baseImage, hoverImage]);
 

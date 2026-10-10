@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Loader2, CheckCircle2 } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { MagneticElement } from './effects/Shared';
 import { saveMessageToDatabase } from '../services/contactDatabase';
 import emailjs from '@emailjs/browser';
@@ -12,7 +12,7 @@ export const ContactForm: React.FC = () => {
     message: ''
   });
 
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,12 +37,13 @@ export const ContactForm: React.FC = () => {
       
       // Also save to local database for admin dashboard
       await saveMessageToDatabase(formData);
+      
+      setStatus('sent');
+      setFormData({ name: '', email: '', message: '' });
     } catch (err) {
       console.error('Contact submission error:', err);
+      setStatus('error');
     }
-
-    setStatus('sent');
-    setFormData({ name: '', email: '', message: '' });
 
     // Revert back to idle after 4 seconds
     setTimeout(() => {
@@ -151,6 +152,22 @@ export const ContactForm: React.FC = () => {
                       <CheckCircle2 size={18} className="text-emerald-600" />
                       <span className="font-bold text-emerald-700 text-[15px]">
                         Message has been sent
+                      </span>
+                    </motion.div>
+                  )}
+
+                  {status === 'error' && (
+                    <motion.div
+                      key="error"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex items-center gap-3"
+                    >
+                      <XCircle size={18} className="text-red-600" />
+                      <span className="font-bold text-red-700 text-[15px]">
+                        Failed to send
                       </span>
                     </motion.div>
                   )}

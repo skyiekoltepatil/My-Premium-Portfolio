@@ -151,22 +151,27 @@ export const TopographicBackground = () => {
     const uIsMobile = gl.getUniformLocation(program, 'uIsMobile');
 
     let animationFrameId: number;
+    let isRunning = false;
+    let isIntersecting = true;
     let startTime = Date.now();
     let currentMouseX = -1000;
     let currentMouseY = -1000;
     let targetMouseX = -1000;
     let targetMouseY = -1000;
     let isMobile = window.innerWidth <= 768;
+    const isLowMemory = 'deviceMemory' in navigator && (navigator as any).deviceMemory <= 4;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const resize = () => {
       isMobile = window.innerWidth <= 768;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
+      const maxDpr = isMobile || isLowMemory ? 1.0 : 1.5;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+      canvas.width = Math.round(window.innerWidth * dpr);
+      canvas.height = Math.round(window.innerHeight * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
     };
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
     resize();
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -178,10 +183,15 @@ export const TopographicBackground = () => {
       targetMouseY = -10;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     const render = () => {
+      if (!isIntersecting || document.hidden) {
+        isRunning = false;
+        return;
+      }
+
       const time = (Date.now() - startTime) * 0.001;
       
       // Smooth mouse interpolation (inertia)
@@ -189,21 +199,57 @@ export const TopographicBackground = () => {
       currentMouseY += (targetMouseY - currentMouseY) * 0.1;
 
       gl.useProgram(program);
-      gl.uniform1f(uTime, time);
+      gl.uniform1f(uTime, prefersReducedMotion ? 0 : time);
       gl.uniform2f(uMouse, currentMouseX, currentMouseY);
       gl.uniform2f(uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uIsMobile, isMobile ? 1.0 : 0.0);
+      gl.uniform1f(uIsMobile, isMobile || prefersReducedMotion ? 1.0 : 0.0);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       animationFrameId = requestAnimationFrame(render);
     };
-    render();
+
+    const startLoop = () => {
+      if (!isRunning && isIntersecting && !document.hidden) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      isRunning = false;
+      cancelAnimationFrame(animationFrameId);
+    };
+
+    // Pause WebGL rendering when hero is off-screen to save battery & GPU
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) startLoop();
+      else stopLoop();
+    }, { threshold: 0.05 });
+
+    observer.observe(canvas);
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startLoop();
 
     return () => {
+      stopLoop();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
-      cancelAnimationFrame(animationFrameId);
+
+      // Clean up WebGL resources
+      gl.deleteBuffer(positionBuffer);
+      gl.deleteProgram(program);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
     };
   }, []);
 
