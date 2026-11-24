@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getAIResponse } from '../../services/aiService';
 import { Laugh, BriefcaseBusiness, Layers, UserRoundSearch, ArrowUp, ChevronDown, ChevronUp } from 'lucide-react';
-import myAvatar from '../../assets/my-avatar.webp';
+import { Mascot } from 'page-mascot';
 
 const FluidCursor = lazy(() => import('../FluidCursor'));
 const AllProjects = lazy(() => import('../projects/AllProjects'));
@@ -216,13 +216,12 @@ export const AIAssistant = () => {
                     </h1>
                   </div>
 
-                  <div className="relative h-48 w-48 sm:h-64 sm:w-64 mt-4 mb-4 flex items-center justify-center pointer-events-none">
-                    <img
-                    loading="lazy"
-                    decoding="async"
-                      src={myAvatar}
-                      alt="Hero memoji"
-                      className="w-full h-full object-cover scale-[1.1] translate-y-2 drop-shadow-xl"
+                  <div className="relative mt-5 mb-2 flex items-center justify-center z-10 pointer-events-auto">
+                    <Mascot
+                      directions="/mascots/cap-directions.webp"
+                      reactions="/mascots/cap-reactions.webp"
+                      size={250}
+                      className="translate-y-3"
                     />
                   </div>
 
@@ -277,22 +276,20 @@ export const AIAssistant = () => {
                     <div className="w-full max-w-4xl mx-auto flex flex-col space-y-12">
                       {/* Avatar at the very top of all text, acts as Home Button */}
                       <div className="w-full flex justify-center animate-in fade-in slide-in-from-top-4 duration-500">
-                        <button
+                        <div
                           onClick={() => setMessages([])}
-                          className="group relative focus:outline-none flex flex-col items-center"
+                          className="group relative focus:outline-none flex flex-col items-center cursor-pointer pointer-events-auto"
                           title="Return to Home"
                         >
-                          <img
-                    loading="lazy"
-                    decoding="async"
-                            src={myAvatar}
-                            alt="AI Avatar"
-                            className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-lg group-hover:scale-105 group-active:scale-95 transition-transform duration-300"
+                          <Mascot
+                            directions="/mascots/cap-directions.webp"
+                            reactions="/mascots/cap-reactions.webp"
+                            size={96}
                           />
                           <span className="text-xs font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity mt-2">
                             Go back home
                           </span>
-                        </button>
+                        </div>
                       </div>
 
                       {messages.map((msg) => {

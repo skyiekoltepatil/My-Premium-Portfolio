@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail, Phone, Calendar, MapPin } from 'lucide-react';
-import AvatarImage from '../assets/Avatar-1-image.webp';
+import { Mascot } from 'page-mascot';
 import { ContactForm } from '../components/ContactForm';
 
 export const Contact = () => {
@@ -29,9 +29,14 @@ export const Contact = () => {
         >
           {/* Left Sidebar Profile Card */}
           <div className="w-full lg:w-1/3 bg-white p-8 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-200/60 flex flex-col items-center">
-            {/* Avatar */}
+            {/* Avatar Mascot */}
             <div className="w-32 h-32 bg-blue-100 rounded-3xl mb-6 flex items-center justify-center shadow-inner border border-blue-200 overflow-hidden">
-              <img src={AvatarImage} alt="Bhushan Kolte" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+              <Mascot
+                directions="/mascots/cap-directions.webp"
+                reactions="/mascots/cap-reactions.webp"
+                size={185}
+                className="translate-y-[18px]"
+              />
             </div>
 
             <h2 className="text-2xl font-bold text-slate-800 mb-2">Bhushan Kolte</h2>
