@@ -40,7 +40,7 @@ export const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100svh] w-full flex flex-col md:flex-row items-start justify-start overflow-hidden bg-white -mt-24 pt-24 cursor-default select-none"
+      className="relative min-h-[100svh] w-full flex flex-col md:flex-row items-start justify-start overflow-hidden bg-white -mt-10 sm:-mt-12 pt-10 sm:pt-12 cursor-default select-none"
     >
       <TopographicBackground />
 
