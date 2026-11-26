@@ -8,22 +8,29 @@ import Project2Image from '../assets/Project-2-image.webp';
 import Project3Image from '../assets/Project-3-image.webp';
 import WeatherImage from '../assets/weather-image.webp';
 import SculptureHoverImage from '../assets/sculpture-hover.webp';
+import DinoKeyImage from '../assets/dino-key-image.webp';
 
 /* ──────────────────────────────────────────────
    Project Data Model
    ────────────────────────────────────────────── */
+
+export interface ProjectHighlight {
+  title: string;
+  detail: string;
+}
 
 export interface ProjectItem {
   id: string;
   num: string;
   year: string;
   category: string;
-  filter: 'all' | 'creative' | 'apps' | 'ui';
+  filter: 'all' | 'creative' | 'apps' | 'ui' | 'hardware';
   title: string;
   tagline: string;
   description: string;
   challenge: string;
   solution: string;
+  highlights?: ProjectHighlight[];
   tech: string[];
   image: string;
   link?: string;
@@ -34,8 +41,45 @@ export interface ProjectItem {
 
 export const PROJECTS: ProjectItem[] = [
   {
-    id: 'detailed-portfolio',
+    id: 'dino-key',
     num: '01',
+    year: '2026',
+    category: 'Hardware & IoT',
+    filter: 'hardware',
+    title: 'DINO KEY V1',
+    tagline: 'ESP32-C3 + 1.3" SH1106 OLED desk companion',
+    description:
+      'An interactive wearable mini desk-companion powered by an ESP32-C3 and a 128×64 SH1106 OLED display, featuring 9 hardware modes, 20 pixel expressions, playable Dino Run, Bluetooth LE HID & battery/time sync, captive Wi-Fi NTP provisioning, a native macOS menu-bar sync app, and a browser OLED simulator.',
+    challenge:
+      'Packing 50 FPS pixel animations, a playable endless runner, multi-radio wireless synchronization (BLE + Wi-Fi AP/NTP), and battery telemetry onto an ultra-compact keychain controller operated from a single input pin.',
+    solution:
+      'Engineered a non-blocking C++ firmware engine over 400 kHz I2C (GPIO 6/7) with automatic touch/button input detection (GPIO 3), NVS high-score and brightness persistence, a CoreBluetooth macOS companion (DinoKeySync.app), and an HTML5 Web Bluetooth/Serial emulator.',
+    highlights: [
+      {
+        title: '9 Hardware Modes',
+        detail:
+          'Single-click cycles Home (clock + blinking face), Digital Clock (BLE/NTP/Web/RTC sync badge), Live Stopwatch, Battery Diagnostics (0x180F BLE / MAX17048), Dino Run, 20 Full Faces, Connect Portal, 5-Step Brightness, and Sleep.',
+      },
+      {
+        title: 'Single-Pin Gesture Control',
+        detail:
+          'GPIO 3 automatically detects Active-HIGH TTP223 capacitive touch or Active-LOW push buttons (INPUT_PULLUP), supporting single click, double click, jump press, and long press sleep/reset.',
+      },
+      {
+        title: 'Companion Sync Ecosystem',
+        detail:
+          'Includes a native Swift CoreBluetooth macOS menu-bar app (DinoKeySync.app), a 2.4 GHz captive Wi-Fi setup portal (DINO-KEY / 192.168.4.1), and a browser 128×64 Web Bluetooth & Web Serial simulator.',
+      },
+    ],
+    tech: ['ESP32-C3', 'C++ / PlatformIO', 'SH1106 OLED', 'BLE 5.0', 'Wi-Fi NTP', 'Swift (macOS)', 'Web Bluetooth'],
+    image: DinoKeyImage,
+    github: 'https://github.com/skyiekoltepatil/Dino-key',
+    status: 'Open Source',
+    accent: '#FF4400',
+  },
+  {
+    id: 'detailed-portfolio',
+    num: '02',
     year: '2026',
     category: 'Design Engineering',
     filter: 'creative',
@@ -53,7 +97,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'live-portfolio',
-    num: '02',
+    num: '03',
     year: '2025',
     category: 'Web Experience',
     filter: 'creative',
@@ -71,7 +115,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'login-interface',
-    num: '03',
+    num: '04',
     year: '2025',
     category: 'Interactive UI',
     filter: 'ui',
@@ -88,7 +132,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'weather-app',
-    num: '04',
+    num: '05',
     year: '2025',
     category: 'Application',
     filter: 'apps',
@@ -105,7 +149,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'liquid-hover',
-    num: '05',
+    num: '06',
     year: '2026',
     category: 'Creative Tech',
     filter: 'creative',
@@ -205,6 +249,30 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
               </div>
             </div>
 
+            {/* Detailed Breakdown (when provided) */}
+            {project.highlights && project.highlights.length > 0 && (
+              <div>
+                <h3 className="text-xs font-mono font-bold tracking-widest text-stone-500 uppercase mb-3">
+                  ARCHITECTURE & MODES
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {project.highlights.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-2xl border border-stone-200 bg-white p-4 flex flex-col gap-2"
+                    >
+                      <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-stone-900">
+                        {item.title}
+                      </h4>
+                      <p className="text-stone-600 text-xs leading-relaxed">
+                        {item.detail}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Tech Stack */}
             <div>
               <h3 className="text-xs font-mono font-bold tracking-widest text-stone-500 uppercase mb-3">
@@ -270,7 +338,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
    ────────────────────────────────────────────── */
 
 export const Project: React.FC = () => {
-  const [filter, setFilter] = useState<'all' | 'creative' | 'apps' | 'ui'>('all');
+  const [filter, setFilter] = useState<'all' | 'creative' | 'apps' | 'ui' | 'hardware'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'index'>('grid');
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
 
@@ -320,17 +388,19 @@ export const Project: React.FC = () => {
               <span className="text-xs font-mono font-bold tracking-widest text-stone-500 uppercase mr-2 hidden sm:inline">
                 FILTER:
               </span>
-              {[
-                { id: 'all', label: 'All Works', count: '5' },
-                { id: 'creative', label: 'Creative Tech', count: '3' },
-                { id: 'apps', label: 'Web Apps', count: '1' },
-                { id: 'ui', label: 'Interactive UI', count: '1' },
-              ].map((tab) => {
+              {([
+                { id: 'all', label: 'All Works' },
+                { id: 'hardware', label: 'Hardware & IoT' },
+                { id: 'creative', label: 'Creative Tech' },
+                { id: 'apps', label: 'Web Apps' },
+                { id: 'ui', label: 'Interactive UI' },
+              ] as const).map((tab) => {
                 const isActive = filter === tab.id;
+                const count = tab.id === 'all' ? PROJECTS.length : PROJECTS.filter((p) => p.filter === tab.id).length;
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setFilter(tab.id as any)}
+                    onClick={() => setFilter(tab.id)}
                     className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
                       isActive
                         ? 'bg-black text-white shadow-sm'
@@ -339,7 +409,7 @@ export const Project: React.FC = () => {
                   >
                     <span>{tab.label}</span>
                     <span className={`text-[10px] font-mono ${isActive ? 'text-stone-300' : 'text-stone-400'}`}>
-                      {tab.count}
+                      {count}
                     </span>
                   </button>
                 );
