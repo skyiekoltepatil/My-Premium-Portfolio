@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { Award, ArrowUpRight, Eye, X } from 'lucide-react';
+import { Award, ArrowUpRight, Eye, FileText, X } from 'lucide-react';
 import { ModalDialog } from '../components/ui/ModalDialog';
 import certFundamentals from '../assets/certificate- Fundamentals of Scientific Communication.webp';
 import certCVs from '../assets/certificate Crafting Impactful CVs and Resumes.webp';
 import certAMD from '../assets/AMDcertificate.webp';
+import certCodeAlpha from '../assets/codealpha-certificate.webp';
+import lorCodeAlpha from '../assets/codealpha-lor.webp';
 
 const EDUCATION = [
   {
@@ -24,19 +26,70 @@ const EDUCATION = [
   },
 ];
 
-const WORK_EXPERIENCE = [
+interface WorkItem {
+  num: string;
+  role: string;
+  period: string;
+  tag: string;
+  description: string;
+  disciplines: string;
+  documents?: { label: string; href: string }[];
+}
+
+const WORK_EXPERIENCE: WorkItem[] = [
   {
     num: '01',
+    role: 'CodeAlpha — Artificial Intelligence Intern',
+    period: '10 OCT — 10 NOV 2026',
+    tag: 'INTERNSHIP',
+    description: 'Completed the CodeAlpha Virtual Internship Program in Artificial Intelligence (Student ID: CA/DF1/313372), delivering analytical AI solutions and earning a formal Letter of Recommendation.',
+    disciplines: 'Artificial Intelligence · Analytical Engineering · Team Collaboration',
+    documents: [
+      { label: 'Certificate PDF', href: '/certificates/codealpha-certificate.pdf' },
+      { label: 'LOR PDF', href: '/certificates/codealpha-lor.pdf' },
+    ],
+  },
+  {
+    num: '02',
     role: 'Freelance Front-End Web Designer',
     period: '2025 — PRESENT',
     tag: 'INDEPENDENT PRACTICE',
     description: 'Bridging technical functionality with creative architectural direction to deliver high-speed, responsive web experiences for clients.',
+    disciplines: 'React Architecture · Tailwind Systems · Interactive Motion',
   },
 ];
 
-export const CERTIFICATES = [
+export interface CertificateItem {
+  num: string;
+  title: string;
+  issuer: string;
+  period: string;
+  description: string;
+  image: string;
+  pdf?: string;
+}
+
+export const CERTIFICATES: CertificateItem[] = [
   {
     num: '01',
+    title: 'CodeAlpha AI Internship Certificate',
+    issuer: 'CODEALPHA • CA/DF1/313372',
+    period: 'NOV 2026',
+    description: 'Certificate of Completion for the CodeAlpha Virtual Internship Program in Artificial Intelligence (10 Oct – 10 Nov 2026).',
+    image: certCodeAlpha,
+    pdf: '/certificates/codealpha-certificate.pdf',
+  },
+  {
+    num: '02',
+    title: 'CodeAlpha Letter of Recommendation',
+    issuer: 'CODEALPHA • CA/DF1/313372',
+    period: 'NOV 2026',
+    description: 'Official Letter of Recommendation from CodeAlpha recognizing analytical skill, adaptability, and high-productivity AI internship contributions.',
+    image: lorCodeAlpha,
+    pdf: '/certificates/codealpha-lor.pdf',
+  },
+  {
+    num: '03',
     title: 'Fundamentals of Scientific Communication',
     issuer: 'SCIENTIFIC RESEARCH',
     period: '2026',
@@ -44,7 +97,7 @@ export const CERTIFICATES = [
     image: certFundamentals,
   },
   {
-    num: '02',
+    num: '04',
     title: 'Crafting Impactful CVs and Resumes',
     issuer: 'CAREER ARCHITECTURE',
     period: '2026',
@@ -52,7 +105,7 @@ export const CERTIFICATES = [
     image: certCVs,
   },
   {
-    num: '03',
+    num: '05',
     title: 'AMD Certification',
     issuer: 'AMD ACADEMY',
     period: '2026',
@@ -64,7 +117,7 @@ export const CERTIFICATES = [
 export const Experience = () => {
   const location = useLocation();
   const isStandalone = location.pathname === '/experience';
-  const [selectedCert, setSelectedCert] = useState<(typeof CERTIFICATES)[number] | null>(null);
+  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
 
   return (
     <section
@@ -90,7 +143,7 @@ export const Experience = () => {
                   to="/experience"
                   className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-stone-900 font-bold transition-colors"
                 >
-                  <span>Certificates (03)</span>
+                  <span>Certificates ({String(CERTIFICATES.length).padStart(2, '0')})</span>
                   <ArrowUpRight size={13} />
                 </Link>
               )}
@@ -199,16 +252,33 @@ export const Experience = () => {
                           PRIMARY DISCIPLINES
                         </p>
                         <p className="text-xs sm:text-sm font-semibold text-stone-800">
-                          React Architecture · Tailwind Systems · Interactive Motion
+                          {item.disciplines}
                         </p>
                       </div>
-                      <Link
-                        to="/project"
-                        className="inline-flex items-center gap-1.5 text-xs font-mono font-bold tracking-widest uppercase text-stone-900 hover:text-[#FF4400] transition-colors"
-                      >
-                        <span>View Works</span>
-                        <ArrowUpRight size={14} />
-                      </Link>
+                      {item.documents && item.documents.length > 0 ? (
+                        <div className="flex flex-wrap items-center gap-2">
+                          {item.documents.map((doc) => (
+                            <a
+                              key={doc.href}
+                              href={doc.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-300 bg-[#FAF9F7] hover:bg-black hover:text-white hover:border-black text-xs font-mono font-bold tracking-wider uppercase text-stone-900 transition-colors"
+                            >
+                              <FileText size={13} />
+                              <span>{doc.label}</span>
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <Link
+                          to="/project"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono font-bold tracking-widest uppercase text-stone-900 hover:text-[#FF4400] transition-colors"
+                        >
+                          <span>View Works</span>
+                          <ArrowUpRight size={14} />
+                        </Link>
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -325,15 +395,29 @@ export const Experience = () => {
                 </h1>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSelectedCert(null)}
-                autoFocus
-                className="w-10 h-10 rounded-full border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-stone-800 flex items-center justify-center transition-colors cursor-pointer shrink-0"
-                aria-label="Close certificate preview"
-              >
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-2.5 shrink-0">
+                {selectedCert.pdf && (
+                  <a
+                    href={selectedCert.pdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-black hover:bg-[#FF4400] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors"
+                  >
+                    <FileText size={14} />
+                    <span>Open PDF</span>
+                  </a>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedCert(null)}
+                  autoFocus
+                  className="w-10 h-10 rounded-full border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-stone-800 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                  aria-label="Close certificate preview"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             <div className="p-4 sm:p-6 bg-stone-100 flex items-center justify-center max-h-[75vh] overflow-auto">

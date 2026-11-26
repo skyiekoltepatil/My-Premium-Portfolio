@@ -10,6 +10,7 @@ const PROJECTS_SUMMARY = [
 ];
 
 const CERTIFICATES_SUMMARY = [
+  { title: 'CodeAlpha AI Internship Certificate', period: 'Nov 2026', description: 'Completed the CodeAlpha Virtual Internship Program in Artificial Intelligence (Oct–Nov 2026, ID: CA/DF1/313372) with a formal Letter of Recommendation.' },
   { title: 'Fundamentals of Scientific Communication', period: '2026', description: 'Developed essential skills for effectively communicating scientific research, concepts, and data to diverse audiences.' },
   { title: 'Crafting Impactful CVs and Resumes', period: '2026', description: 'Mastered the principles of designing compelling professional profiles to highlight achievements and career milestones.' },
   { title: 'AMD Certification', period: '2026', description: 'Achieved proficiency in advanced technologies and professional solutions certified by AMD.' }

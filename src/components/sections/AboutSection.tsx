@@ -74,9 +74,6 @@ export const AboutSection = () => {
               className="lg:col-span-5"
             >
               <div className="relative rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
-                <div className="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white font-mono text-[10px] font-bold tracking-widest uppercase">
-                  ALARD UNIVERSITY • PUNE, IN
-                </div>
                 <img
                   src={aboutImage}
                   alt="Bhushan Kolte portrait"
