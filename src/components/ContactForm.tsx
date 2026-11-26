@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { MagneticElement } from './effects/Shared';
@@ -6,10 +6,15 @@ import { saveMessageToDatabase } from '../services/contactDatabase';
 import emailjs from '@emailjs/browser';
 
 export const ContactForm: React.FC = () => {
+  const formHeadingId = useId();
+  const nameId = useId();
+  const emailId = useId();
+  const messageId = useId();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -21,7 +26,6 @@ export const ContactForm: React.FC = () => {
     setStatus('sending');
 
     try {
-      // Send email using EmailJS
       await emailjs.send(
         'service_rqxuj9m',
         'template_psip91t',
@@ -34,10 +38,9 @@ export const ContactForm: React.FC = () => {
         },
         'N671lSh1SG6Loil1o'
       );
-      
-      // Also save to local database for admin dashboard
+
       await saveMessageToDatabase(formData);
-      
+
       setStatus('sent');
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {
@@ -45,7 +48,6 @@ export const ContactForm: React.FC = () => {
       setStatus('error');
     }
 
-    // Revert back to idle after 4 seconds
     setTimeout(() => {
       setStatus('idle');
     }, 4000);
@@ -57,123 +59,153 @@ export const ContactForm: React.FC = () => {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold text-slate-800 mb-6">Contact Form</h3>
+      <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-stone-200">
+        <h3 id={formHeadingId} className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-stone-950 font-sans">
+          MESSAGE DISPATCH FORM
+        </h3>
+        <span className="text-[10px] font-mono font-bold tracking-widest text-stone-400 uppercase">
+          DIRECT TO INBOX
+        </span>
+      </div>
 
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form aria-labelledby={formHeadingId} className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
+          <div className="flex flex-col gap-2">
+            <label htmlFor={nameId} className="text-xs font-mono font-bold tracking-wider uppercase text-stone-700">
+              Full Name <span className="text-[#FF4400]" aria-hidden="true">*</span>
+            </label>
+            <input
+              id={nameId}
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Bhushan Kolte"
+              autoComplete="name"
+              required
+              disabled={status === 'sending'}
+              className="w-full min-h-[48px] px-4 py-3 bg-[#FAF9F7] border border-stone-300 rounded-xl outline-none focus:border-black transition-all text-base font-medium text-stone-900 placeholder:text-stone-400 disabled:opacity-70"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor={emailId} className="text-xs font-mono font-bold tracking-wider uppercase text-stone-700">
+              Email Address <span className="text-[#FF4400]" aria-hidden="true">*</span>
+            </label>
+            <input
+              id={emailId}
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@domain.com"
+              autoComplete="email"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              required
+              disabled={status === 'sending'}
+              className="w-full min-h-[48px] px-4 py-3 bg-[#FAF9F7] border border-stone-300 rounded-xl outline-none focus:border-black transition-all text-base font-medium text-stone-900 placeholder:text-stone-400 disabled:opacity-70"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor={messageId} className="text-xs font-mono font-bold tracking-wider uppercase text-stone-700">
+            Your Message <span className="text-[#FF4400]" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id={messageId}
+            name="message"
+            value={formData.message}
             onChange={handleChange}
-            placeholder="Full name"
+            placeholder="Tell me about your project, timeline, or collaboration..."
+            rows={5}
             required
             disabled={status === 'sending'}
-            className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 shadow-sm disabled:opacity-70"
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email address"
-            required
-            disabled={status === 'sending'}
-            className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 shadow-sm disabled:opacity-70"
+            className="w-full px-4 py-3.5 bg-[#FAF9F7] border border-stone-300 rounded-xl outline-none focus:border-black transition-all text-base font-medium text-stone-900 placeholder:text-stone-400 resize-y disabled:opacity-70"
           />
         </div>
 
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your Message"
-          rows={5}
-          required
-          disabled={status === 'sending'}
-          className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all font-semibold text-slate-700 placeholder:text-slate-400 resize-none shadow-sm disabled:opacity-70"
-        ></textarea>
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <div role="status" aria-live="polite" className="text-xs font-mono font-medium text-stone-500">
+            {status === 'sent' && 'Message transmitted cleanly.'}
+            {status === 'error' && 'Delivery failed. Please email bhushankolte20@gmail.com directly.'}
+          </div>
 
-        <div className="flex justify-end mt-2">
           <MagneticElement>
-              <button
-                type="submit"
-                disabled={status !== 'idle'}
-                className={`flex items-center gap-3 px-8 py-4 border shadow-sm rounded-2xl transition-all duration-300 group min-w-[210px] justify-center ${
-                  status === 'idle'
-                    ? 'bg-white border-slate-200 hover:shadow-md hover:-translate-y-1 hover:border-blue-200 cursor-pointer'
-                    : status === 'sending'
-                    ? 'bg-blue-50 border-blue-200 text-blue-600 cursor-wait'
-                    : 'bg-emerald-50 border-emerald-200 text-emerald-700 cursor-default'
-                }`}
-              >
-                <AnimatePresence mode="wait">
-                  {status === 'idle' && (
-                    <motion.div
-                      key="idle"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex items-center gap-3"
-                    >
-                      <Send size={18} className="text-blue-500 group-hover:text-blue-600 transition-colors" />
-                      <span className="font-bold text-slate-600 group-hover:text-blue-600 transition-colors text-[15px]">
-                        Send Message
-                      </span>
-                    </motion.div>
-                  )}
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className={`flex items-center gap-2.5 px-8 py-3.5 min-h-[48px] rounded-full transition-all duration-300 min-w-[210px] justify-center text-xs font-mono font-bold tracking-widest uppercase ${
+                status === 'idle'
+                  ? 'bg-black hover:bg-[#FF4400] text-white cursor-pointer shadow-sm hover:-translate-y-0.5'
+                  : status === 'sending'
+                  ? 'bg-stone-200 text-stone-700 cursor-wait'
+                  : status === 'error'
+                  ? 'bg-red-600 text-white cursor-default'
+                  : 'bg-emerald-600 text-white cursor-default'
+              }`}
+            >
+              <AnimatePresence mode="wait">
+                {status === 'idle' && (
+                  <motion.span
+                    key="idle"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <Send size={15} />
+                    <span>Send Message</span>
+                  </motion.span>
+                )}
 
-                  {status === 'sending' && (
-                    <motion.div
-                      key="sending"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex items-center gap-3"
-                    >
-                      <Loader2 size={18} className="text-blue-600 animate-spin" />
-                      <span className="font-bold text-blue-600 text-[15px]">
-                        Sending...
-                      </span>
-                    </motion.div>
-                  )}
+                {status === 'sending' && (
+                  <motion.span
+                    key="sending"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <Loader2 size={15} className="animate-spin" />
+                    <span>Sending...</span>
+                  </motion.span>
+                )}
 
-                  {status === 'sent' && (
-                    <motion.div
-                      key="sent"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex items-center gap-3"
-                    >
-                      <CheckCircle2 size={18} className="text-emerald-600" />
-                      <span className="font-bold text-emerald-700 text-[15px]">
-                        Message has been sent
-                      </span>
-                    </motion.div>
-                  )}
+                {status === 'sent' && (
+                  <motion.span
+                    key="sent"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <CheckCircle2 size={15} />
+                    <span>Message Sent</span>
+                  </motion.span>
+                )}
 
-                  {status === 'error' && (
-                    <motion.div
-                      key="error"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex items-center gap-3"
-                    >
-                      <XCircle size={18} className="text-red-600" />
-                      <span className="font-bold text-red-700 text-[15px]">
-                        Failed to send
-                      </span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
-            </MagneticElement>
+                {status === 'error' && (
+                  <motion.span
+                    key="error"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <XCircle size={15} />
+                    <span>Failed to Send</span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </MagneticElement>
         </div>
       </form>
     </div>

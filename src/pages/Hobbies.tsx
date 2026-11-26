@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Target, Medal, Brain, Swords, Gamepad, Gamepad2, Users, CheckCircle2, Play, Pause } from 'lucide-react';
 import dotaVideo from '../assets/Dota 2 Info.mp4';
 import cricketImg from '../assets/cricket-image.webp';
@@ -10,28 +10,28 @@ import tanjiroImg from '../assets/tanjiro-images.webp';
 import nezukoImg from '../assets/nezuko-image.webp';
 import spyxfamilyImg from '../assets/spyxfamily-image.webp';
 
-const sportsList = ["Badminton", "Cricket", "Basketball", "Table Tennis", "Volleyball", "Swimming", "Relay Race", "100m Sprint"];
+const sportsList = ['Badminton', 'Cricket', 'Basketball', 'Table Tennis', 'Volleyball', 'Swimming', 'Relay Race', '100m Sprint'];
 const representations = [
-  "Represented my school in Cricket tournaments.",
-  "Represented my school in Volleyball competitions.",
-  "Competed in official Relay Race events."
+  'Represented my school in Cricket tournaments.',
+  'Represented my school in Volleyball competitions.',
+  'Competed in official Relay Race events.',
 ];
 const sportsLearnings = [
-  "Leadership under pressure.",
-  "Team coordination and communication.",
-  "Strategic decision-making.",
-  "Competitive mindset and consistency.",
-  "Mental resilience and sportsmanship."
+  'Leadership under pressure.',
+  'Team coordination and communication.',
+  'Strategic decision-making.',
+  'Competitive mindset and consistency.',
+  'Mental resilience and sportsmanship.',
 ];
-const compGames = ["Dota 2 (Main Game)", "Valorant", "Counter-Strike 2", "PUBG", "Among Us"];
-const storyGames = ["God of War", "GTA V", "Hitman", "Resident Evil", "Borderlands 2", "It Takes Two", "Phasmophobia"];
-const genres = ["MOBA", "FPS", "Survival Horror", "RPG", "Open World", "Co-op Adventures", "Strategy Games", "Indie Titles"];
+const compGames = ['Dota 2 (Main Game)', 'Valorant', 'Counter-Strike 2', 'PUBG', 'Among Us'];
+const storyGames = ['God of War', 'GTA V', 'Hitman', 'Resident Evil', 'Borderlands 2', 'It Takes Two', 'Phasmophobia'];
+const genres = ['MOBA', 'FPS', 'Survival Horror', 'RPG', 'Open World', 'Co-op Adventures', 'Strategy Games', 'Indie Titles'];
 const gamingLearnings = [
-  "Strategic thinking and quick decision-making.",
-  "Teamplay and communication.",
-  "Learning complex game mechanics.",
-  "Competitive mindset and adaptability.",
-  "Appreciation for storytelling, design, and immersive experiences."
+  'Strategic thinking and quick decision-making.',
+  'Teamplay and communication.',
+  'Learning complex game mechanics.',
+  'Competitive mindset and adaptability.',
+  'Appreciation for storytelling, design, and immersive experiences.',
 ];
 
 export const Hobbies = () => {
@@ -39,463 +39,397 @@ export const Hobbies = () => {
   const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const togglePlay = () => {
+    if (isPlaying) {
+      videoRef.current?.pause();
+      setIsPlaying(false);
+    } else {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+      }
+      setIsPlaying(true);
+    }
+  };
+
   return (
-    <section id="hobbies" className="py-24 md:py-32 relative z-10 flex flex-col items-center justify-center">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
-
-        {/* HEADER */}
-        <div className="text-center mb-24">
-
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-[clamp(2.5rem,6vw,4rem)] font-extrabold tracking-tighter text-slate-900"
-          >
-            Beyond the <span className="text-gradient">Screen</span>
-          </motion.h2>
-        </div>
-
-        {/* ======================= SPORTS & ATHLETICS ======================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12"
-        >
-          <h3 className="text-[clamp(1.875rem,5vw,2.5rem)] font-extrabold text-slate-800 border-b-4 border-orange-400 inline-block pb-2 mb-16">
-            Sports & Athletics
-          </h3>
-        </motion.div>
-
-        {/* Cricket Block (Image Left, Text Right) */}
-        <div className="flex flex-col lg:flex-row items-center gap-16 mb-24">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={cricketImg}
-                alt="Cricket"
-                className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+    <div id="hobbies" className="min-h-screen bg-[#F9F9F8] text-stone-900 font-sans pb-16 pt-1 sm:pt-2 relative">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 md:px-10">
+        {/* Outer Architectural Container */}
+        <div className="border border-stone-300/80 bg-[#FAF9F7] rounded-[2rem] md:rounded-[2.5rem] shadow-sm overflow-hidden">
+          {/* Top Kicker Bar */}
+          <div className="px-6 sm:px-10 py-4 border-b border-stone-200 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono tracking-[0.2em] uppercase text-stone-500">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2 h-2 rounded-full bg-[#FF4400]" />
+              <span className="font-bold text-stone-950">ARCHIVE OF INTERESTS</span>
             </div>
-          </motion.div>
+            <span className="font-semibold">ATHLETICS · GAMING · ANIME</span>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Cricket</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>Cricket is more than just a game to me; it's a test of patience, strategy, and explosive skill.</p>
-              <p>Standing at the crease, every delivery is a mind game against the bowler, requiring complete focus.</p>
-              <p>Hitting a perfectly timed cover drive provides a sense of immense satisfaction that is hard to replicate.</p>
-              <p>It has taught me the value of teamwork, as eleven players must move in absolute synchrony on the field.</p>
-              <p>The sport fundamentally built my competitive drive and mental resilience from a very young age.</p>
+          {/* Hero Banner */}
+          <div className="px-6 sm:px-10 py-10 md:py-16 border-b border-stone-200 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8">
+              <p className="text-xs font-mono font-bold tracking-[0.25em] text-stone-500 uppercase mb-3">
+                LIFE OUTSIDE THE IDE
+              </p>
+              <h1 className="font-editorial text-[clamp(3rem,8vw,6.25rem)] font-normal tracking-tight text-stone-950 leading-[0.88] mb-5">
+                Beyond the <span className="italic font-serif font-light text-stone-400">Screen.</span>
+              </h1>
+              <p className="text-stone-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+                Competition on the field, strategic depth inside competitive lobbies, and visual storytelling that shapes how I design interfaces.
+              </p>
             </div>
-          </motion.div>
-        </div>
 
-        {/* Badminton Block (Text Left, Image Right) */}
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-16 mb-32">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Badminton</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>Badminton requires lightning-fast reflexes, intense agility, and split-second decision making.</p>
-              <p>The sheer speed of a powerful jump smash is exhilarating, demanding physical power and precision.</p>
-              <p>Covering the court efficiently has taught me about anticipation and maintaining high energy levels.</p>
-              <p>It's an incredibly fast-paced sport where momentum can shift completely in the blink of an eye.</p>
-              <p>Playing badminton keeps my mind sharp, my reflexes tested, and my cardiovascular endurance high.</p>
+            <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-stone-200 pt-6 lg:pt-0 lg:pl-8 font-mono text-xs space-y-2 text-stone-500">
+              <p><strong className="text-stone-950">01 /</strong> ATHLETICS &amp; FIELD SPORTS</p>
+              <p><strong className="text-stone-950">02 /</strong> STRATEGIC ESPORTS &amp; CO-OP</p>
+              <p><strong className="text-stone-950">03 /</strong> ANIME &amp; NARRATIVE WORLDS</p>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={badmintonImg}
-                alt="Badminton"
-                className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+          {/* ==================== CHAPTER 01: SPORTS & ATHLETICS ==================== */}
+          <section aria-labelledby="sports-heading" className="bg-white border-b border-stone-200">
+            <div className="px-6 sm:px-10 py-5 border-b border-stone-200 bg-[#FAF9F7] flex items-center justify-between">
+              <h2 id="sports-heading" className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-stone-950">
+                01 / SPORTS &amp; ATHLETICS
+              </h2>
+              <span className="text-[11px] font-mono font-bold text-[#FF4400]">DISCIPLINE</span>
             </div>
-          </motion.div>
-        </div>
 
-        {/* ======================= SPORTS SUMMARY ======================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 md:mb-32 glass-panel rounded-3xl md:rounded-[2.5rem] p-6 sm:p-8 md:p-12 relative overflow-hidden border border-slate-200 shadow-xl"
-        >
-          <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-orange-400/10 blur-[80px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
-
-          <div className="relative z-10">
-            <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium mb-12 max-w-4xl">
-              I thrive in competitive environments—whether it's on the court, on the field, or at the starting line. Sports have shaped my discipline, teamwork, adaptability, and mindset. Winning is great, but I've always enjoyed pushing my limits and learning through competition.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Target size={24} className="text-orange-500" /> All Sports</h4>
-                <div className="flex flex-wrap gap-2">
-                  {sportsList.map(sport => (
-                    <span key={sport} className="px-3 py-1.5 bg-white text-slate-700 rounded-lg text-base font-semibold border border-slate-200 shadow-sm">
-                      {sport}
-                    </span>
-                  ))}
+            {/* Cricket Row */}
+            <div className="p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-stone-200">
+              <div className="lg:col-span-6">
+                <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src={cricketImg}
+                    alt="Cricket pitch match"
+                    className="w-full aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                  />
                 </div>
               </div>
 
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Medal size={24} className="text-orange-500" /> Official Representation</h4>
-                <ul className="space-y-4">
-                  {representations.map((rep, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-600 font-medium text-base">
-                      <CheckCircle2 size={20} className="text-green-500 shrink-0 mt-0.5" /> {rep}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Brain size={24} className="text-orange-500" /> What Sports Taught Me</h4>
-                <ul className="space-y-4">
-                  {sportsLearnings.map((learning, i) => (
-                    <li key={i} className="flex items-center gap-3 text-slate-600 font-medium text-base">
-                      <div className="w-2 h-2 rounded-full bg-orange-400 shrink-0" /> {learning}
-                    </li>
-                  ))}
-                </ul>
+              <div className="lg:col-span-6 space-y-4">
+                <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">01.1 / PATIENCE &amp; STRATEGY</p>
+                <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Cricket</h3>
+                <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                  <p>Cricket is more than just a game to me; it&apos;s a test of patience, strategy, and explosive skill. Standing at the crease, every delivery is a mind game against the bowler requiring complete focus.</p>
+                  <p>Hitting a timed cover drive or coordinating eleven players on the field in absolute synchrony built my competitive drive and mental resilience from a young age.</p>
+                </div>
               </div>
             </div>
-          </div>
-        </motion.div>
 
-
-        {/* ======================= GAMING ======================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12 pt-16 border-t border-slate-200/60"
-        >
-          <h3 className="text-[clamp(1.875rem,5vw,2.5rem)] font-extrabold text-slate-800 border-b-4 border-indigo-500 inline-block pb-2 mb-16">
-            Gaming
-          </h3>
-        </motion.div>
-
-        {/* Dota 2 Block (Image Left, Text Right) */}
-        <div className="flex flex-col lg:flex-row items-center gap-16 mb-24">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group h-full">
-              <video
-                ref={videoRef}
-                src={dotaVideo}
-                preload="none"
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-                loop
-                playsInline
-                onTimeUpdate={() => {
-                  if (videoRef.current) {
-                    setProgress((videoRef.current.currentTime / (videoRef.current.duration || 1)) * 100);
-                  }
-                }}
-              />
-              <img
-                loading="lazy"
-                decoding="async"
-                src={dotaImg}
-                alt="Dota 2"
-                className={`relative w-full aspect-[4/3] object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'} group-hover:scale-105 z-0`}
-              />
-
-              {/* Play/Pause Button Overlay */}
-              <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 z-20 ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                <button
-                  onClick={() => {
-                    if (isPlaying) {
-                      videoRef.current?.pause();
-                      setIsPlaying(false);
-                    } else {
-                      if (videoRef.current) {
-                        videoRef.current.currentTime = 0;
-                        videoRef.current.play();
-                      }
-                      setIsPlaying(true);
-                    }
-                  }}
-                  className="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all shadow-xl"
-                >
-                  {isPlaying ? <Pause size={36} /> : <Play size={36} className="ml-1" />}
-                </button>
+            {/* Badminton Row */}
+            <div className="p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-stone-200">
+              <div className="lg:col-span-6 lg:order-2">
+                <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src={badmintonImg}
+                    alt="Badminton racket and shuttlecock"
+                    className="w-full aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                  />
+                </div>
               </div>
 
-              {/* Video Progress Scrubber */}
-              {isPlaying && (
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-10 pb-1 sm:pb-0 bg-transparent cursor-pointer z-30 flex flex-col justify-end group/scrubber"
-                  onClick={(e) => {
-                    if (!videoRef.current || !videoRef.current.duration) return;
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const clickX = e.clientX - rect.left;
-                    const newTime = (clickX / rect.width) * videoRef.current.duration;
-                    videoRef.current.currentTime = newTime;
-                  }}
-                >
-                  <div className="w-full h-1.5 bg-black/40 group-hover/scrubber:h-2.5 transition-all relative">
-                    <div
-                      className="h-full bg-indigo-500 relative"
-                      style={{ width: `${progress}%` }}
-                    >
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full opacity-0 group-hover/scrubber:opacity-100 transform translate-x-1/2 shadow-md" />
-                    </div>
+              <div className="lg:col-span-6 lg:order-1 space-y-4">
+                <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">01.2 / SPEED &amp; AGILITY</p>
+                <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Badminton</h3>
+                <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                  <p>Badminton requires lightning-fast reflexes, intense court agility, and split-second decision making where momentum shifts in the blink of an eye.</p>
+                  <p>The sheer speed of a jump smash demands physical precision and keeps both my reaction speed and endurance sharp.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Sports Summary Ledger */}
+            <div className="p-6 sm:p-10 bg-[#FAF9F7]">
+              <p className="font-serif italic text-xl sm:text-2xl text-stone-900 leading-relaxed max-w-4xl mb-10">
+                &ldquo;I thrive in competitive environments — whether on the court, on the field, or at the starting line.&rdquo;
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t border-stone-200">
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Target size={16} className="text-[#FF4400]" />
+                    All Disciplines
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {sportsList.map((sport) => (
+                      <span key={sport} className="px-3 py-1 bg-white text-stone-700 rounded-full text-xs font-mono font-semibold border border-stone-200">
+                        {sport}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              )}
+
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Medal size={16} className="text-[#FF4400]" />
+                    Representation
+                  </h4>
+                  <ul className="space-y-2.5 text-sm text-stone-600">
+                    {representations.map((rep, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{rep}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Brain size={16} className="text-[#FF4400]" />
+                    Core Takeaways
+                  </h4>
+                  <ul className="space-y-2.5 text-sm text-stone-600">
+                    {sportsLearnings.map((learning, i) => (
+                      <li key={i} className="flex items-center gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF4400] shrink-0" />
+                        <span>{learning}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </section>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Dota 2</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>Dota 2 is the ultimate test of strategic depth, teamwork, and demanding mechanical mastery.</p>
-              <p>Every match is a complex puzzle with infinite variables, requiring deep game knowledge.</p>
-              <p>Coordinating with five players to execute flawless team fights provides an unmatched adrenaline rush.</p>
-              <p>The game has deeply sharpened my analytical skills and high-stakes decision making.</p>
-              <p>It is my absolute main competitive outlet where I continuously push to adapt and improve.</p>
+          {/* ==================== CHAPTER 02: GAMING ==================== */}
+          <section aria-labelledby="gaming-heading" className="bg-white border-b border-stone-200">
+            <div className="px-6 sm:px-10 py-5 border-b border-stone-200 bg-[#09090B] text-white flex items-center justify-between">
+              <h2 id="gaming-heading" className="text-xs font-mono font-bold tracking-[0.2em] uppercase">
+                02 / COMPETITIVE &amp; STORY GAMING
+              </h2>
+              <span className="text-[11px] font-mono font-bold text-[#FF4400]">SYSTEMS PLAY</span>
             </div>
-          </motion.div>
-        </div>
 
-        {/* Phasmophobia Block (Text Left, Image Right) */}
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-16 mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Phasmophobia</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>Phasmophobia offers a highly immersive atmospheric experience focused on suspense and investigation.</p>
-              <p>Walking through haunted corridors armed with nothing but a flashlight is genuinely terrifying.</p>
-              <p>It relies heavily on communication and teamwork to gather evidence while managing sanity.</p>
-              <p>The game perfectly balances sheer horror with methodical, clue-based puzzle-solving mechanics.</p>
-              <p>It's my absolute favorite game for thrilling, unforgettable, and chaotic co-op sessions with friends.</p>
-            </div>
-          </motion.div>
+            {/* Dota 2 Theater Block */}
+            <div className="p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-stone-200">
+              <div className="lg:col-span-6">
+                <div className="relative rounded-[1.75rem] overflow-hidden border border-stone-300 bg-[#09090B] group">
+                  <video
+                    ref={videoRef}
+                    src={dotaVideo}
+                    preload="none"
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                    loop
+                    playsInline
+                    onTimeUpdate={() => {
+                      if (videoRef.current) {
+                        setProgress((videoRef.current.currentTime / (videoRef.current.duration || 1)) * 100);
+                      }
+                    }}
+                  />
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src={dotaImg}
+                    alt="Dota 2 gameplay showcase"
+                    className={`relative w-full aspect-[4/3] object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-0' : 'opacity-100'} group-hover:scale-[1.03] z-0`}
+                  />
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={phasmophobiaImg}
-                alt="Phasmophobia"
-                className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-          </motion.div>
-        </div>
+                  <div className={`absolute inset-0 bg-black/45 flex items-center justify-center transition-opacity duration-300 z-20 ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100'}`}>
+                    <button
+                      type="button"
+                      onClick={togglePlay}
+                      aria-label={isPlaying ? 'Pause Dota 2 highlight' : 'Play Dota 2 highlight'}
+                      className="w-16 h-16 bg-white/95 hover:bg-[#FF4400] text-stone-950 hover:text-white rounded-full flex items-center justify-center transition-all shadow-xl cursor-pointer"
+                    >
+                      {isPlaying ? <Pause size={26} /> : <Play size={26} className="ml-0.5" />}
+                    </button>
+                  </div>
 
-        {/* ======================= GAMING SUMMARY ======================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-16 md:mt-24 mb-12 glass-panel rounded-3xl md:rounded-[2.5rem] p-6 sm:p-8 md:p-12 relative overflow-hidden border border-slate-200 shadow-xl"
-        >
-          <div className="absolute top-0 left-0 w-[30rem] h-[30rem] bg-indigo-400/10 blur-[80px] rounded-full pointer-events-none -translate-y-1/2 -translate-x-1/3" />
-
-          <div className="relative z-10">
-            <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium mb-12 max-w-4xl">
-              Gaming is more than entertainment for me—it's where I developed problem-solving skills, strategic thinking, and an obsession with mastering mechanics. From highly competitive multiplayer titles to cinematic single-player experiences, I enjoy exploring different genres and challenges.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Swords size={24} className="text-indigo-500" /> Competitive Games</h4>
-                <div className="flex flex-col gap-3">
-                  {compGames.map(game => (
-                    <span key={game} className="text-slate-600 text-base font-medium">
-                      • {game}
-                    </span>
-                  ))}
+                  {isPlaying && (
+                    <div
+                      className="absolute bottom-0 left-0 right-0 h-8 cursor-pointer z-30 flex flex-col justify-end"
+                      onClick={(e) => {
+                        if (!videoRef.current || !videoRef.current.duration) return;
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        videoRef.current.currentTime = (clickX / rect.width) * videoRef.current.duration;
+                      }}
+                    >
+                      <div className="w-full h-1.5 bg-white/20">
+                        <div className="h-full bg-[#FF4400]" style={{ width: `${progress}%` }} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Gamepad size={24} className="text-indigo-500" /> Story & Adventure</h4>
-                <div className="flex flex-col gap-3">
-                  {storyGames.map(game => (
-                    <span key={game} className="text-slate-600 text-base font-medium">
-                      • {game}
-                    </span>
-                  ))}
-                  <span className="text-slate-400 text-sm italic mt-2">And Many More...</span>
+              <div className="lg:col-span-6 space-y-4">
+                <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">02.1 / MAIN COMPETITIVE ARENA</p>
+                <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Dota 2</h3>
+                <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                  <p>Dota 2 is the ultimate test of strategic depth, five-player teamwork, and demanding mechanical execution. Every match is a dynamic systems puzzle with infinite drafting variables.</p>
+                  <p>Executing synchronized team fights under high pressure deeply sharpened my analytical clarity and real-time decision speed.</p>
                 </div>
-              </div>
-
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Gamepad2 size={24} className="text-indigo-500" /> Genres</h4>
-                <div className="flex flex-wrap gap-2">
-                  {genres.map(genre => (
-                    <span key={genre} className="px-3 py-1.5 bg-white text-slate-600 rounded-lg text-sm font-semibold border border-slate-200 shadow-sm">
-                      {genre}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-bold text-slate-800 mb-6"><Users size={24} className="text-indigo-500" /> Why I Love Gaming</h4>
-                <ul className="space-y-4">
-                  {gamingLearnings.map((learning, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-600 font-medium text-base">
-                      <div className="w-2 h-2 rounded-full bg-indigo-400 shrink-0 mt-2" /> {learning}
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
+
+            {/* Phasmophobia Row */}
+            <div className="p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-stone-200">
+              <div className="lg:col-span-6 lg:order-2">
+                <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src={phasmophobiaImg}
+                    alt="Phasmophobia atmospheric investigation"
+                    className="w-full aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                  />
+                </div>
+              </div>
+
+              <div className="lg:col-span-6 lg:order-1 space-y-4">
+                <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">02.2 / CO-OP INVESTIGATION</p>
+                <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Phasmophobia</h3>
+                <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                  <p>Phasmophobia delivers atmospheric suspense balanced with methodical evidence gathering — walking haunted corridors reliant on team communication.</p>
+                  <p>It remains my go-to title for thrilling, investigative co-op sessions with friends.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gaming 4-Column Catalog */}
+            <div className="p-6 sm:p-10 bg-[#FAF9F7]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Swords size={15} className="text-[#FF4400]" />
+                    Competitive
+                  </h4>
+                  <ul className="space-y-2 text-sm text-stone-600">
+                    {compGames.map((g) => (
+                      <li key={g}>• {g}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Gamepad size={15} className="text-[#FF4400]" />
+                    Story &amp; Co-op
+                  </h4>
+                  <ul className="space-y-2 text-sm text-stone-600">
+                    {storyGames.map((g) => (
+                      <li key={g}>• {g}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Gamepad2 size={15} className="text-[#FF4400]" />
+                    Genres
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {genres.map((genre) => (
+                      <span key={genre} className="px-2.5 py-1 bg-white text-stone-700 rounded-full text-xs font-mono font-semibold border border-stone-200">
+                        {genre}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-stone-950 mb-4 font-sans">
+                    <Users size={15} className="text-[#FF4400]" />
+                    Why Play
+                  </h4>
+                  <ul className="space-y-2.5 text-sm text-stone-600">
+                    {gamingLearnings.map((l, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF4400] shrink-0 mt-2" />
+                        <span>{l}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ==================== CHAPTER 03: ANIME & NARRATIVE WORLDS ==================== */}
+          <section aria-labelledby="anime-heading" className="bg-white">
+            <div className="px-6 sm:px-10 py-5 border-b border-stone-200 bg-[#FAF9F7] flex items-center justify-between">
+              <h2 id="anime-heading" className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-stone-950">
+                03 / VISUAL WORLDS &amp; ANIME
+              </h2>
+              <span className="text-[11px] font-mono font-bold text-[#FF4400]">STORYTELLING</span>
+            </div>
+
+            <div className="p-6 sm:p-10 space-y-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <div className="lg:col-span-6 grid grid-cols-2 gap-4">
+                  <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={tanjiroImg}
+                      alt="Tanjiro Kamado"
+                      className="w-full aspect-square object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={nezukoImg}
+                      alt="Nezuko Kamado"
+                      className="w-full aspect-square object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 space-y-4">
+                  <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">03.1 / RESOLVE &amp; CRAFT</p>
+                  <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Demon Slayer</h3>
+                  <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                    <p>I draw endless inspiration from the pacing, visual artistry, and emotional depth of anime storytelling.</p>
+                    <p>Tanjiro Kamado stands out for his unwavering determination, discipline, and kindness under impossible odds.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-10 border-t border-stone-200 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <div className="lg:col-span-6 lg:order-2">
+                  <div className="rounded-[1.75rem] overflow-hidden border border-stone-200 bg-stone-100 group">
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={spyxfamilyImg}
+                      alt="Spy x Family"
+                      className="w-full aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 lg:order-1 space-y-4">
+                  <p className="text-xs font-mono font-bold tracking-widest text-[#FF4400] uppercase">03.2 / CURATED WATCHLIST</p>
+                  <h3 className="font-editorial text-3xl sm:text-4xl font-normal text-stone-950">Favorite Series</h3>
+                  <div className="text-stone-600 text-base leading-relaxed space-y-3">
+                    <p>From the razor-sharp psychological battles of <strong className="text-stone-900">Death Note</strong> to the kinetic intensity of <strong className="text-stone-900">Jujutsu Kaisen</strong> and <strong className="text-stone-900">Chainsaw Man</strong>, alongside the warmth of <strong className="text-stone-900">Spy × Family</strong> and comedy of <strong className="text-stone-900">One Punch Man</strong>.</p>
+                    <p>Each series sharpens my eye for framing, rhythm, and creative atmosphere.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-stone-200 px-6 sm:px-10 py-4 bg-[#FAF9F7] flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono tracking-widest text-stone-500 uppercase">
+            <span>ATHLETICS · STRATEGY · DESIGN INSPIRATION</span>
+            <Link to="/fun-games" className="text-stone-950 font-bold hover:text-[#FF4400] transition-colors">
+              TRY FUN GAMES PLAYGROUND —→
+            </Link>
           </div>
-        </motion.div>
-        {/* ======================= ANIME SECTION ======================= */}
-        <div className="mt-32 mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-panel mb-8 border border-red-500/20 shadow-lg shadow-red-500/10"
-          >
-            <span className="text-xl">🌸</span>
-            <span className="text-sm font-bold text-red-600 uppercase tracking-widest">Anime Enthusiast</span>
-          </motion.div>
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[clamp(2rem,5vw,3rem)] font-black text-slate-900 mb-8 tracking-tight"
-          >
-            Exploring <span className="text-red-500">Different Worlds</span>
-          </motion.h3>
         </div>
-
-        <div className="flex flex-col lg:flex-row items-center gap-16 mb-24">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 flex gap-4 items-center"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={tanjiroImg}
-                alt="Tanjiro Kamado"
-                className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group w-1/2">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={nezukoImg}
-                alt="Nezuko Kamado"
-                className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Demon Slayer</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>I'm a passionate anime enthusiast who loves exploring different worlds and stories.</p>
-              <p>My favorite character is Tanjiro Kamado for his determination, kindness, and never-give-up attitude.</p>
-              <p>Demon Slayer is one of the anime that inspired me the most.</p>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row-reverse items-center gap-16 mb-24">
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200/50 group">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={spyxfamilyImg}
-                alt="Spy x Family"
-                className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/2 space-y-6"
-          >
-            <h4 className="text-[clamp(1.5rem,4vw,1.875rem)] font-bold text-slate-900">Favorite Watches</h4>
-            <div className="text-slate-600 text-lg leading-relaxed font-medium space-y-3">
-              <p>I've watched Death Note and loved its psychological battles and brilliant storytelling.</p>
-              <p>Jujutsu Kaisen impressed me with its action and powerful characters.</p>
-              <p>Spy × Family became one of my favorites for its perfect blend of comedy and emotion.</p>
-              <p>I enjoyed the humor and overpowered moments in One Punch Man.</p>
-              <p>Chainsaw Man kept me hooked with its unique and chaotic world.</p>
-              <p>I've also watched many other amazing anime across different genres. Anime continues to inspire my creativity, imagination, and passion for storytelling.</p>
-            </div>
-          </motion.div>
-        </div>
-
       </div>
-    </section>
+    </div>
   );
 };

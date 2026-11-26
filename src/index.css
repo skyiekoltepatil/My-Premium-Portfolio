@@ -1,65 +1,172 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   html {
-    font-size: 16px; /* Base size for large screens */
+    font-size: 16px;
     scroll-behavior: smooth;
-    background-color: #ffffff;
-    color: #334155;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    background-color: #F9F9F8;
+    color: #1C1917;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-
-  /* Fluid typography and spacing will be handled by Tailwind classes (e.g. text-[clamp(...)]) */
 
   html::-webkit-scrollbar {
     display: none;
   }
 
   body {
-    background-color: #ffffff;
+    background-color: #F9F9F8;
     overflow-x: hidden;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   body::-webkit-scrollbar {
     display: none;
   }
 
+  :where(a:any-link, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2.5px solid #FF4400;
+    outline-offset: 3px;
+  }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply text-black;
+    @apply text-stone-950;
   }
 
   .glass-panel {
-    @apply backdrop-blur-xl bg-white/70 border border-white/50 shadow-[0_8px_30px_rgba(0,0,0,0.04)];
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    will-change: transform, backdrop-filter;
+    @apply bg-[#FAF9F7] border border-stone-300/80 shadow-sm;
+  }
+
+  .visually-hidden:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
   }
 }
 
-/* Target only the h3 subheadings within the Hobbies section */
+@layer base {
+  dialog:modal {
+    overscroll-behavior: contain;
+    margin: auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+    width: fit-content;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100dvh - 2.5rem);
+    overflow: visible;
+  }
+
+  dialog::backdrop {
+    overflow: hidden;
+    overscroll-behavior: contain;
+    background-color: rgba(9, 9, 11, 0.72);
+    backdrop-filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.editorial-dialog {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+    transition:
+      opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      display 0.22s,
+      overlay 0.22s;
+    transition-behavior: allow-discrete;
+  }
+
+  dialog.editorial-dialog[open] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @starting-style {
+    dialog.editorial-dialog[open] {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+  }
+
+  dialog.editorial-dialog::backdrop {
+    opacity: 0;
+    transition: opacity 0.22s ease-out, display 0.22s, overlay 0.22s;
+    transition-behavior: allow-discrete;
+  }
+
+  dialog.editorial-dialog[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog.editorial-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+/* Pure CSS Scroll-Driven Reveal */
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    @keyframes architectural-reveal {
+      entry 0% {
+        opacity: 0.35;
+        transform: translateY(18px);
+      }
+      entry 40% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .scroll-reveal-frame {
+      animation: architectural-reveal linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* Preserve Home Hero & Typography Hierarchy */
 #hobbies h3 {
-  font-family: 'Unbounded', sans-serif !important;
+  font-family: 'Unbounded', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Unbounded', sans-serif;
 }
 
-/* Target the specific quote text in the Quote page */
-.quote-text {
-  font-family: 'Playfair Display', serif !important;
-  font-style: italic !important;
-  font-weight: 900 !important;
-  color: #0f172a !important;
-  -webkit-text-fill-color: #0f172a !important;
+.font-editorial {
+  font-family: 'Bodoni Moda', 'Playfair Display', serif !important;
 }
+
+.font-serif {
+  font-family: 'Playfair Display', 'Bodoni Moda', serif !important;
+}
+
+.font-sans {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.quote-text {
+  font-family: 'Bodoni Moda', 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  color: #09090B !important;
+  -webkit-text-fill-color: #09090B !important;
+}
+
 :root {
   --color-1: hsl(0 100% 63%);
   --color-2: hsl(270 100% 63%);

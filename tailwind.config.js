@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Outfit', 'sans-serif'],
+        serif: ['"Playfair Display"', '"Bodoni Moda"', 'serif'],
+        editorial: ['"Bodoni Moda"', '"Playfair Display"', 'serif'],
       },
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',

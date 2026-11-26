@@ -16,6 +16,7 @@ interface LogoLoopProps {
   gap?: number;
   pauseOnHover?: boolean;
   hoverSpeed?: number;
+  paused?: boolean;
   fadeOut?: boolean;
   fadeOutColor?: string;
   scaleOnHover?: boolean;
@@ -37,6 +38,7 @@ const useAnimationLoop = (
   hoverSpeed: number | undefined,
   isVertical: boolean,
   dragOffsetRef: React.RefObject<number>,
+  paused: boolean,
 ) => {
   const rafRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number | null>(null);
@@ -51,7 +53,7 @@ const useAnimationLoop = (
     const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const animate = (timestamp: number) => {
-      if (!isIntersecting || document.hidden || prefersReducedMotion) {
+      if (!isIntersecting || document.hidden || prefersReducedMotion || paused) {
         lastTimestampRef.current = null;
         return;
       }
@@ -79,7 +81,7 @@ const useAnimationLoop = (
     };
 
     const startAnimation = () => {
-      if (rafRef.current === null && isIntersecting && !document.hidden && !prefersReducedMotion) {
+      if (rafRef.current === null && isIntersecting && !document.hidden && !prefersReducedMotion && !paused) {
         lastTimestampRef.current = null;
         rafRef.current = requestAnimationFrame(animate);
       }
@@ -114,7 +116,7 @@ const useAnimationLoop = (
       observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef, dragOffsetRef]);
+  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef, dragOffsetRef, paused]);
 };
 
 export const LogoLoop = memo(({
@@ -126,6 +128,7 @@ export const LogoLoop = memo(({
   gap = 32,
   pauseOnHover,
   hoverSpeed,
+  paused = false,
   fadeOut = false,
   fadeOutColor,
   scaleOnHover = false,
@@ -185,7 +188,7 @@ export const LogoLoop = memo(({
     return () => observer.disconnect();
   }, [updateDimensions, logos, gap, logoHeight]);
 
-  useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical, dragOffsetRef);
+  useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical, dragOffsetRef, paused);
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     isDraggingRef.current = true;
@@ -304,7 +307,7 @@ export const LogoLoop = memo(({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         onWheel={handleWheel}
-        style={{ touchAction: 'none' }}
+        style={{ touchAction: isVertical ? 'pan-x' : 'pan-y' }}
       >
         {logoLists}
       </div>

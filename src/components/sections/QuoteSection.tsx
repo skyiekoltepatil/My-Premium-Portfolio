@@ -1,72 +1,97 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
+
+const HOME_QUOTES = [
+  {
+    num: '01',
+    quote: 'You can sleep while you are dead.',
+    author: 'Max Verstappen',
+    accent: '#FF4400',
+    tags: ['SPEED', 'DISCIPLINE', 'PERSPECTIVE'],
+    align: 'left' as const,
+  },
+  {
+    num: '02',
+    quote: "Don't forget who you are mate.",
+    author: 'Lewis Hamilton',
+    accent: '#09090B',
+    tags: ['IDENTITY', 'FOCUS', 'JOURNEY'],
+    align: 'right' as const,
+  },
+];
 
 export const QuoteSection = () => {
   return (
-    <section id="quote-section" className="py-24 md:py-32 relative z-10 flex flex-col items-center justify-center overflow-hidden">
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12">
-        <div className="mb-16 md:mb-24 text-center relative z-20">
-          <motion.h2
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-[clamp(2.5rem,6vw,4rem)] font-bold tracking-tighter text-slate-900"
-          >
-            <span className="text-gradient">Quote</span>
-          </motion.h2>
-        </div>
-
-        <div className="flex flex-col gap-24 md:gap-40 w-full max-w-5xl mx-auto">
-          {/* Max Verstappen Quote - Left Aligned */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative text-left pr-12 md:pr-32"
-          >
-            <span className="absolute -top-16 -left-8 md:-left-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
-              "
-            </span>
-            <div className="relative z-10">
-              <p className="quote-text text-[clamp(2rem,6vw,4.5rem)] font-black italic tracking-tight leading-tight mb-8">
-                You can sleep while you are dead.
-              </p>
-
-              <div className="flex items-center justify-start gap-4 mt-8">
-                <div className="w-12 h-1 bg-orange-500 rounded-full shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div>
-                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
-                  Max Verstappen
-                </p>
-              </div>
+    <section id="quote-section" aria-labelledby="home-quotes-heading" className="py-12 md:py-20 bg-[#F9F9F8] relative z-10 overflow-hidden">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 md:px-10">
+        <div className="border border-stone-300/80 bg-[#FAF9F7] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm">
+          {/* Header Kicker */}
+          <div className="px-6 sm:px-10 py-5 border-b border-stone-200 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold tracking-[0.2em] text-stone-400">02 /</span>
+              <h2 id="home-quotes-heading" className="text-xs font-mono font-bold tracking-[0.2em] text-stone-950 uppercase">
+                GUIDING PHILOSOPHY
+              </h2>
             </div>
-          </motion.div>
 
-          {/* Lewis Hamilton Quote - Right Aligned */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="relative text-right pl-12 md:pl-32"
-          >
-            <span className="absolute -top-16 -right-8 md:-right-16 text-[8rem] md:text-[12rem] text-slate-900/40 font-serif leading-none select-none z-0 pointer-events-none">
-              "
-            </span>
-            <div className="relative z-10">
-              <p className="quote-text text-[clamp(2rem,6vw,4.5rem)] font-black italic tracking-tight leading-tight mb-8">
-                Don't forget who you are mate.
-              </p>
+            <Link
+              to="/quote"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-[11px] font-mono font-bold tracking-widest uppercase transition-colors"
+            >
+              <span>Full Archive (07)</span>
+              <ArrowUpRight size={14} />
+            </Link>
+          </div>
 
-              <div className="flex items-center justify-end gap-4 mt-8">
-                <p className="text-[clamp(1.125rem,2.5vw,1.5rem)] font-semibold text-slate-600 uppercase tracking-widest">
-                  Lewis Hamilton
-                </p>
-                <div className="w-12 h-1 bg-teal-400 rounded-full shadow-[0_0_10px_rgba(45,212,191,0.5)]"></div>
-              </div>
-            </div>
-          </motion.div>
+          {/* Monumental Two-Quote Ledger */}
+          <div className="divide-y divide-stone-200 bg-white">
+            {HOME_QUOTES.map((item, idx) => (
+              <motion.div
+                key={item.num}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.55, delay: idx * 0.1 }}
+                className="p-6 sm:p-10 md:p-14 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"
+              >
+                <div className={`lg:col-span-2 flex items-center gap-4 lg:flex-col lg:items-start lg:justify-between h-full ${item.align === 'right' ? 'lg:order-2 lg:items-end lg:border-l border-stone-200 lg:pl-8' : 'lg:border-r border-stone-200 lg:pr-8'}`}>
+                  <span className="font-editorial text-4xl sm:text-5xl text-stone-900 font-light select-none">
+                    {item.num}
+                  </span>
+                  <div className={`flex flex-wrap lg:flex-col gap-1.5 font-mono text-[10px] font-bold tracking-[0.2em] text-stone-400 uppercase ${item.align === 'right' ? 'lg:text-right' : ''}`}>
+                    {item.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
 
+                <div className={`lg:col-span-10 flex flex-col justify-between ${item.align === 'right' ? 'lg:order-1 lg:text-right lg:items-end lg:pr-6' : 'lg:pl-4'}`}>
+                  <span
+                    className="text-4xl sm:text-5xl font-serif font-black leading-none select-none mb-2"
+                    style={{ color: item.accent }}
+                    aria-hidden="true"
+                  >
+                    &ldquo;
+                  </span>
+
+                  <blockquote className="quote-text text-[clamp(2rem,4.8vw,4rem)] tracking-tight leading-[1.06] mb-8 max-w-4xl">
+                    {item.quote}
+                  </blockquote>
+
+                  <div className={`flex items-center gap-4 ${item.align === 'right' ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className="w-12 h-1 rounded-full"
+                      style={{ backgroundColor: item.accent }}
+                    />
+                    <p className="font-mono text-xs sm:text-sm font-bold tracking-[0.2em] text-stone-700 uppercase">
+                      {item.author}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
