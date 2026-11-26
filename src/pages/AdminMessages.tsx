@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Inbox, 
-  Mail, 
-  Trash2, 
-  CheckCheck, 
-  Search, 
-  Clock, 
-  Send, 
-  Lock, 
-  Download, 
+import {
+  Inbox,
+  Mail,
+  Trash2,
+  CheckCheck,
+  Search,
+  Clock,
+  Send,
+  Lock,
+  Download,
   RefreshCw,
-  ShieldCheck
+  ShieldCheck,
 } from 'lucide-react';
 import type { ContactMessage } from '../services/contactDatabase';
-import { 
-  getStoredMessages, 
-  markMessageAsRead, 
-  markAllMessagesAsRead, 
-  deleteMessage, 
-  clearStoredMessages 
+import {
+  getStoredMessages,
+  markMessageAsRead,
+  markAllMessagesAsRead,
+  deleteMessage,
+  clearStoredMessages,
 } from '../services/contactDatabase';
 
-// Hashed passcode for public repository security (SHA-256 hash of password)
 const PASSCODE_HASH = 'deab4b1a1376a899b5275e56156c819acbb34b3f51ee67b3b3eadbb0d7dd8399';
 
 async function hashInput(str: string): Promise<string> {
@@ -34,6 +33,9 @@ async function hashInput(str: string): Promise<string> {
 }
 
 export const AdminMessages: React.FC = () => {
+  const passcodeInputId = useId();
+  const searchInputId = useId();
+
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,7 +44,6 @@ export const AdminMessages: React.FC = () => {
   const [passError, setPassError] = useState(false);
 
   useEffect(() => {
-    // Check if previously unlocked in session
     const unlocked = sessionStorage.getItem('admin_messages_unlocked');
     if (unlocked === 'true') {
       setIsAuthenticated(true);
@@ -102,23 +103,23 @@ export const AdminMessages: React.FC = () => {
   };
 
   const handleExportJSON = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(messages, null, 2));
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(messages, null, 2));
     const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `portfolio_messages_${new Date().toISOString().slice(0,10)}.json`);
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `portfolio_messages_${new Date().toISOString().slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
   };
 
   const filteredMessages = messages.filter((msg) => {
-    const matchesFilter = 
+    const matchesFilter =
       filter === 'all' ? true : filter === 'unread' ? msg.status === 'unread' : msg.status === 'read';
-    
+
     const query = searchQuery.toLowerCase();
-    const matchesSearch = 
-      msg.name.toLowerCase().includes(query) || 
-      msg.email.toLowerCase().includes(query) || 
+    const matchesSearch =
+      msg.name.toLowerCase().includes(query) ||
+      msg.email.toLowerCase().includes(query) ||
       msg.message.toLowerCase().includes(query);
 
     return matchesFilter && matchesSearch;
@@ -128,44 +129,63 @@ export const AdminMessages: React.FC = () => {
 
   if (!isAuthenticated) {
     return (
-      <section className="py-28 md:py-36 relative z-10 flex items-center justify-center min-h-[75vh]">
+      <section className="pt-6 pb-20 relative z-10 flex items-center justify-center min-h-[75vh] bg-[#F9F9F8]">
         <div className="max-w-md w-full mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl border border-slate-200/80 text-center flex flex-col items-center"
+            className="bg-[#FAF9F7] border border-stone-300/80 rounded-[2rem] shadow-sm overflow-hidden"
           >
-            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-blue-100">
-              <Lock size={28} />
+            <div className="px-6 py-3.5 border-b border-stone-200 flex items-center justify-between text-[10px] font-mono font-bold tracking-widest uppercase text-stone-500">
+              <span>ADMIN VAULT</span>
+              <span className="text-[#FF4400]">RESTRICTED</span>
             </div>
 
-            <h2 className="text-2xl font-extrabold text-slate-800 mb-2">Admin Messages Access</h2>
-            <p className="text-slate-500 text-sm mb-6 font-medium">Enter passcode to view your custom messages inbox database.</p>
-
-            <form onSubmit={handleUnlock} className="w-full flex flex-col gap-4">
-              <div>
-                <input
-                  type="password"
-                  value={passcode}
-                  onChange={(e) => { setPasscode(e.target.value); setPassError(false); }}
-                  placeholder="Enter Admin Passcode"
-                  className={`w-full px-5 py-3.5 bg-slate-50 border rounded-2xl outline-none text-center font-bold text-slate-800 transition-all ${
-                    passError ? 'border-red-400 focus:ring-4 focus:ring-red-100' : 'border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-50'
-                  }`}
-                />
-                {passError && (
-                  <p className="text-xs text-red-500 font-semibold mt-2">Incorrect passcode. Please try again.</p>
-                )}
+            <div className="p-8 bg-white text-center flex flex-col items-center">
+              <div className="w-14 h-14 bg-[#FAF9F7] text-stone-900 border border-stone-200 rounded-2xl flex items-center justify-center mb-5">
+                <Lock size={24} />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
-              >
-                <ShieldCheck size={18} />
-                <span>Unlock Inbox</span>
-              </button>
-            </form>
+              <h1 className="font-editorial text-3xl text-stone-950 mb-2 font-normal">Inbox Access</h1>
+              <p className="text-stone-500 text-sm mb-6">
+                Enter your passcode to decrypt stored contact inquiries.
+              </p>
+
+              <form onSubmit={handleUnlock} className="w-full flex flex-col gap-4 text-left">
+                <div>
+                  <label htmlFor={passcodeInputId} className="block text-[11px] font-mono font-bold tracking-wider uppercase text-stone-600 mb-1.5">
+                    Passcode
+                  </label>
+                  <input
+                    id={passcodeInputId}
+                    type="password"
+                    value={passcode}
+                    onChange={(e) => {
+                      setPasscode(e.target.value);
+                      setPassError(false);
+                    }}
+                    placeholder="Enter admin passcode"
+                    aria-invalid={passError ? 'true' : undefined}
+                    className={`w-full min-h-[48px] px-4 py-3 bg-[#FAF9F7] border rounded-xl outline-none text-center font-mono font-bold text-stone-900 transition-all ${
+                      passError ? 'border-red-500' : 'border-stone-300 focus:border-black'
+                    }`}
+                  />
+                  {passError && (
+                    <p role="alert" className="text-xs text-red-600 font-semibold mt-2 text-center">
+                      Incorrect passcode. Please try again.
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full min-h-[48px] py-3 bg-black hover:bg-[#FF4400] text-white text-xs font-mono font-bold tracking-widest uppercase rounded-full transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ShieldCheck size={16} />
+                  <span>Unlock Vault</span>
+                </button>
+              </form>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -173,98 +193,94 @@ export const AdminMessages: React.FC = () => {
   }
 
   return (
-    <section className="py-24 md:py-32 relative z-10 flex flex-col items-center justify-center min-h-[85vh]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full">
+    <div className="min-h-screen bg-[#F9F9F8] text-stone-900 font-sans pb-16 pt-1 sm:pt-2 relative">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-8"
+          className="border border-stone-300/80 bg-[#FAF9F7] rounded-[2rem] md:rounded-[2.5rem] shadow-sm overflow-hidden"
         >
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-slate-200/60">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl">
-                  <Inbox size={24} />
-                </div>
-                <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">Messages Database</h1>
-                {unreadCount > 0 && (
-                  <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full animate-pulse">
-                    {unreadCount} New
-                  </span>
-                )}
-              </div>
-              <p className="text-slate-500 text-sm font-medium">Manage and review all contact form messages stored directly in your database.</p>
+          {/* Kicker Strip */}
+          <div className="px-6 sm:px-10 py-4 border-b border-stone-200 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono tracking-[0.2em] uppercase text-stone-500">
+            <div className="flex items-center gap-2.5">
+              <Inbox size={14} className="text-[#FF4400]" />
+              <span className="font-bold text-stone-950">MESSAGES VAULT</span>
+              {unreadCount > 0 && (
+                <span className="px-2.5 py-0.5 rounded-full bg-[#FF4400] text-white text-[10px] font-bold">
+                  {unreadCount} NEW
+                </span>
+              )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={loadMessages}
-                className="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors font-semibold text-sm flex items-center gap-2"
-                title="Refresh Messages"
+                className="px-3.5 py-1.5 bg-white border border-stone-300 hover:border-black text-stone-800 rounded-full text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
               >
-                <RefreshCw size={16} />
-                <span className="hidden sm:inline">Refresh</span>
+                <RefreshCw size={12} />
+                <span>Refresh</span>
               </button>
 
               <button
+                type="button"
                 onClick={handleExportJSON}
                 disabled={messages.length === 0}
-                className="px-4 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl transition-colors font-semibold text-sm flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-1.5 bg-black hover:bg-[#FF4400] text-white rounded-full text-[11px] font-bold flex items-center gap-1.5 disabled:opacity-40 cursor-pointer transition-colors"
               >
-                <Download size={16} />
-                <span>Export Backup</span>
+                <Download size={12} />
+                <span>Export JSON</span>
               </button>
             </div>
           </div>
 
-          {/* Controls Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-md border border-slate-200/60">
-            {/* Search */}
-            <div className="relative w-full sm:w-72">
-              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search messages..."
-                className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-400 font-semibold text-sm text-slate-700"
-              />
+          {/* Title & Search Bar */}
+          <div className="px-6 sm:px-10 py-8 border-b border-stone-200 bg-white flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <h1 className="font-editorial text-4xl sm:text-5xl font-normal text-stone-950 tracking-tight mb-2">
+                Inbox Ledger.
+              </h1>
+              <p className="text-stone-600 text-sm sm:text-base">
+                Stored inquiry submissions managed inside the portfolio database.
+              </p>
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <div className="flex bg-slate-100 p-1 rounded-xl w-full sm:w-auto">
-                <button
-                  onClick={() => setFilter('all')}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    filter === 'all' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  All ({messages.length})
-                </button>
-                <button
-                  onClick={() => setFilter('unread')}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    filter === 'unread' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  Unread ({unreadCount})
-                </button>
-                <button
-                  onClick={() => setFilter('read')}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    filter === 'read' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  Read ({messages.length - unreadCount})
-                </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <search className="relative w-full sm:w-64">
+                <label htmlFor={searchInputId} className="visually-hidden">
+                  Search messages
+                </label>
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+                <input
+                  id={searchInputId}
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search inbox..."
+                  className="w-full min-h-[42px] pl-10 pr-4 py-2 bg-[#FAF9F7] border border-stone-300 rounded-full outline-none focus:border-black text-sm text-stone-800"
+                />
+              </search>
+
+              <div className="flex bg-[#FAF9F7] border border-stone-200 p-1 rounded-full">
+                {(['all', 'unread', 'read'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setFilter(tab)}
+                    className={`px-3.5 py-1.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer ${
+                      filter === tab ? 'bg-black text-white' : 'text-stone-600 hover:text-stone-950'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
               </div>
 
               {unreadCount > 0 && (
                 <button
+                  type="button"
                   onClick={handleMarkAllRead}
-                  className="px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-bold transition-colors whitespace-nowrap"
+                  className="px-4 py-2 bg-stone-900 hover:bg-[#FF4400] text-white rounded-full text-[11px] font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer"
                 >
                   Mark All Read
                 </button>
@@ -272,116 +288,119 @@ export const AdminMessages: React.FC = () => {
 
               {messages.length > 0 && (
                 <button
+                  type="button"
                   onClick={handleClearAll}
-                  className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-                  title="Clear All Messages"
+                  className="p-2.5 text-stone-500 hover:text-red-600 border border-stone-200 hover:border-red-300 rounded-full transition-colors cursor-pointer"
+                  aria-label="Clear all messages"
                 >
-                  <Trash2 size={18} />
+                  <Trash2 size={16} />
                 </button>
               )}
             </div>
           </div>
 
           {/* Messages List */}
-          {filteredMessages.length === 0 ? (
-            <div className="bg-white p-12 rounded-[2rem] text-center shadow-lg border border-slate-200/60 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-4">
-                <Inbox size={32} />
+          <div className="p-6 sm:p-10 bg-[#FAF9F7]">
+            {filteredMessages.length === 0 ? (
+              <div className="bg-white p-12 rounded-[1.75rem] text-center border border-stone-200 flex flex-col items-center justify-center">
+                <div className="w-14 h-14 bg-[#FAF9F7] border border-stone-200 text-stone-400 rounded-full flex items-center justify-center mb-4">
+                  <Inbox size={26} />
+                </div>
+                <h2 className="text-xl font-bold text-stone-900 mb-1 font-sans">No Messages Found</h2>
+                <p className="text-stone-500 text-sm max-w-sm">
+                  {messages.length === 0
+                    ? 'Submissions from your contact studio form will appear here.'
+                    : 'No messages match your current filter or search query.'}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-700 mb-1">No Messages Found</h3>
-              <p className="text-slate-400 text-sm max-w-sm">
-                {messages.length === 0 
-                  ? "Your database is empty. Submissions from the contact form will appear here instantly!" 
-                  : "No messages match your current search or filter."}
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <AnimatePresence>
-                {filteredMessages.map((msg) => (
-                  <motion.div
-                    key={msg.id}
-                    layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className={`bg-white p-6 sm:p-8 rounded-[2rem] border transition-all shadow-md hover:shadow-lg ${
-                      msg.status === 'unread' 
-                        ? 'border-blue-300 ring-2 ring-blue-50 bg-blue-50/20' 
-                        : 'border-slate-200/70'
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
-                      <div className="flex items-center gap-4">
-                        {/* Avatar initials */}
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-extrabold flex items-center justify-center shadow-md text-lg">
-                          {msg.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="text-lg font-extrabold text-slate-800">{msg.name}</h3>
-                            {msg.status === 'unread' && (
-                              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[11px] font-bold rounded-md">NEW</span>
-                            )}
+            ) : (
+              <div className="flex flex-col gap-4">
+                <AnimatePresence>
+                  {filteredMessages.map((msg) => (
+                    <motion.article
+                      key={msg.id}
+                      layout
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
+                      className={`bg-white p-6 rounded-2xl border transition-all ${
+                        msg.status === 'unread' ? 'border-[#FF4400]/50 shadow-sm' : 'border-stone-200'
+                      }`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-stone-100">
+                        <div className="flex items-center gap-4">
+                          <div className="w-11 h-11 rounded-full bg-stone-950 text-white font-mono font-bold flex items-center justify-center text-base">
+                            {msg.name.charAt(0).toUpperCase()}
                           </div>
-                          <a href={`mailto:${msg.email}`} className="text-sm font-semibold text-blue-600 hover:underline flex items-center gap-1.5 mt-0.5">
-                            <Mail size={14} />
-                            <span>{msg.email}</span>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-base font-bold text-stone-950 font-sans">{msg.name}</h3>
+                              {msg.status === 'unread' && (
+                                <span className="px-2 py-0.5 bg-[#FF4400]/10 text-[#FF4400] text-[10px] font-mono font-bold rounded-full uppercase">
+                                  NEW
+                                </span>
+                              )}
+                            </div>
+                            <a href={`mailto:${msg.email}`} className="text-xs font-mono text-stone-600 hover:text-[#FF4400] flex items-center gap-1.5 mt-0.5">
+                              <Mail size={13} />
+                              <span>{msg.email}</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[11px] font-mono text-stone-500 flex items-center gap-1 bg-[#FAF9F7] px-3 py-1.5 rounded-full border border-stone-200">
+                            <Clock size={12} />
+                            {new Date(msg.timestamp).toLocaleString()}
+                          </span>
+
+                          {msg.status === 'unread' ? (
+                            <button
+                              type="button"
+                              onClick={() => handleMarkRead(msg.id)}
+                              className="p-2 bg-[#FAF9F7] border border-stone-200 hover:border-black text-stone-700 hover:text-black rounded-full transition-colors cursor-pointer"
+                              aria-label="Mark as read"
+                            >
+                              <CheckCheck size={16} />
+                            </button>
+                          ) : (
+                            <span className="p-2 text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full" aria-label="Read">
+                              <CheckCheck size={16} />
+                            </span>
+                          )}
+
+                          <a
+                            href={`mailto:${msg.email}?subject=Re: Portfolio Contact Inquiry&body=Hi ${encodeURIComponent(msg.name)},%0A%0AThank you for reaching out!%0A%0ABest regards,%0ABhushan Kolte`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-2 bg-[#FAF9F7] border border-stone-200 hover:bg-black hover:text-white hover:border-black text-stone-700 rounded-full transition-colors"
+                            aria-label="Reply via email"
+                          >
+                            <Send size={16} />
                           </a>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(msg.id)}
+                            className="p-2 text-stone-400 hover:text-red-600 border border-stone-200 hover:border-red-300 rounded-full transition-colors cursor-pointer"
+                            aria-label="Delete message"
+                          >
+                            <Trash2 size={16} />
+                          </button>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 self-end sm:self-center">
-                        <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
-                          <Clock size={13} />
-                          {new Date(msg.timestamp).toLocaleString()}
-                        </span>
-
-                        {msg.status === 'unread' ? (
-                          <button
-                            onClick={() => handleMarkRead(msg.id)}
-                            className="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl transition-colors"
-                            title="Mark as Read"
-                          >
-                            <CheckCheck size={18} />
-                          </button>
-                        ) : (
-                          <span className="p-2 text-emerald-600 bg-emerald-50 rounded-xl" title="Read">
-                            <CheckCheck size={18} />
-                          </span>
-                        )}
-
-                        <a
-                          href={`mailto:${msg.email}?subject=Re: Portfolio Contact Inquiry&body=Hi ${encodeURIComponent(msg.name)},\n\nThank you for reaching out!\n\nBest regards,\nBhushan Kolte`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-xl transition-all"
-                          title="Reply via Email"
-                        >
-                          <Send size={18} />
-                        </a>
-
-                        <button
-                          onClick={() => handleDelete(msg.id)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-                          title="Delete Message"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                      <div className="bg-[#FAF9F7] p-4 rounded-xl border border-stone-200 text-stone-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                        {msg.message}
                       </div>
-                    </div>
-
-                    {/* Message Content */}
-                    <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-100 text-slate-700 font-medium text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
-                      {msg.message}
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          )}
+                    </motion.article>
+                  ))}
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
