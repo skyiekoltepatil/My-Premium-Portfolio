@@ -64,7 +64,6 @@ const PROJECT_CONTENT: ProjectProps[] = [
     techStack: ['HTML', 'CSS', 'JavaScript', 'Canvas API'],
     date: '2024',
     links: [
-      { name: 'Website', url: 'https://immersive-g.com/' },
       { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/sculpture-hover' }
     ],
     images: []
