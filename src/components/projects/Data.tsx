@@ -5,6 +5,7 @@ import project2Img from '../../assets/Project-2-image.webp';
 import project3Img from '../../assets/Project-3-image.webp';
 import weatherImg from '../../assets/weather-image.webp';
 import sculptureHoverImg from '../../assets/sculpture-hover.webp';
+import dinoKeyImg from '../../assets/dino-key-image.webp';
 
 export interface ProjectProps {
   title: string;
@@ -16,6 +17,17 @@ export interface ProjectProps {
 }
 
 const PROJECT_CONTENT: ProjectProps[] = [
+  {
+    title: 'DINO KEY V1',
+    description:
+      'Interactive ESP32-C3 + 1.3" SH1106 OLED mini desk-companion with 9 modes, playable Dino Run game, 20 pixel expressions, Bluetooth LE HID & time/battery sync, captive Wi-Fi NTP portal, native macOS Swift sync app, and Web Bluetooth OLED simulator.',
+    techStack: ['ESP32-C3', 'C++ / PlatformIO', 'SH1106 OLED', 'BLE 5.0', 'Swift (macOS)', 'Web Bluetooth'],
+    date: '2026',
+    links: [
+      { name: 'GitHub', url: 'https://github.com/skyiekoltepatil/Dino-key' }
+    ],
+    images: [{ src: dinoKeyImg, alt: 'DINO KEY V1 ESP32-C3 OLED Hardware' }]
+  },
   {
     title: 'My Detailed Portfolio',
     description: 'A premium, highly interactive React component library for modern web applications.',
@@ -159,6 +171,7 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
 };
 
 export const data = [
+  { category: 'Hardware & IoT', title: 'DINO KEY V1', src: dinoKeyImg, content: <ProjectContent project={{ title: 'DINO KEY V1' }} /> },
   { category: 'Web Development', title: 'My Detailed Portfolio', src: project1Img, content: <ProjectContent project={{ title: 'My Detailed Portfolio' }} /> },
   { category: 'Web Development', title: 'Live Portfolio', src: project2Img, content: <ProjectContent project={{ title: 'Live Portfolio' }} /> },
   { category: 'UI/UX', title: '3D Animated Login Interface', src: project3Img, content: <ProjectContent project={{ title: '3D Animated Login Interface' }} /> },

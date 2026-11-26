@@ -1,6 +1,7 @@
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
 const PROJECTS_SUMMARY = [
+  { title: 'DINO KEY V1', description: 'ESP32-C3 + 1.3" SH1106 OLED interactive wearable desk companion with 9 modes, playable Dino Run, 20 pixel faces, BLE/Wi-Fi NTP sync, macOS Swift app, and Web Bluetooth simulator.' },
   { title: 'My Detailed Portfolio', description: 'A premium, highly interactive React component library for modern web applications.' },
   { title: 'Live Portfolio', description: 'A modern and interactive portfolio crafted to showcase my passion for technology, creativity, and innovation.' },
   { title: '3D Animated Login Interface', description: 'A modern, 3D animated login interface built with React, showcasing interactive elements and fluid CSS animations.' },
@@ -9,6 +10,7 @@ const PROJECTS_SUMMARY = [
 ];
 
 const CERTIFICATES_SUMMARY = [
+  { title: 'CodeAlpha AI Internship Certificate', period: 'Nov 2026', description: 'Completed the CodeAlpha Virtual Internship Program in Artificial Intelligence (Oct–Nov 2026, ID: CA/DF1/313372) with a formal Letter of Recommendation.' },
   { title: 'Fundamentals of Scientific Communication', period: '2026', description: 'Developed essential skills for effectively communicating scientific research, concepts, and data to diverse audiences.' },
   { title: 'Crafting Impactful CVs and Resumes', period: '2026', description: 'Mastered the principles of designing compelling professional profiles to highlight achievements and career milestones.' },
   { title: 'AMD Certification', period: '2026', description: 'Achieved proficiency in advanced technologies and professional solutions certified by AMD.' }
